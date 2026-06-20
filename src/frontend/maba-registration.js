@@ -45,13 +45,16 @@ registrationForm.addEventListener("submit", (event) => {
   const uploadedFile = formData.get("certificateFile");
 
   setTimeout(() => {
+    const registrationId = `${Date.now()}`;
     saveMabaRegistration({
-      id: `${Date.now()}`,
+      id: registrationId,
+      registrationNumber: registrationId,
       fullName: String(formData.get("fullName") ?? "").trim(),
       schoolOrigin: String(formData.get("schoolOrigin") ?? "").trim(),
       studyProgram: String(formData.get("studyProgram") ?? "").trim(),
       certificateFileName: uploadedFile instanceof File ? uploadedFile.name : "",
-      status: "pending",
+      pipelineStatus: "pending",
+      statusPembayaran: "belum_lunas",
       createdAt: new Date().toISOString(),
     });
 

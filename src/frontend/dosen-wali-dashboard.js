@@ -41,34 +41,19 @@ const students = [
   },
 ];
 
-const demoUsers = {
-  "dosen-101": {
-    userId: "101",
-    role: "dosen",
-    label: "Dosen Wali",
-  },
-  "mahasiswa-1": {
-    userId: "1",
-    role: "mahasiswa",
-    label: "Mahasiswa A",
-  },
-  "mahasiswa-2": {
-    userId: "2",
-    role: "mahasiswa",
-    label: "Mahasiswa B",
-  },
-};
-
 const summaryCards = document.querySelector("#summaryCards");
 const studentTableBody = document.querySelector("#studentTableBody");
 const onlyWarningToggle = document.querySelector("#onlyWarning");
-const activeDemoUserSelect = document.querySelector("#activeDemoUser");
-const refreshByRoleButton = document.querySelector("#refreshByRole");
-const activeRoleHint = document.querySelector("#activeRoleHint");
 const transkripModal = document.querySelector("#transkripModal");
 const closeTranskripModalBtn = document.querySelector("#closeTranskripModalBtn");
 const transkripDetailMeta = document.querySelector("#transkripDetailMeta");
 const transkripGradesBody = document.querySelector("#transkripGradesBody");
+
+const activeDemoUser = {
+  userId: "101",
+  role: "dosen",
+  label: "Dosen Wali",
+};
 
 const transcriptPreviewByStudentId = {
   "1": [
@@ -92,11 +77,6 @@ const transcriptPreviewByStudentId = {
     { code: "IF211", name: "Sistem Operasi", credits: 2, score: 71, letter: "B-" },
   ],
 };
-
-function getActiveDemoUser() {
-  const selectedKey = activeDemoUserSelect.value;
-  return demoUsers[selectedKey] ?? demoUsers["dosen-101"];
-}
 
 function getVisibleStudents(activeUser) {
   if (activeUser.role === "dosen") {
@@ -172,12 +152,11 @@ function renderTable(data) {
 }
 
 async function fetchTranscript(studentId) {
-  const activeUser = getActiveDemoUser();
   const response = await fetch(`/api/mahasiswa/${studentId}/transkrip`, {
     method: "GET",
     headers: {
-      "x-user-id": activeUser.userId,
-      "x-role": activeUser.role,
+      "x-user-id": activeDemoUser.userId,
+      "x-role": activeDemoUser.role,
     },
   });
 
@@ -351,24 +330,14 @@ transkripModal.addEventListener("click", (event) => {
 });
 
 function render() {
-  const activeUser = getActiveDemoUser();
-  const baseData = getVisibleStudents(activeUser);
+  const baseData = getVisibleStudents(activeDemoUser);
   const filteredData = onlyWarningToggle.checked
     ? baseData.filter((student) => student.isUnderperforming)
     : baseData;
 
   renderSummary(baseData);
   renderTable(filteredData);
-
-  const hintText =
-    activeUser.role === "dosen"
-      ? `${activeUser.label} aktif. Tabel menampilkan seluruh mahasiswa perwalian.`
-      : `${activeUser.label} aktif. Tabel hanya menampilkan data mahasiswa tersebut.`;
-
-  activeRoleHint.textContent = hintText;
 }
 
 onlyWarningToggle.addEventListener("change", render);
-refreshByRoleButton.addEventListener("click", render);
-activeDemoUserSelect.addEventListener("change", render);
 render();

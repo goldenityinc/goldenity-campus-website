@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mahasiswa - Daftar Ulang</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #17324d;
+        --ink-soft: #4b6783;
+        --line: #ccdaeb;
+        --surface: #ffffffdd;
+        --primary-1: #0b709b;
+        --primary-2: #29ba9c;
+        --shadow: 0 20px 44px rgba(17, 39, 67, 0.18);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        color: var(--ink);
+        background: radial-gradient(circle at 12% 16%, #caf8ff, transparent 36%),
+          radial-gradient(circle at 84% 12%, #ffe1af, transparent 30%),
+          linear-gradient(145deg, #eef7ff, #f7fbff 48%, #fff8f0);
+        display: grid;
+        place-items: center;
+        padding: 20px;
+      }
+
+      .page-card {
+        width: min(760px, 100%);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--surface);
+        backdrop-filter: blur(8px);
+        box-shadow: var(--shadow);
+        padding: 24px;
+      }
+
+      .kicker {
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.76rem;
+        font-weight: 800;
+        color: #0e667d;
+      }
+
+      h1 {
+        margin: 8px 0 6px;
+        font-family: "Fraunces", serif;
+        font-size: clamp(1.5rem, 4vw, 2.3rem);
+      }
+
+      .subtitle, .helper {
+        margin: 0;
+        color: var(--ink-soft);
+        line-height: 1.55;
+      }
+
+      .search-form {
+        margin-top: 18px;
+        display: grid;
+        gap: 12px;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-weight: 700;
+        color: #2f5170;
+      }
+
+      input {
+        border: 1px solid #bfd1e8;
+        border-radius: 12px;
+        padding: 11px 12px;
+        font: inherit;
+      }
+
+      .btn-primary {
+        border: 0;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font: inherit;
+        font-weight: 800;
+        color: #fff;
+        background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+        cursor: pointer;
+      }
+
+      .btn-primary:disabled { opacity: 0.72; cursor: wait; }
+
+      .invoice-box {
+        margin-top: 18px;
+        border: 1px solid #d3dff0;
+        border-radius: 18px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .invoice-head {
+        padding: 14px 16px;
+        border-bottom: 1px solid #e5ecf8;
+      }
+
+      .invoice-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .invoice-table th, .invoice-table td {
+        padding: 12px 14px;
+        border-bottom: 1px solid #e9eef8;
+        text-align: left;
+      }
+
+      .hidden { display: none; }
+
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 26, 45, 0.45);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+
+      .modal-backdrop.show { display: flex; }
+
+      .modal {
+        width: min(520px, 100%);
+        border-radius: 18px;
+        border: 1px solid #bdd0ea;
+        background: #fff;
+        padding: 20px;
+        box-shadow: var(--shadow);
+      }
+
+      .modal h2 { margin: 0 0 8px; font-family: "Fraunces", serif; }
+      .modal p { margin: 0; color: #3f5b77; line-height: 1.55; }
+      .modal-actions { margin-top: 14px; display: flex; justify-content: flex-end; }
+    </style>
+  </head>
+  <body>
+    <main class="page-card">
+      <p class="kicker">Portal Mahasiswa</p>
+      <h1>Daftar Ulang & Pembayaran Online</h1>
+      <p class="subtitle">Cek status penerimaan dan lanjutkan pembayaran daftar ulang secara mandiri.</p>
+
+      <section id="searchStep">
+        <form id="searchForm" class="search-form">
+          <label for="registrationLookup">
+            Masukkan NIK / Nomor Pendaftaran
+            <input id="registrationLookup" name="registrationLookup" type="text" placeholder="Contoh: 171234567890 atau nomor pendaftaran" required />
+          </label>
+          <button id="checkStatusBtn" class="btn-primary" type="submit">Cek Status</button>
+        </form>
+        <p id="searchFeedback" class="helper hidden"></p>
+      </section>
+
+      <section id="paymentStep" class="hidden">
+        <h2 id="acceptedTitle"></h2>
+        <p class="helper">Berikut rincian biaya daftar ulang yang perlu diselesaikan untuk mengaktifkan NIM Anda.</p>
+
+        <div class="invoice-box">
+          <div class="invoice-head">
+            <strong>Invoice Daftar Ulang</strong>
+          </div>
+          <table class="invoice-table">
+            <thead>
+              <tr>
+                <th>Komponen Biaya</th>
+                <th>Nominal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Uang Pangkal</td><td>Rp 5.000.000</td></tr>
+              <tr><td>UKT Semester 1</td><td>Rp 6.500.000</td></tr>
+              <tr><td>Jas Almamater</td><td>Rp 1.000.000</td></tr>
+              <tr><td><strong>Total Tagihan</strong></td><td><strong>Rp 12.500.000</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button id="payNowBtn" class="btn-primary" type="button" style="margin-top:16px;width:100%;">Bayar Online Sekarang</button>
+      </section>
+    </main>
+
+    <div id="paymentSuccessModal" class="modal-backdrop" aria-hidden="true">
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="paymentSuccessTitle">
+        <h2 id="paymentSuccessTitle">Pembayaran Berhasil!</h2>
+        <p>NIM Anda telah aktif.</p>
+        <div class="modal-actions">
+          <button id="closePaymentSuccessBtn" class="btn-primary" type="button">Tutup</button>
+        </div>
+      </section>
+    </div>
+
+    <script src="./mahasiswa-daftar-ulang.js"></script>
+  </body>
+</html>

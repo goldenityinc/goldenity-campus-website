@@ -1,20 +1,27 @@
 const colPending = document.querySelector("#colPending");
 const colApproved = document.querySelector("#colApproved");
+const colDone = document.querySelector("#colDone");
 
 const generatedNim = new Set();
 const MABA_REGISTRATION_STORAGE_KEY = "goldenity.mabaRegistrations";
-const defaultPendingApplicants = [
+const defaultApplicants = [
   {
     id: "seed-1",
+    registrationNumber: "seed-1",
     fullName: "Rafi Nuryana",
     schoolOrigin: "SMAN 3 Bandung",
     studyProgram: "Teknik Informatika",
+    pipelineStatus: "pending",
+    statusPembayaran: "belum_lunas",
   },
   {
     id: "seed-2",
+    registrationNumber: "seed-2",
     fullName: "Mira Puspita",
     schoolOrigin: "SMKN 1 Yogyakarta",
     studyProgram: "Sistem Informasi",
+    pipelineStatus: "pending",
+    statusPembayaran: "belum_lunas",
   },
 ];
 
@@ -35,9 +42,53 @@ function saveStoredRegistrations(registrations) {
   localStorage.setItem(MABA_REGISTRATION_STORAGE_KEY, JSON.stringify(registrations));
 }
 
+function getAllApplicants() {
+  const storedRegistrations = getStoredRegistrations();
+  const mergedApplicants = [...defaultApplicants];
+
+  storedRegistrations.forEach((registration) => {
+    const normalizedRegistration = {
+      ...registration,
+      registrationNumber: registration.registrationNumber ?? registration.id,
+      pipelineStatus: registration.pipelineStatus ?? registration.status ?? "pending",
+      statusPembayaran: registration.statusPembayaran ?? "belum_lunas",
+      nim: registration.nim ?? null,
+    };
+
+    const existingIndex = mergedApplicants.findIndex((applicant) => applicant.id === normalizedRegistration.id);
+    if (existingIndex >= 0) {
+      mergedApplicants[existingIndex] = normalizedRegistration;
+      return;
+    }
+
+    mergedApplicants.push(normalizedRegistration);
+  });
+
+  return mergedApplicants;
+}
+
+function persistApplicant(applicantToSave) {
+  const storedRegistrations = getStoredRegistrations();
+  const applicantIndex = storedRegistrations.findIndex((registration) => registration.id === applicantToSave.id);
+
+  if (applicantIndex >= 0) {
+    storedRegistrations[applicantIndex] = applicantToSave;
+  } else {
+    storedRegistrations.push(applicantToSave);
+  }
+
+  saveStoredRegistrations(storedRegistrations);
+}
+
+function removeDynamicCards() {
+  document.querySelectorAll(".js-dynamic-card").forEach((element) => {
+    element.remove();
+  });
+}
+
 function createPendingCard(applicant) {
   return `
-    <div class="maba-card" data-registration-id="${applicant.id}">
+    <div class="maba-card js-dynamic-card" data-registration-id="${applicant.id}">
       <p class="maba-name">${applicant.fullName}</p>
       <p>Asal Sekolah: ${applicant.schoolOrigin}</p>
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
@@ -46,19 +97,44 @@ function createPendingCard(applicant) {
   `;
 }
 
-function renderPendingApplicants() {
-  const storedRegistrations = getStoredRegistrations();
-  const pendingApplicants = [
-    ...storedRegistrations.map((registration) => ({
-      id: registration.id,
-      fullName: registration.fullName,
-      schoolOrigin: registration.schoolOrigin,
-      studyProgram: registration.studyProgram,
-    })),
-    ...defaultPendingApplicants,
-  ];
+function createApprovedCard(applicant) {
+  return `
+    <div class="maba-card js-dynamic-card" data-registration-id="${applicant.id}" data-generated-nim="${applicant.nim}">
+      <p class="maba-name">${applicant.fullName}</p>
+      <p>Asal Sekolah: ${applicant.schoolOrigin}</p>
+      <p>Pilihan Prodi: ${applicant.studyProgram}</p>
+      <span class="nim-pill">NIM: ${applicant.nim}</span>
+      <button class="btn btn-primary js-verify-payment" type="button">Verifikasi Pembayaran Manual</button>
+    </div>
+  `;
+}
 
-  colPending.innerHTML = pendingApplicants.map(createPendingCard).join("");
+function createDoneCard(applicant) {
+  return `
+    <div class="maba-card js-dynamic-card" data-registration-id="${applicant.id}" data-generated-nim="${applicant.nim}">
+      <p class="maba-name">${applicant.fullName}</p>
+      <p>Asal Sekolah: ${applicant.schoolOrigin}</p>
+      <p>Pilihan Prodi: ${applicant.studyProgram}</p>
+      <span class="nim-pill">LUNAS & NIM: ${applicant.nim}</span>
+    </div>
+  `;
+}
+
+function renderKanban() {
+  removeDynamicCards();
+
+  const allApplicants = getAllApplicants();
+  const pendingApplicants = allApplicants.filter((applicant) => applicant.pipelineStatus === "pending");
+  const approvedApplicants = allApplicants.filter(
+    (applicant) => applicant.pipelineStatus === "approved" && applicant.statusPembayaran !== "lunas",
+  );
+  const doneApplicants = allApplicants.filter(
+    (applicant) => applicant.pipelineStatus === "done" || applicant.statusPembayaran === "lunas",
+  );
+
+  colPending.insertAdjacentHTML("beforeend", pendingApplicants.map(createPendingCard).join(""));
+  colApproved.insertAdjacentHTML("beforeend", approvedApplicants.map(createApprovedCard).join(""));
+  colDone.insertAdjacentHTML("beforeend", doneApplicants.map(createDoneCard).join(""));
 }
 
 function createRandomNim() {
@@ -74,27 +150,35 @@ function createRandomNim() {
 }
 
 function approveCard(card) {
-  const approveBtn = card.querySelector(".js-approve");
-  if (approveBtn) {
-    approveBtn.remove();
-  }
-
-  const nimBadge = document.createElement("span");
-  nimBadge.className = "nim-pill";
-  nimBadge.textContent = `NIM: ${createRandomNim()}`;
-
-  card.appendChild(nimBadge);
-  colApproved.appendChild(card);
-
   const registrationId = card.dataset.registrationId;
   if (!registrationId) {
     return;
   }
 
-  const remainingRegistrations = getStoredRegistrations().filter(
-    (registration) => registration.id !== registrationId,
-  );
-  saveStoredRegistrations(remainingRegistrations);
+  const allApplicants = getAllApplicants();
+  const selectedApplicant = allApplicants.find((applicant) => applicant.id === registrationId);
+  if (!selectedApplicant) {
+    return;
+  }
+
+  selectedApplicant.pipelineStatus = "approved";
+  selectedApplicant.nim = selectedApplicant.nim ?? createRandomNim();
+  persistApplicant(selectedApplicant);
+  renderKanban();
+}
+
+function completeApplicantPayment(registrationId) {
+  const allApplicants = getAllApplicants();
+  const selectedApplicant = allApplicants.find((applicant) => applicant.id === registrationId);
+  if (!selectedApplicant) {
+    return;
+  }
+
+  selectedApplicant.pipelineStatus = "done";
+  selectedApplicant.statusPembayaran = "lunas";
+  selectedApplicant.nim = selectedApplicant.nim ?? createRandomNim();
+  persistApplicant(selectedApplicant);
+  renderKanban();
 }
 
 colPending.addEventListener("click", (event) => {
@@ -116,4 +200,39 @@ colPending.addEventListener("click", (event) => {
   approveCard(card);
 });
 
-renderPendingApplicants();
+colApproved.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) {
+    return;
+  }
+
+  const verifyButton = target.closest(".js-verify-payment");
+  if (!(verifyButton instanceof HTMLButtonElement)) {
+    return;
+  }
+
+  const card = verifyButton.closest(".maba-card");
+  if (!(card instanceof HTMLDivElement)) {
+    return;
+  }
+
+  if (card.dataset.staticCard === "true") {
+    verifyButton.remove();
+    const nimBadge = card.querySelector(".nim-pill");
+    if (nimBadge) {
+      nimBadge.textContent = `LUNAS & NIM: ${card.dataset.generatedNim ?? createRandomNim()}`;
+    }
+
+    colDone.appendChild(card);
+    return;
+  }
+
+  const registrationId = card.dataset.registrationId;
+  if (!registrationId) {
+    return;
+  }
+
+  completeApplicantPayment(registrationId);
+});
+
+renderKanban();
