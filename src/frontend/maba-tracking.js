@@ -207,24 +207,31 @@ function openDetailPendaftarModal(applicant) {
 
   detailPendaftarMeta.textContent = `${applicant.fullName} | ${applicant.registrationNumber ?? applicant.id}`;
 
-  function makeField(label, value) {
+  function makeInfoField(label, value) {
     return `
-      <article class="metric-card">
-        <p class="metric-label">${label}</p>
-        <p class="metric-value" style="font-size:1rem">${value}</p>
-      </article>
+      <div class="info-field">
+        <p class="info-label">${label}</p>
+        <p class="info-value">${value}</p>
+      </div>
     `;
   }
 
   detailPendaftarGrid.innerHTML =
-    makeField("Nama Lengkap", applicant.fullName ?? "-") +
-    makeField("Nomor Pendaftaran", applicant.registrationNumber ?? applicant.id ?? "-") +
-    makeField("Asal Sekolah", applicant.schoolOrigin ?? "-") +
-    makeField("Pilihan Prodi", applicant.studyProgram ?? "-");
+    makeInfoField("Nama Lengkap", applicant.fullName ?? "-") +
+    makeInfoField("Nomor Pendaftaran", applicant.registrationNumber ?? applicant.id ?? "-") +
+    makeInfoField("Asal Sekolah", applicant.schoolOrigin ?? "-") +
+    makeInfoField("Pilihan Prodi", applicant.studyProgram ?? "-");
 
-  detailDokumenGrid.innerHTML =
-    makeField("Berkas Ijazah/Nilai", '<a href="#" class="btn btn-secondary" style="font-size:0.8rem">Lihat PDF</a>') +
-    makeField("Pas Foto", '<a href="#" class="btn btn-secondary" style="font-size:0.8rem">Lihat Foto</a>');
+  detailDokumenGrid.innerHTML = `
+    <div class="doc-card">
+      <p class="doc-card-label">Berkas Ijazah / Nilai</p>
+      <a href="#" class="btn-doc">&#128196; Lihat PDF</a>
+    </div>
+    <div class="doc-card">
+      <p class="doc-card-label">Pas Foto</p>
+      <a href="#" class="btn-doc">&#128247; Lihat Foto</a>
+    </div>
+  `;
 
   const journeyItems = [
     "Menunggu Berkas",

@@ -542,6 +542,84 @@ th {
   font-family: "Archivo Black", sans-serif;
 }
 
+/* Softer info-field grid for modals (replaces metric-card in info contexts) */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.info-field {
+  border: 1px solid #e2eaf6;
+  border-radius: 12px;
+  background: #f8faff;
+  padding: 12px 14px;
+}
+
+.info-label {
+  margin: 0;
+  font-size: 0.7rem;
+  color: #7a90ae;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.info-value {
+  margin: 5px 0 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1a2f4a;
+  line-height: 1.3;
+}
+
+/* Document row in modal */
+.doc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.doc-card {
+  border: 1px solid #e2eaf6;
+  border-radius: 12px;
+  background: #f8faff;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.doc-card-label {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #4a6080;
+}
+
+.doc-card .btn-doc {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1175d1;
+  background: #e8f1fc;
+  border: 1px solid #b8d4f5;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.doc-card .btn-doc:hover {
+  background: #d0e5fb;
+}
+
 .panel-body {
   padding: 16px;
 }
@@ -575,6 +653,10 @@ th {
   }
 
   .detail-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .info-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
