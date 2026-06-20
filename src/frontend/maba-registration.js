@@ -2,6 +2,7 @@ const registrationForm = document.querySelector("#mabaRegistrationForm");
 const submitBtn = document.querySelector("#submitBtn");
 const successModal = document.querySelector("#successModal");
 const closeModalBtn = document.querySelector("#closeModalBtn");
+const successModalMessage = successModal?.querySelector("p");
 
 const MABA_REGISTRATION_STORAGE_KEY = "goldenity.mabaRegistrations";
 
@@ -29,6 +30,10 @@ function openSuccessModal() {
   successModal.setAttribute("aria-hidden", "false");
 }
 
+function createRegistrationNumber() {
+  return `REG-${String(Math.floor(Math.random() * 9000) + 1000)}`;
+}
+
 function closeSuccessModal() {
   successModal.classList.remove("show");
   successModal.setAttribute("aria-hidden", "true");
@@ -46,17 +51,23 @@ registrationForm.addEventListener("submit", (event) => {
 
   setTimeout(() => {
     const registrationId = `${Date.now()}`;
+    const registrationNumber = createRegistrationNumber();
     saveMabaRegistration({
       id: registrationId,
-      registrationNumber: registrationId,
+      registrationNumber,
       fullName: String(formData.get("fullName") ?? "").trim(),
       schoolOrigin: String(formData.get("schoolOrigin") ?? "").trim(),
       studyProgram: String(formData.get("studyProgram") ?? "").trim(),
       certificateFileName: uploadedFile instanceof File ? uploadedFile.name : "",
+      status: "Menunggu Verifikasi",
       pipelineStatus: "pending",
-      statusPembayaran: "belum_lunas",
+      sudahBayar: false,
       createdAt: new Date().toISOString(),
     });
+
+    if (successModalMessage) {
+      successModalMessage.textContent = `Pendaftaran Berhasil! Nomor Pendaftaran Anda: ${registrationNumber}. Harap simpan nomor ini untuk mengecek status pendaftaran dan melakukan pembayaran.`;
+    }
 
     submitBtn.disabled = false;
     submitBtn.textContent = originalLabel;

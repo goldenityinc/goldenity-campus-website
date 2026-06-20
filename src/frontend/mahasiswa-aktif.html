@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portal Calon Mahasiswa</title>
+    <title>Portal Mahasiswa Aktif</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -38,7 +38,7 @@
       }
 
       .portal-card {
-        width: min(760px, 100%);
+        width: min(860px, 100%);
         border: 1px solid var(--line);
         border-radius: 24px;
         background: var(--surface);
@@ -56,10 +56,9 @@
         color: #0c6173;
       }
 
-      h1 {
+      h1, h2 {
         margin: 8px 0 6px;
         font-family: "Fraunces", serif;
-        font-size: clamp(1.5rem, 3.8vw, 2.2rem);
       }
 
       .subtitle,
@@ -94,25 +93,14 @@
         cursor: pointer;
       }
 
-      .btn-primary:disabled {
-        opacity: 0.7;
-        cursor: wait;
-      }
-
       .hidden { display: none; }
 
-      .invoice-box {
-        margin-top: 16px;
+      .table-wrap {
+        margin-top: 14px;
         border: 1px solid var(--line);
         border-radius: 16px;
         background: #fff;
-        overflow: hidden;
-      }
-
-      .invoice-head {
-        padding: 14px 16px;
-        border-bottom: 1px solid #e5ecf8;
-        font-weight: 800;
+        overflow-x: auto;
       }
 
       table {
@@ -133,55 +121,61 @@
         letter-spacing: 0.07em;
         color: #5a6f8f;
       }
+
+      .dashboard-meta {
+        display: grid;
+        gap: 6px;
+        margin-top: 8px;
+      }
     </style>
   </head>
   <body>
     <main class="portal-card">
-      <p class="kicker">Portal Calon Mahasiswa</p>
-      <h1>Cek Status & Pembayaran Daftar Ulang</h1>
-      <p class="subtitle">Masukkan Nomor Pendaftaran untuk melihat status verifikasi dan pembayaran daftar ulang.</p>
+      <section id="loginSection">
+        <p class="kicker">Portal Mahasiswa Aktif</p>
+        <h1>Akses Dashboard Akademik</h1>
+        <p class="subtitle">Masukkan NIM untuk melihat KHS dan transkrip nilai sementara.</p>
 
-      <section id="lookupStep">
-        <form id="lookupForm" class="lookup-form">
-          <input id="lookupInput" type="text" placeholder="Masukkan Nomor Pendaftaran (contoh: REG-1234)" required />
-          <button id="checkStatusBtn" class="btn-primary" type="submit">Cek Status</button>
+        <form id="nimForm" class="lookup-form">
+          <input id="nimInput" type="text" placeholder="Masukkan NIM Anda" required />
+          <button class="btn-primary" type="submit">Lihat Akademik</button>
         </form>
-        <p id="lookupFeedback" class="helper hidden"></p>
       </section>
 
-      <section id="statusStep" class="hidden">
-        <h2 id="statusTitle"></h2>
-        <p id="statusMessage" class="helper"></p>
-      </section>
+      <section id="dashboardSection" class="hidden">
+        <p class="kicker">Dashboard Akademik Mahasiswa</p>
+        <h2>Ringkasan Nilai</h2>
+        <div class="dashboard-meta">
+          <p id="studentName" class="helper"></p>
+          <p id="studentNim" class="helper"></p>
+        </div>
 
-      <section id="invoiceStep" class="hidden">
-        <h2 id="invoiceGreeting"></h2>
-        <p class="helper">Rincian biaya daftar ulang Anda:</p>
-
-        <div class="invoice-box">
-          <div class="invoice-head">Invoice Daftar Ulang</div>
+        <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Komponen Biaya</th>
-                <th>Nominal</th>
+                <th>Kode MK</th>
+                <th>Nama Mata Kuliah</th>
+                <th>SKS</th>
+                <th>Nilai Angka</th>
+                <th>Nilai Huruf</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>UKT Semester 1</td><td>Rp 7.500.000</td></tr>
-              <tr><td>Uang Pangkal</td><td>Rp 5.000.000</td></tr>
-              <tr><td>Almamater & KTM</td><td>Rp 1.000.000</td></tr>
-              <tr><td><strong>Total</strong></td><td><strong>Rp 13.500.000</strong></td></tr>
+              <tr><td>IF201</td><td>Struktur Data</td><td>3</td><td>88</td><td>A</td></tr>
+              <tr><td>IF203</td><td>Basis Data</td><td>3</td><td>84</td><td>A-</td></tr>
+              <tr><td>IF205</td><td>Kalkulus</td><td>2</td><td>79</td><td>B+</td></tr>
+              <tr><td>IF207</td><td>Pemrograman Web</td><td>3</td><td>86</td><td>A-</td></tr>
             </tbody>
           </table>
         </div>
 
-        <button id="payNowBtn" class="btn-primary" type="button" style="margin-top: 16px; width: 100%;">
-          Bayar Online Sekarang
+        <button id="downloadTranscriptBtn" class="btn-primary" type="button" style="margin-top: 16px;">
+          Download Transkrip (PDF)
         </button>
       </section>
     </main>
 
-    <script src="./mahasiswa-portal.js"></script>
+    <script src="./mahasiswa-aktif.js"></script>
   </body>
 </html>

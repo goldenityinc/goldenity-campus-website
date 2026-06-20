@@ -47,10 +47,20 @@ function getAllApplicants() {
   const mergedApplicants = [...defaultApplicants];
 
   storedRegistrations.forEach((registration) => {
+    const normalizedStatus = registration.status ?? "Menunggu Verifikasi";
+    const normalizedPipelineStatus =
+      registration.pipelineStatus ??
+      (normalizedStatus === "Disetujui"
+        ? "approved"
+        : normalizedStatus === "Lunas"
+          ? "done"
+          : "pending");
+
     const normalizedRegistration = {
       ...registration,
       registrationNumber: registration.registrationNumber ?? registration.id,
-      pipelineStatus: registration.pipelineStatus ?? registration.status ?? "pending",
+      status: normalizedStatus,
+      pipelineStatus: normalizedPipelineStatus,
       sudahBayar: registration.sudahBayar ?? registration.statusPembayaran === "lunas",
       nim: registration.nim ?? null,
     };
@@ -159,6 +169,7 @@ function approveCard(card) {
   }
 
   selectedApplicant.pipelineStatus = "approved";
+  selectedApplicant.status = "Disetujui";
   selectedApplicant.nim = selectedApplicant.nim ?? createRandomNim();
   persistApplicant(selectedApplicant);
   renderKanban();
@@ -173,6 +184,7 @@ function completeApplicantPayment(registrationId) {
 
   selectedApplicant.pipelineStatus = "done";
   selectedApplicant.sudahBayar = true;
+  selectedApplicant.status = "Lunas";
   selectedApplicant.nim = selectedApplicant.nim ?? createRandomNim();
   persistApplicant(selectedApplicant);
   renderKanban();
