@@ -11,6 +11,39 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./campus-admin-ui.css" />
+    <style>
+      .semester-grid {
+        margin-top: 16px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+      }
+
+      .semester-card {
+        border: 1px solid #cbd8ef;
+        border-radius: 16px;
+        background: #ffffffd9;
+        padding: 14px;
+      }
+
+      .semester-meta {
+        margin: 0;
+        color: #4d6686;
+        line-height: 1.6;
+      }
+
+      .semester-status-badge {
+        display: inline-flex;
+        margin-top: 8px;
+        border-radius: 999px;
+        padding: 5px 10px;
+        background: #e9f9ef;
+        color: #118146;
+        border: 1px solid #b8e5c8;
+        font-size: 0.76rem;
+        font-weight: 700;
+      }
+    </style>
   </head>
   <body>
     <div class="app-shell">
@@ -33,6 +66,18 @@
           <p class="page-subtitle">
             Kelola katalog program studi untuk penerimaan mahasiswa baru dengan cepat dan terstruktur.
           </p>
+        </section>
+
+        <section class="panel semester-grid">
+          <div class="panel-head">
+            <h2>Manajemen Semester Akademik</h2>
+            <button id="startSemesterBtn" class="btn btn-primary" type="button">Mulai Semester Baru</button>
+          </div>
+          <article class="semester-card">
+            <h3 style="margin: 0 0 8px;">Semester Aktif Saat Ini</h3>
+            <p id="activeSemesterInfo" class="semester-meta"></p>
+            <span id="activeSemesterStatus" class="semester-status-badge">Berjalan</span>
+          </article>
         </section>
 
         <section class="panel">

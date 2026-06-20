@@ -135,9 +135,15 @@ function createPendingCard(applicant) {
       <p class="maba-name">${applicant.fullName}</p>
       <p>Asal Sekolah: ${applicant.schoolOrigin}</p>
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
-      <div class="action-row">
-        <button class="btn btn-primary js-approve" type="button">Approve</button>
-        <button class="btn btn-secondary js-view-detail" type="button">Lihat Detail</button>
+      <div class="kanban-actions">
+        <button class="btn-kanban-primary js-approve" type="button">
+          <i class="fa-solid fa-check-circle" aria-hidden="true"></i>
+          Approve
+        </button>
+        <button class="btn-kanban-secondary js-view-detail" type="button">
+          <i class="fa-solid fa-eye" aria-hidden="true"></i>
+          Lihat Detail
+        </button>
       </div>
     </div>
   `;
@@ -150,9 +156,15 @@ function createApprovedCard(applicant) {
       <p>Asal Sekolah: ${applicant.schoolOrigin}</p>
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
       <span class="nim-pill">NIM: ${applicant.nim}</span>
-      <div class="action-row">
-        <button class="btn btn-primary js-complete-logistics" type="button">Verifikasi Daftar Ulang</button>
-        <button class="btn btn-secondary js-view-detail" type="button">Lihat Detail</button>
+      <div class="kanban-actions">
+        <button class="btn-kanban-primary js-complete-logistics" type="button">
+          <i class="fa-solid fa-check-circle" aria-hidden="true"></i>
+          Verifikasi Daftar Ulang
+        </button>
+        <button class="btn-kanban-secondary js-view-detail" type="button">
+          <i class="fa-solid fa-eye" aria-hidden="true"></i>
+          Lihat Detail
+        </button>
       </div>
     </div>
   `;
@@ -166,8 +178,11 @@ function createDoneCard(applicant) {
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
       <span class="nim-pill">LUNAS & AKTIF</span>
       <span class="nim-pill badge">NIM: ${nimValue}</span>
-      <div class="action-row">
-        <button class="btn btn-secondary js-view-detail" type="button">Lihat Detail</button>
+      <div class="kanban-actions">
+        <button class="btn-kanban-secondary js-view-detail" type="button">
+          <i class="fa-solid fa-eye" aria-hidden="true"></i>
+          Lihat Detail
+        </button>
       </div>
     </div>
   `;
@@ -366,7 +381,7 @@ colApproved.addEventListener("click", (event) => {
     statusBadge.textContent = "LUNAS & AKTIF";
     card.appendChild(statusBadge);
 
-    const actionRow = card.querySelector(".action-row");
+    const actionRow = card.querySelector(".kanban-actions");
     if (actionRow) {
       completeButton.remove();
     }

@@ -49,6 +49,12 @@ const closeTranskripModalBtn = document.querySelector("#closeTranskripModalBtn")
 const transkripDetailMeta = document.querySelector("#transkripDetailMeta");
 const transkripGradesBody = document.querySelector("#transkripGradesBody");
 
+const ACTIVE_SEMESTER_STORAGE_KEY = "goldenity.activeSemester";
+const DEFAULT_ACTIVE_SEMESTER = {
+  tahun: "2026/2027",
+  tipe: "Ganjil",
+};
+
 const activeDemoUser = {
   userId: "101",
   role: "dosen",
@@ -77,6 +83,22 @@ const transcriptPreviewByStudentId = {
     { code: "IF211", name: "Sistem Operasi", credits: 2, score: 71, letter: "B-" },
   ],
 };
+
+function getActiveSemesterLabel() {
+  const savedValue = localStorage.getItem(ACTIVE_SEMESTER_STORAGE_KEY);
+  if (!savedValue) {
+    return `${DEFAULT_ACTIVE_SEMESTER.tahun} - ${DEFAULT_ACTIVE_SEMESTER.tipe}`;
+  }
+
+  try {
+    const parsedValue = JSON.parse(savedValue);
+    const tahun = parsedValue.tahun ?? DEFAULT_ACTIVE_SEMESTER.tahun;
+    const tipe = parsedValue.tipe ?? DEFAULT_ACTIVE_SEMESTER.tipe;
+    return `${tahun} - ${tipe}`;
+  } catch (_error) {
+    return `${DEFAULT_ACTIVE_SEMESTER.tahun} - ${DEFAULT_ACTIVE_SEMESTER.tipe}`;
+  }
+}
 
 function getVisibleStudents(activeUser) {
   if (activeUser.role === "dosen") {
@@ -241,7 +263,8 @@ function downloadTranscriptPdf(payload) {
 
 function openTranscriptModal(student) {
   const gradeRows = transcriptPreviewByStudentId[student.studentId] ?? [];
-  transkripDetailMeta.textContent = `${student.fullName} | ${student.nim} | ${student.programStudy}`;
+  const activeSemesterLabel = getActiveSemesterLabel();
+  transkripDetailMeta.textContent = `${student.fullName} | ${student.nim} | ${student.programStudy} | Tahun Ajaran ${activeSemesterLabel}`;
   transkripGradesBody.innerHTML = gradeRows
     .map(
       (grade) => `

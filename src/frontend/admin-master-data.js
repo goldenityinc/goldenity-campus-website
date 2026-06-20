@@ -3,8 +3,18 @@ const modal = document.querySelector("#prodiModal");
 const cancelModalBtn = document.querySelector("#cancelModalBtn");
 const prodiForm = document.querySelector("#prodiForm");
 const programStudyTableBody = document.querySelector("#programStudyTableBody");
+const startSemesterBtn = document.querySelector("#startSemesterBtn");
+const activeSemesterInfo = document.querySelector("#activeSemesterInfo");
+const activeSemesterStatus = document.querySelector("#activeSemesterStatus");
 
 const PROGRAM_STUDY_STORAGE_KEY = "goldenity.programStudies";
+const ACTIVE_SEMESTER_STORAGE_KEY = "goldenity.activeSemester";
+const defaultActiveSemester = {
+  tahun: "2026/2027",
+  tipe: "Ganjil",
+  mulai: "Agustus 2026",
+  status: "Aktif",
+};
 const defaultProgramStudies = [
   {
     id: "IF",
@@ -46,6 +56,67 @@ function getProgramStudies() {
 
 function saveProgramStudies(programStudies) {
   localStorage.setItem(PROGRAM_STUDY_STORAGE_KEY, JSON.stringify(programStudies));
+}
+
+function getActiveSemester() {
+  const savedValue = localStorage.getItem(ACTIVE_SEMESTER_STORAGE_KEY);
+  if (!savedValue) {
+    localStorage.setItem(ACTIVE_SEMESTER_STORAGE_KEY, JSON.stringify(defaultActiveSemester));
+    return { ...defaultActiveSemester };
+  }
+
+  try {
+    const parsedValue = JSON.parse(savedValue);
+    return {
+      tahun: parsedValue.tahun ?? defaultActiveSemester.tahun,
+      tipe: parsedValue.tipe ?? defaultActiveSemester.tipe,
+      mulai: parsedValue.mulai ?? defaultActiveSemester.mulai,
+      status: parsedValue.status ?? defaultActiveSemester.status,
+    };
+  } catch (_error) {
+    localStorage.setItem(ACTIVE_SEMESTER_STORAGE_KEY, JSON.stringify(defaultActiveSemester));
+    return { ...defaultActiveSemester };
+  }
+}
+
+function saveActiveSemester(activeSemester) {
+  localStorage.setItem(ACTIVE_SEMESTER_STORAGE_KEY, JSON.stringify(activeSemester));
+}
+
+function renderActiveSemester() {
+  const activeSemester = getActiveSemester();
+  activeSemesterInfo.textContent = `Tahun Ajaran: ${activeSemester.tahun} | Tipe: ${activeSemester.tipe} | Dimulai: ${activeSemester.mulai}`;
+  activeSemesterStatus.textContent = activeSemester.status === "Aktif" ? "Berjalan" : activeSemester.status;
+}
+
+function startNewSemester() {
+  const nextTahun = window.prompt("Masukkan Tahun Ajaran Baru (contoh: 2027/2028)", "2027/2028");
+  if (nextTahun === null) {
+    return;
+  }
+
+  const nextTipe = window.prompt("Masukkan Tipe Semester (Ganjil/Genap)", "Genap");
+  if (nextTipe === null) {
+    return;
+  }
+
+  const nextMulai = window.prompt("Masukkan Bulan Dimulai (contoh: Februari 2027)", "Februari 2027");
+  if (nextMulai === null) {
+    return;
+  }
+
+  const cleanedTipe = String(nextTipe).trim();
+  const validTipe = cleanedTipe.toLowerCase() === "genap" ? "Genap" : "Ganjil";
+
+  const nextSemester = {
+    tahun: String(nextTahun).trim() || defaultActiveSemester.tahun,
+    tipe: validTipe,
+    mulai: String(nextMulai).trim() || defaultActiveSemester.mulai,
+    status: "Aktif",
+  };
+
+  saveActiveSemester(nextSemester);
+  renderActiveSemester();
 }
 
 function renderProgramStudies() {
@@ -165,4 +236,7 @@ programStudyTableBody.addEventListener("click", (event) => {
   }
 });
 
+startSemesterBtn.addEventListener("click", startNewSemester);
+
+renderActiveSemester();
 renderProgramStudies();

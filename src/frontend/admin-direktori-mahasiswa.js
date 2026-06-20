@@ -92,6 +92,11 @@ const activeStudents = [
 ];
 
 const MABA_REGISTRATION_STORAGE_KEY = "goldenity.mabaRegistrations";
+const ACTIVE_SEMESTER_STORAGE_KEY = "goldenity.activeSemester";
+const DEFAULT_ACTIVE_SEMESTER = {
+  tahun: "2026/2027",
+  tipe: "Ganjil",
+};
 
 const programFilter = document.querySelector("#programFilter");
 const semesterFilter = document.querySelector("#semesterFilter");
@@ -113,6 +118,22 @@ function getStoredRegistrations() {
     return JSON.parse(savedValue);
   } catch (_error) {
     return [];
+  }
+}
+
+function getActiveSemesterLabel() {
+  const savedValue = localStorage.getItem(ACTIVE_SEMESTER_STORAGE_KEY);
+  if (!savedValue) {
+    return `${DEFAULT_ACTIVE_SEMESTER.tahun} - ${DEFAULT_ACTIVE_SEMESTER.tipe}`;
+  }
+
+  try {
+    const parsedValue = JSON.parse(savedValue);
+    const tahun = parsedValue.tahun ?? DEFAULT_ACTIVE_SEMESTER.tahun;
+    const tipe = parsedValue.tipe ?? DEFAULT_ACTIVE_SEMESTER.tipe;
+    return `${tahun} - ${tipe}`;
+  } catch (_error) {
+    return `${DEFAULT_ACTIVE_SEMESTER.tahun} - ${DEFAULT_ACTIVE_SEMESTER.tipe}`;
   }
 }
 
@@ -196,7 +217,8 @@ function renderStudentDirectory() {
 }
 
 function openStudentDetail(student) {
-  studentDetailMeta.textContent = `${student.name} | ${student.nim} | ${student.programStudy} | Semester Aktif ${student.semester}`;
+  const activeSemesterLabel = getActiveSemesterLabel();
+  studentDetailMeta.textContent = `${student.name} | ${student.nim} | ${student.programStudy} | Tahun Ajaran ${activeSemesterLabel}`;
   ipsValue.textContent = student.ips.toFixed(2);
   gpaValue.textContent = student.gpa.toFixed(2);
   studentDetailGradesBody.innerHTML = student.grades
