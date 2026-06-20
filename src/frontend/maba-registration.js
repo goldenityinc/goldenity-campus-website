@@ -3,6 +3,10 @@ const submitBtn = document.querySelector("#submitBtn");
 const successModal = document.querySelector("#successModal");
 const closeModalBtn = document.querySelector("#closeModalBtn");
 const successModalMessage = successModal?.querySelector("p");
+const mabaSyncChannel =
+  typeof BroadcastChannel !== "undefined"
+    ? new BroadcastChannel("goldenity.mabaRegistrations.sync")
+    : null;
 
 const MABA_REGISTRATION_STORAGE_KEY = "goldenity.mabaRegistrations";
 
@@ -23,6 +27,10 @@ function saveMabaRegistration(registration) {
   const currentRegistrations = getMabaRegistrations();
   currentRegistrations.push(registration);
   localStorage.setItem(MABA_REGISTRATION_STORAGE_KEY, JSON.stringify(currentRegistrations));
+
+  if (mabaSyncChannel) {
+    mabaSyncChannel.postMessage("registrations-updated");
+  }
 }
 
 function openSuccessModal() {

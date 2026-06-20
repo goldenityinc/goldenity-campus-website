@@ -7,6 +7,10 @@ const detailPendaftarMeta = document.querySelector("#detailPendaftarMeta");
 const detailPendaftarGrid = document.querySelector("#detailPendaftarGrid");
 const detailDokumenGrid = document.querySelector("#detailDokumenGrid");
 const journeyStatusList = document.querySelector("#journeyStatusList");
+const mabaSyncChannel =
+  typeof BroadcastChannel !== "undefined"
+    ? new BroadcastChannel("goldenity.mabaRegistrations.sync")
+    : null;
 
 const generatedNim = new Set();
 const MABA_REGISTRATION_STORAGE_KEY = "goldenity.mabaRegistrations";
@@ -495,4 +499,20 @@ function initializeTrackingBoard() {
 }
 
 window.addEventListener("storage", renderKanban);
+window.addEventListener("focus", renderKanban);
+window.addEventListener("pageshow", renderKanban);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    renderKanban();
+  }
+});
+
+if (mabaSyncChannel) {
+  mabaSyncChannel.addEventListener("message", (event) => {
+    if (event.data === "registrations-updated") {
+      renderKanban();
+    }
+  });
+}
+
 initializeTrackingBoard();
