@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Dashboard Keuangan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./campus-admin-ui.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <h1 class="brand">Goldenity Campus Admin</h1>
+        <nav class="nav-group">
+          <a class="nav-link" href="./dosen-wali-dashboard.html">Dashboard</a>
+          <a class="nav-link" href="./admin-master-data.html">Master Data</a>
+          <a class="nav-link" href="./maba-tracking.html">Penerimaan MABA</a>
+          <a class="nav-link active" href="./keuangan-dashboard.html">Keuangan</a>
+          <a class="nav-link" href="#">Akademik</a>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <section class="hero-card">
+          <p class="page-kicker">Dashboard Keuangan</p>
+          <h2 class="page-title">Monitoring Pembayaran Mahasiswa</h2>
+          <p class="page-subtitle">
+            Ringkasan pembayaran semester berjalan untuk membantu tindak lanjut tim keuangan.
+          </p>
+        </section>
+
+        <section class="summary-grid">
+          <article class="summary-card">
+            <p class="summary-label">Total Tagihan Semester Ini</p>
+            <p class="summary-value">Rp 2.5 Miliar</p>
+          </article>
+          <article class="summary-card">
+            <p class="summary-label">Total Lunas</p>
+            <p class="summary-value green">Rp 2 Miliar</p>
+          </article>
+          <article class="summary-card">
+            <p class="summary-label">Total Tunggakan</p>
+            <p class="summary-value red">Rp 500 Juta</p>
+          </article>
+        </section>
+
+        <section class="panel chart-card">
+          <div class="panel-head">
+            <h2>Perbandingan Status Pembayaran</h2>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="financeDonutChart"></canvas>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Daftar Tunggakan Mahasiswa</h2>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>NIM</th>
+                  <th>Nama</th>
+                  <th>Program Studi</th>
+                  <th>Status</th>
+                  <th>Nominal</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>231401006</td>
+                  <td>Bima Pratama</td>
+                  <td>Sistem Informasi</td>
+                  <td><span class="badge badge-danger">Belum Dibayar</span></td>
+                  <td>Rp 8.500.000</td>
+                  <td><button class="btn btn-primary js-pay-va" type="button">Simulasikan Bayar VA</button></td>
+                </tr>
+                <tr>
+                  <td>231401022</td>
+                  <td>Daffa Kurnia</td>
+                  <td>Teknik Informatika</td>
+                  <td><span class="badge badge-warning">Sebagian</span></td>
+                  <td>Rp 4.250.000</td>
+                  <td><button class="btn btn-primary js-pay-va" type="button">Simulasikan Bayar VA</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <script src="./keuangan-dashboard.js"></script>
+  </body>
+</html>

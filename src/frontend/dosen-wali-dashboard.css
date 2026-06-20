@@ -314,6 +314,37 @@ tr.warning-row td {
   color: #355277;
 }
 
+.demo-nav {
+  margin-top: 12px;
+  border-top: 1px dashed #b2c7e7;
+  padding-top: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.demo-nav-title {
+  margin: 0;
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #3e5e87;
+}
+
+.demo-link {
+  text-decoration: none;
+  color: #0f5ca6;
+  font-size: 0.83rem;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 5px 7px;
+  transition: background-color 0.18s ease;
+}
+
+.demo-link:hover {
+  background: #e8f1ff;
+}
+
 @keyframes fade-up {
   to {
     opacity: 1;

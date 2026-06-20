@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Master Data</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./campus-admin-ui.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <h1 class="brand">Goldenity Campus Admin</h1>
+        <nav class="nav-group">
+          <a class="nav-link" href="./dosen-wali-dashboard.html">Dashboard</a>
+          <a class="nav-link active" href="./admin-master-data.html">Master Data</a>
+          <a class="nav-link" href="./maba-tracking.html">Penerimaan MABA</a>
+          <a class="nav-link" href="./keuangan-dashboard.html">Keuangan</a>
+          <a class="nav-link" href="#">Akademik</a>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <section class="hero-card">
+          <p class="page-kicker">Panel Admin</p>
+          <h2 class="page-title">Master Data Program Studi & Kuota</h2>
+          <p class="page-subtitle">
+            Kelola katalog program studi untuk penerimaan mahasiswa baru dengan cepat dan terstruktur.
+          </p>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Daftar Program Studi</h2>
+            <button id="openModalBtn" class="btn btn-primary" type="button">Tambah Prodi Baru</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Kode Prodi</th>
+                  <th>Nama Prodi</th>
+                  <th>Fakultas</th>
+                  <th>Kuota MABA</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>IF</td>
+                  <td>Teknik Informatika</td>
+                  <td>Fakultas Teknologi Informasi</td>
+                  <td>240</td>
+                  <td>
+                    <div class="action-row">
+                      <button class="btn btn-secondary" type="button">Edit</button>
+                      <button class="btn btn-danger" type="button">Hapus</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>SI</td>
+                  <td>Sistem Informasi</td>
+                  <td>Fakultas Teknologi Informasi</td>
+                  <td>180</td>
+                  <td>
+                    <div class="action-row">
+                      <button class="btn btn-secondary" type="button">Edit</button>
+                      <button class="btn btn-danger" type="button">Hapus</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>TK</td>
+                  <td>Teknik Komputer</td>
+                  <td>Fakultas Teknik</td>
+                  <td>120</td>
+                  <td>
+                    <div class="action-row">
+                      <button class="btn btn-secondary" type="button">Edit</button>
+                      <button class="btn btn-danger" type="button">Hapus</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="prodiModal" class="modal-backdrop" aria-hidden="true">
+      <div class="modal">
+        <h3>Tambah Program Studi Baru</h3>
+        <p class="page-subtitle">Form ini bersifat demo UI statis untuk presentasi.</p>
+
+        <form id="prodiForm" class="form-grid">
+          <label>
+            Kode Prodi
+            <input type="text" placeholder="Contoh: MI" required />
+          </label>
+          <label>
+            Nama Prodi
+            <input type="text" placeholder="Contoh: Manajemen Informatika" required />
+          </label>
+          <label>
+            Fakultas
+            <select>
+              <option>Fakultas Teknologi Informasi</option>
+              <option>Fakultas Teknik</option>
+              <option>Fakultas Ekonomi</option>
+            </select>
+          </label>
+          <label>
+            Kuota MABA
+            <input type="number" min="1" value="100" required />
+          </label>
+        </form>
+
+        <div class="form-actions">
+          <button id="cancelModalBtn" class="btn btn-secondary" type="button">Batal</button>
+          <button id="saveProdiBtn" class="btn btn-primary" type="button">Simpan</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./admin-master-data.js"></script>
+  </body>
+</html>
