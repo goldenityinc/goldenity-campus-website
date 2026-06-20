@@ -50,6 +50,28 @@ function saveStoredRegistrations(registrations) {
   localStorage.setItem(MABA_REGISTRATION_STORAGE_KEY, JSON.stringify(registrations));
 }
 
+function normalizeText(value) {
+  return String(value ?? "").trim().toLowerCase();
+}
+
+function derivePipelineStatus(registration) {
+  const pipeline = normalizeText(registration.pipelineStatus);
+  if (pipeline === "pending" || pipeline === "approved" || pipeline === "done") {
+    return pipeline;
+  }
+
+  const status = normalizeText(registration.status);
+  if (status.includes("lunas") || status.includes("aktif") || status.includes("selesai")) {
+    return "done";
+  }
+
+  if (status.includes("setuju") || status.includes("approve")) {
+    return "approved";
+  }
+
+  return "pending";
+}
+
 function syncRegistrationStatusInStorage(registrationId, nextStatus) {
   const storedRegistrations = getStoredRegistrations();
   const targetIndex = storedRegistrations.findIndex((registration) => registration.id === registrationId);
@@ -81,17 +103,18 @@ function getAllApplicants() {
   const mergedApplicants = [...defaultApplicants];
 
   storedRegistrations.forEach((registration) => {
-    const normalizedStatus = registration.status ?? "Menunggu Verifikasi";
-    const normalizedPipelineStatus =
-      registration.pipelineStatus ??
-      (normalizedStatus === "Disetujui"
-        ? "approved"
-        : normalizedStatus === "Lunas"
-          ? "done"
-          : "pending");
+    const normalizedPipelineStatus = derivePipelineStatus(registration);
+    const normalizedStatus =
+      registration.status ??
+      (normalizedPipelineStatus === "approved"
+        ? "Disetujui"
+        : normalizedPipelineStatus === "done"
+          ? "Lunas"
+          : "Menunggu Verifikasi");
 
     const normalizedRegistration = {
       ...registration,
+      id: registration.id ?? registration.registrationNumber ?? `${Date.now()}-${Math.random()}`,
       registrationNumber: registration.registrationNumber ?? registration.id,
       status: normalizedStatus,
       pipelineStatus: normalizedPipelineStatus,
@@ -260,10 +283,14 @@ function renderKanban() {
 
   const allApplicants = getAllApplicants();
   const pendingApplicants = allApplicants.filter(
-    (applicant) => (applicant.status ?? "Menunggu Verifikasi") === "Menunggu Verifikasi",
+    (applicant) => derivePipelineStatus(applicant) === "pending",
   );
-  const approvedApplicants = allApplicants.filter((applicant) => applicant.status === "Disetujui");
-  const doneApplicants = allApplicants.filter((applicant) => applicant.status === "Lunas");
+  const approvedApplicants = allApplicants.filter(
+    (applicant) => derivePipelineStatus(applicant) === "approved",
+  );
+  const doneApplicants = allApplicants.filter(
+    (applicant) => derivePipelineStatus(applicant) === "done",
+  );
 
   colPending.insertAdjacentHTML("beforeend", pendingApplicants.map(createPendingCard).join(""));
   colApproved.insertAdjacentHTML("beforeend", approvedApplicants.map(createApprovedCard).join(""));
