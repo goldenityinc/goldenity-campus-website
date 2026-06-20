@@ -364,3 +364,56 @@ function render() {
 
 onlyWarningToggle.addEventListener("change", render);
 render();
+
+// ── Chart.js: Tren IPK & Pendaftar ──────────────────────────────────────────
+const chartYears = ["2023", "2024", "2025", "2026"];
+
+new Chart(document.getElementById("ipkChart"), {
+  type: "line",
+  data: {
+    labels: chartYears,
+    datasets: [
+      {
+        label: "Rata-rata IPK",
+        data: [3.10, 3.22, 3.35, 3.45],
+        fill: true,
+        borderColor: "#1175d1",
+        backgroundColor: "rgba(17, 117, 209, 0.1)",
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointBackgroundColor: "#1175d1",
+        tension: 0.4,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { min: 2.8, max: 4.0, ticks: { stepSize: 0.1 } },
+    },
+  },
+});
+
+new Chart(document.getElementById("pendaftarChart"), {
+  type: "bar",
+  data: {
+    labels: chartYears,
+    datasets: [
+      {
+        label: "Jumlah Pendaftar",
+        data: [1200, 1650, 2100, 2500],
+        backgroundColor: "rgba(17, 117, 209, 0.75)",
+        borderRadius: 8,
+        borderSkipped: false,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, ticks: { stepSize: 500 } },
+    },
+  },
+});

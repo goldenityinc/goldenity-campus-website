@@ -23,12 +23,9 @@
           <a class="nav-link" href="./maba-tracking.html">Penerimaan MABA</a>
           <a class="nav-link" href="./keuangan-dashboard.html">Keuangan</a>
           <a class="nav-link" href="./admin-direktori-mahasiswa.html">Direktori Mahasiswa</a>
+          <a class="nav-link" href="#">Master Jadwal Kelas</a>
+          <a class="nav-link" href="#">Master Materi Pembelajaran</a>
           <a class="nav-link back-btn" href="./index.html">⬅️ Kembali ke Utama</a>
-        </nav>
-      </aside>
-
-      <main class="main-content">
-        <section class="hero-card dashboard-hero">
           <p class="page-kicker">Sistem Akademik Kampus</p>
           <h1 class="page-title">Dashboard Dosen Wali</h1>
           <p class="page-subtitle dashboard-subtitle">
@@ -37,6 +34,17 @@
         </section>
 
         <section class="summary" id="summaryCards"></section>
+
+        <div class="charts-wrapper">
+          <article class="card chart-card">
+            <p class="card-label">Tren Rata-rata IPK Kampus</p>
+            <canvas id="ipkChart"></canvas>
+          </article>
+          <article class="card chart-card">
+            <p class="card-label">Statistik Pendaftar per Tahun</p>
+            <canvas id="pendaftarChart"></canvas>
+          </article>
+        </div>
 
         <section class="panel dashboard-panel">
           <div class="panel-head">
@@ -99,6 +107,7 @@
       </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script src="./dosen-wali-dashboard.js"></script>
   </body>

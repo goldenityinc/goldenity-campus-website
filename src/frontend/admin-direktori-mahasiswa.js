@@ -275,3 +275,17 @@ studentDetailModal.addEventListener("click", (event) => {
 });
 
 renderStudentDirectory();
+
+// ── MABA Summary Card ──────────────────────────────────────────────────────
+function updateMabaSummary() {
+  const lunasCount = getStoredRegistrations().filter(
+    (registration) => registration.status === "Lunas",
+  ).length;
+
+  const totalMabaBaruEl = document.querySelector("#totalMabaBaru");
+  if (totalMabaBaruEl) {
+    totalMabaBaruEl.textContent = String(lunasCount);
+  }
+}
+
+updateMabaSummary();

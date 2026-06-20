@@ -4,7 +4,8 @@ const colDone = document.querySelector("#colDone");
 const detailPendaftarModal = document.querySelector("#detailPendaftarModal");
 const closeDetailPendaftarBtn = document.querySelector("#closeDetailPendaftarBtn");
 const detailPendaftarMeta = document.querySelector("#detailPendaftarMeta");
-const detailPendaftarBody = document.querySelector("#detailPendaftarBody");
+const detailPendaftarGrid = document.querySelector("#detailPendaftarGrid");
+const detailDokumenGrid = document.querySelector("#detailDokumenGrid");
 const journeyStatusList = document.querySelector("#journeyStatusList");
 
 const generatedNim = new Set();
@@ -205,7 +206,25 @@ function openDetailPendaftarModal(applicant) {
   const journeyStep = getJourneyStep(normalizedStatus);
 
   detailPendaftarMeta.textContent = `${applicant.fullName} | ${applicant.registrationNumber ?? applicant.id}`;
-  detailPendaftarBody.textContent = `Nama: ${applicant.fullName} | Asal Sekolah: ${applicant.schoolOrigin ?? "-"} | Prodi: ${applicant.studyProgram ?? "-"} | NIM: ${applicant.nim ?? "Belum tersedia"} | Status: ${normalizedStatus}`;
+
+  function makeField(label, value) {
+    return `
+      <article class="metric-card">
+        <p class="metric-label">${label}</p>
+        <p class="metric-value" style="font-size:1rem">${value}</p>
+      </article>
+    `;
+  }
+
+  detailPendaftarGrid.innerHTML =
+    makeField("Nama Lengkap", applicant.fullName ?? "-") +
+    makeField("Nomor Pendaftaran", applicant.registrationNumber ?? applicant.id ?? "-") +
+    makeField("Asal Sekolah", applicant.schoolOrigin ?? "-") +
+    makeField("Pilihan Prodi", applicant.studyProgram ?? "-");
+
+  detailDokumenGrid.innerHTML =
+    makeField("Berkas Ijazah/Nilai", '<a href="#" class="btn btn-secondary" style="font-size:0.8rem">Lihat PDF</a>') +
+    makeField("Pas Foto", '<a href="#" class="btn btn-secondary" style="font-size:0.8rem">Lihat Foto</a>');
 
   const journeyItems = [
     "Menunggu Berkas",
