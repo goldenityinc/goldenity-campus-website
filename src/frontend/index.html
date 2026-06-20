@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Goldenity Campus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        color: #13304a;
+        background: radial-gradient(circle at 15% 20%, #d2f6ff, transparent 34%),
+          radial-gradient(circle at 86% 14%, #ffe0b7, transparent 30%),
+          linear-gradient(150deg, #eef8ff, #f6fbff 45%, #fff8ef);
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      .container {
+        width: min(1060px, 100%);
+      }
+
+      .logo-wrap {
+        text-align: center;
+        margin-bottom: 18px;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 76px;
+        height: 76px;
+        border-radius: 20px;
+        background: linear-gradient(140deg, #0f6994, #2dbb9a);
+        color: #fff;
+        font-family: "Fraunces", serif;
+        font-size: 1.35rem;
+        box-shadow: 0 16px 34px rgba(16, 55, 92, 0.25);
+        margin-bottom: 12px;
+      }
+
+      h1 {
+        margin: 0;
+        font-family: "Fraunces", serif;
+        font-size: clamp(1.8rem, 4.4vw, 2.8rem);
+      }
+
+      .subtitle {
+        margin: 8px auto 0;
+        max-width: 64ch;
+        color: #4a6783;
+        line-height: 1.6;
+        text-align: center;
+      }
+
+      .grid {
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .card {
+        border: 1px solid #c8d8ea;
+        border-radius: 22px;
+        background: #ffffffd9;
+        backdrop-filter: blur(8px);
+        padding: 22px;
+        box-shadow: 0 16px 32px rgba(19, 48, 78, 0.14);
+      }
+
+      .card h2 {
+        margin: 0 0 8px;
+        font-family: "Fraunces", serif;
+      }
+
+      .card p {
+        margin: 0;
+        color: #4e6882;
+        line-height: 1.6;
+      }
+
+      .actions {
+        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .btn {
+        text-decoration: none;
+        border-radius: 10px;
+        padding: 9px 12px;
+        font-size: 0.9rem;
+        font-weight: 800;
+      }
+
+      .btn-primary {
+        color: #fff;
+        background: linear-gradient(135deg, #0e6a96, #29b99d);
+      }
+
+      .btn-secondary {
+        color: #19456b;
+        background: #e8f2ff;
+        border: 1px solid #bed2ee;
+      }
+
+      @media (max-width: 860px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <header class="logo-wrap">
+        <div class="logo">G</div>
+        <h1>Goldenity Campus</h1>
+        <p class="subtitle">
+          Sistem terpadu untuk pendaftaran, keuangan, dan operasional akademik kampus.
+        </p>
+      </header>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Portal Calon Mahasiswa</h2>
+          <p>Daftar Baru & Cek Status Pembayaran.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="./maba-registration.html">Daftar Baru</a>
+            <a class="btn btn-secondary" href="./mahasiswa-portal.html">Cek Status & Bayar</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Portal Internal Kampus</h2>
+          <p>Dashboard Admin, Dosen, dan Keuangan.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="./dosen-wali-dashboard.html">Masuk Portal Internal</a>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

@@ -12,7 +12,7 @@ const defaultApplicants = [
     schoolOrigin: "SMAN 3 Bandung",
     studyProgram: "Teknik Informatika",
     pipelineStatus: "pending",
-    statusPembayaran: "belum_lunas",
+    sudahBayar: false,
   },
   {
     id: "seed-2",
@@ -21,7 +21,7 @@ const defaultApplicants = [
     schoolOrigin: "SMKN 1 Yogyakarta",
     studyProgram: "Sistem Informasi",
     pipelineStatus: "pending",
-    statusPembayaran: "belum_lunas",
+    sudahBayar: false,
   },
 ];
 
@@ -51,7 +51,7 @@ function getAllApplicants() {
       ...registration,
       registrationNumber: registration.registrationNumber ?? registration.id,
       pipelineStatus: registration.pipelineStatus ?? registration.status ?? "pending",
-      statusPembayaran: registration.statusPembayaran ?? "belum_lunas",
+      sudahBayar: registration.sudahBayar ?? registration.statusPembayaran === "lunas",
       nim: registration.nim ?? null,
     };
 
@@ -104,7 +104,7 @@ function createApprovedCard(applicant) {
       <p>Asal Sekolah: ${applicant.schoolOrigin}</p>
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
       <span class="nim-pill">NIM: ${applicant.nim}</span>
-      <button class="btn btn-primary js-verify-payment" type="button">Verifikasi Pembayaran Manual</button>
+      <button class="btn btn-primary js-complete-logistics" type="button">Selesaikan Logistik</button>
     </div>
   `;
 }
@@ -113,9 +113,8 @@ function createDoneCard(applicant) {
   return `
     <div class="maba-card js-dynamic-card" data-registration-id="${applicant.id}" data-generated-nim="${applicant.nim}">
       <p class="maba-name">${applicant.fullName}</p>
-      <p>Asal Sekolah: ${applicant.schoolOrigin}</p>
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
-      <span class="nim-pill">LUNAS & NIM: ${applicant.nim}</span>
+      <span class="nim-pill">LUNAS & AKTIF</span>
     </div>
   `;
 }
@@ -125,11 +124,9 @@ function renderKanban() {
 
   const allApplicants = getAllApplicants();
   const pendingApplicants = allApplicants.filter((applicant) => applicant.pipelineStatus === "pending");
-  const approvedApplicants = allApplicants.filter(
-    (applicant) => applicant.pipelineStatus === "approved" && applicant.statusPembayaran !== "lunas",
-  );
+  const approvedApplicants = allApplicants.filter((applicant) => applicant.pipelineStatus === "approved");
   const doneApplicants = allApplicants.filter(
-    (applicant) => applicant.pipelineStatus === "done" || applicant.statusPembayaran === "lunas",
+    (applicant) => applicant.pipelineStatus === "done" || applicant.sudahBayar === true,
   );
 
   colPending.insertAdjacentHTML("beforeend", pendingApplicants.map(createPendingCard).join(""));
@@ -175,7 +172,7 @@ function completeApplicantPayment(registrationId) {
   }
 
   selectedApplicant.pipelineStatus = "done";
-  selectedApplicant.statusPembayaran = "lunas";
+  selectedApplicant.sudahBayar = true;
   selectedApplicant.nim = selectedApplicant.nim ?? createRandomNim();
   persistApplicant(selectedApplicant);
   renderKanban();
@@ -206,21 +203,26 @@ colApproved.addEventListener("click", (event) => {
     return;
   }
 
-  const verifyButton = target.closest(".js-verify-payment");
-  if (!(verifyButton instanceof HTMLButtonElement)) {
+  const completeButton = target.closest(".js-complete-logistics");
+  if (!(completeButton instanceof HTMLButtonElement)) {
     return;
   }
 
-  const card = verifyButton.closest(".maba-card");
+  const card = completeButton.closest(".maba-card");
   if (!(card instanceof HTMLDivElement)) {
     return;
   }
 
   if (card.dataset.staticCard === "true") {
-    verifyButton.remove();
+    completeButton.remove();
     const nimBadge = card.querySelector(".nim-pill");
     if (nimBadge) {
-      nimBadge.textContent = `LUNAS & NIM: ${card.dataset.generatedNim ?? createRandomNim()}`;
+      nimBadge.textContent = "LUNAS & AKTIF";
+    }
+
+    const schoolText = card.querySelector("p:nth-of-type(2)");
+    if (schoolText && schoolText.textContent?.startsWith("Asal Sekolah")) {
+      schoolText.remove();
     }
 
     colDone.appendChild(card);

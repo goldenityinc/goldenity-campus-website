@@ -16,7 +16,7 @@ const frontendDir = fs.existsSync(frontendFromDistRuntime)
 
 app.use(express.static(frontendDir));
 app.get("/", (_req, res) => {
-  res.sendFile(path.join(frontendDir, "dosen-wali-dashboard.html"));
+  res.sendFile(path.join(frontendDir, "index.html"));
 });
 
 const server = app.listen(PORT, () => {

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal Calon Mahasiswa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #14314d;
+        --ink-soft: #476581;
+        --surface: #ffffffdd;
+        --line: #cbd9ea;
+        --primary-1: #0d8790;
+        --primary-2: #22bf9f;
+        --shadow: 0 22px 46px rgba(18, 40, 69, 0.18);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        color: var(--ink);
+        background: radial-gradient(circle at 12% 14%, #c8f6ff, transparent 36%),
+          radial-gradient(circle at 86% 8%, #ffe0af, transparent 32%),
+          radial-gradient(circle at 78% 82%, #d4ffef, transparent 28%),
+          linear-gradient(145deg, #eef8ff, #f4faff 42%, #fff8ef);
+        display: grid;
+        place-items: center;
+        padding: 20px;
+      }
+
+      .portal-card {
+        width: min(760px, 100%);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--surface);
+        backdrop-filter: blur(8px);
+        box-shadow: var(--shadow);
+        padding: 24px;
+      }
+
+      .kicker {
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.76rem;
+        font-weight: 800;
+        color: #0c6173;
+      }
+
+      h1 {
+        margin: 8px 0 6px;
+        font-family: "Fraunces", serif;
+        font-size: clamp(1.5rem, 3.8vw, 2.2rem);
+      }
+
+      .subtitle,
+      .helper {
+        margin: 0;
+        color: var(--ink-soft);
+        line-height: 1.5;
+      }
+
+      .lookup-form {
+        margin-top: 18px;
+        display: grid;
+        gap: 12px;
+      }
+
+      input {
+        border: 1px solid #bad0e8;
+        border-radius: 12px;
+        padding: 11px 12px;
+        font: inherit;
+        background: #fff;
+      }
+
+      .btn-primary {
+        border: 0;
+        border-radius: 12px;
+        padding: 11px 14px;
+        font: inherit;
+        font-weight: 800;
+        color: #fff;
+        background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+        cursor: pointer;
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.7;
+        cursor: wait;
+      }
+
+      .hidden { display: none; }
+
+      .invoice-box {
+        margin-top: 16px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .invoice-head {
+        padding: 14px 16px;
+        border-bottom: 1px solid #e5ecf8;
+        font-weight: 800;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 12px 14px;
+        border-bottom: 1px solid #e9eef8;
+        text-align: left;
+      }
+
+      th {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: #5a6f8f;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="portal-card">
+      <p class="kicker">Portal Calon Mahasiswa</p>
+      <h1>Cek Status & Pembayaran Daftar Ulang</h1>
+      <p class="subtitle">Masukkan Nomor Pendaftaran / NIK untuk melihat tagihan dan melanjutkan pembayaran online.</p>
+
+      <section id="lookupStep">
+        <form id="lookupForm" class="lookup-form">
+          <input id="lookupInput" type="text" placeholder="Masukkan Nomor Pendaftaran / NIK" required />
+          <button id="checkStatusBtn" class="btn-primary" type="submit">Cek Status</button>
+        </form>
+        <p id="lookupFeedback" class="helper hidden"></p>
+      </section>
+
+      <section id="invoiceStep" class="hidden">
+        <h2 id="invoiceGreeting"></h2>
+        <p class="helper">Rincian biaya daftar ulang Anda:</p>
+
+        <div class="invoice-box">
+          <div class="invoice-head">Invoice Daftar Ulang</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Komponen Biaya</th>
+                <th>Nominal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>UKT Semester 1</td><td>Rp 7.500.000</td></tr>
+              <tr><td>Uang Pangkal</td><td>Rp 5.000.000</td></tr>
+              <tr><td>Almamater & KTM</td><td>Rp 1.000.000</td></tr>
+              <tr><td><strong>Total</strong></td><td><strong>Rp 13.500.000</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button id="payNowBtn" class="btn-primary" type="button" style="margin-top: 16px; width: 100%;">
+          Bayar Online Sekarang
+        </button>
+      </section>
+    </main>
+
+    <script src="./mahasiswa-portal.js"></script>
+  </body>
+</html>
