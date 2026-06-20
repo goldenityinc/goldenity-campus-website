@@ -14,6 +14,7 @@ const mabaSyncChannel =
 
 const generatedNim = new Set();
 const MABA_REGISTRATION_STORAGE_KEY = "goldenity.mabaRegistrations";
+const MABA_PUBLIC_API_ENDPOINT = "/api/public/maba-registrations";
 const defaultApplicants = [
   {
     id: "seed-1",
@@ -521,12 +522,59 @@ function initializeTrackingBoard() {
   renderKanban();
 }
 
+async function hydrateRegistrationsFromApi() {
+  try {
+    const response = await fetch(MABA_PUBLIC_API_ENDPOINT, {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      return;
+    }
+
+    const payload = await response.json();
+    const remoteData = Array.isArray(payload?.data) ? payload.data : [];
+
+    if (remoteData.length === 0) {
+      return;
+    }
+
+    const localData = getStoredRegistrations();
+    const mergedById = new Map();
+
+    [...localData, ...remoteData].forEach((item) => {
+      const fallbackId = item.id ?? item.registrationNumber;
+      if (!fallbackId) {
+        return;
+      }
+
+      mergedById.set(String(fallbackId), {
+        ...mergedById.get(String(fallbackId)),
+        ...item,
+      });
+    });
+
+    const mergedArray = [...mergedById.values()];
+    saveStoredRegistrations(mergedArray);
+    renderKanban();
+  } catch (_error) {
+    // Keep local rendering as fallback when API is unavailable.
+  }
+}
+
 window.addEventListener("storage", renderKanban);
-window.addEventListener("focus", renderKanban);
+window.addEventListener("focus", () => {
+  renderKanban();
+  void hydrateRegistrationsFromApi();
+});
 window.addEventListener("pageshow", renderKanban);
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) {
     renderKanban();
+    void hydrateRegistrationsFromApi();
   }
 });
 
@@ -534,8 +582,10 @@ if (mabaSyncChannel) {
   mabaSyncChannel.addEventListener("message", (event) => {
     if (event.data === "registrations-updated") {
       renderKanban();
+      void hydrateRegistrationsFromApi();
     }
   });
 }
 
 initializeTrackingBoard();
+void hydrateRegistrationsFromApi();

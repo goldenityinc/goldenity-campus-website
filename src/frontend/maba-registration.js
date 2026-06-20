@@ -9,6 +9,7 @@ const mabaSyncChannel =
     : null;
 
 const MABA_REGISTRATION_STORAGE_KEY = "goldenity.mabaRegistrations";
+const MABA_PUBLIC_API_ENDPOINT = "/api/public/maba-registrations";
 
 function getMabaRegistrations() {
   const savedValue = localStorage.getItem(MABA_REGISTRATION_STORAGE_KEY);
@@ -23,10 +24,22 @@ function getMabaRegistrations() {
   }
 }
 
-function saveMabaRegistration(registration) {
+async function saveMabaRegistration(registration) {
   const currentRegistrations = getMabaRegistrations();
   currentRegistrations.push(registration);
   localStorage.setItem(MABA_REGISTRATION_STORAGE_KEY, JSON.stringify(currentRegistrations));
+
+  try {
+    await fetch(MABA_PUBLIC_API_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(registration),
+    });
+  } catch (_error) {
+    // Keep localStorage as fallback when API is temporarily unavailable.
+  }
 
   if (mabaSyncChannel) {
     mabaSyncChannel.postMessage("registrations-updated");
@@ -60,7 +73,7 @@ registrationForm.addEventListener("submit", (event) => {
   setTimeout(() => {
     const registrationId = `${Date.now()}`;
     const registrationNumber = createRegistrationNumber();
-    saveMabaRegistration({
+    void saveMabaRegistration({
       id: registrationId,
       registrationNumber,
       fullName: String(formData.get("fullName") ?? "").trim(),
