@@ -1,6 +1,11 @@
 const colPending = document.querySelector("#colPending");
 const colApproved = document.querySelector("#colApproved");
 const colDone = document.querySelector("#colDone");
+const detailPendaftarModal = document.querySelector("#detailPendaftarModal");
+const closeDetailPendaftarBtn = document.querySelector("#closeDetailPendaftarBtn");
+const detailPendaftarMeta = document.querySelector("#detailPendaftarMeta");
+const detailPendaftarBody = document.querySelector("#detailPendaftarBody");
+const journeyStatusList = document.querySelector("#journeyStatusList");
 
 const generatedNim = new Set();
 const MABA_REGISTRATION_STORAGE_KEY = "goldenity.mabaRegistrations";
@@ -128,7 +133,10 @@ function createPendingCard(applicant) {
       <p class="maba-name">${applicant.fullName}</p>
       <p>Asal Sekolah: ${applicant.schoolOrigin}</p>
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
-      <button class="btn btn-primary js-approve" type="button">Approve</button>
+      <div class="action-row">
+        <button class="btn btn-primary js-approve" type="button">Approve</button>
+        <button class="btn btn-secondary js-view-detail" type="button">Lihat Detail</button>
+      </div>
     </div>
   `;
 }
@@ -140,21 +148,68 @@ function createApprovedCard(applicant) {
       <p>Asal Sekolah: ${applicant.schoolOrigin}</p>
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
       <span class="nim-pill">NIM: ${applicant.nim}</span>
-      <button class="btn btn-primary js-complete-logistics" type="button">Selesaikan Logistik</button>
+      <div class="action-row">
+        <button class="btn btn-primary js-complete-logistics" type="button">Verifikasi Daftar Ulang</button>
+        <button class="btn btn-secondary js-view-detail" type="button">Lihat Detail</button>
+      </div>
     </div>
   `;
 }
 
 function createDoneCard(applicant) {
-  const nimValue = applicant.nim ?? "-";
+  const nimValue = applicant.nim ?? applicant.registrationNumber ?? "-";
   return `
     <div class="maba-card js-dynamic-card" data-registration-id="${applicant.id}" data-generated-nim="${applicant.nim}">
       <p class="maba-name">${applicant.fullName}</p>
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
       <span class="nim-pill">LUNAS & AKTIF</span>
       <span class="nim-pill badge">NIM: ${nimValue}</span>
+      <div class="action-row">
+        <button class="btn btn-secondary js-view-detail" type="button">Lihat Detail</button>
+      </div>
     </div>
   `;
+}
+
+function getJourneyStep(status) {
+  if (status === "Lunas") {
+    return 3;
+  }
+
+  if (status === "Disetujui") {
+    return 2;
+  }
+
+  return 1;
+}
+
+function openDetailPendaftarModal(applicant) {
+  const normalizedStatus = applicant.status ?? "Menunggu Verifikasi";
+  const journeyStep = getJourneyStep(normalizedStatus);
+
+  detailPendaftarMeta.textContent = `${applicant.fullName} | ${applicant.registrationNumber ?? applicant.id}`;
+  detailPendaftarBody.textContent = `Nama: ${applicant.fullName} | Asal Sekolah: ${applicant.schoolOrigin ?? "-"} | Prodi: ${applicant.studyProgram ?? "-"} | NIM: ${applicant.nim ?? "Belum tersedia"} | Status: ${normalizedStatus}`;
+
+  const journeyItems = [
+    "Menunggu Berkas",
+    "Disetujui",
+    "Lunas",
+  ];
+
+  journeyStatusList.innerHTML = journeyItems
+    .map((item, index) => {
+      const isActive = index + 1 <= journeyStep;
+      return `<li class="journey-item ${isActive ? "active" : ""}">${item}</li>`;
+    })
+    .join("");
+
+  detailPendaftarModal.classList.add("show");
+  detailPendaftarModal.setAttribute("aria-hidden", "false");
+}
+
+function closeDetailPendaftarModal() {
+  detailPendaftarModal.classList.remove("show");
+  detailPendaftarModal.setAttribute("aria-hidden", "true");
 }
 
 function renderKanban() {
@@ -225,12 +280,28 @@ colPending.addEventListener("click", (event) => {
   }
 
   const approveBtn = target.closest(".js-approve");
-  if (!approveBtn) {
+  const detailBtn = target.closest(".js-view-detail");
+  const card = target.closest(".maba-card");
+  if (!card) {
     return;
   }
 
-  const card = approveBtn.closest(".maba-card");
-  if (!card) {
+  if (detailBtn) {
+    const registrationIdForDetail = card.dataset.registrationId;
+    if (!registrationIdForDetail) {
+      return;
+    }
+
+    const selectedApplicant = getAllApplicants().find((applicant) => applicant.id === registrationIdForDetail);
+    if (!selectedApplicant) {
+      return;
+    }
+
+    openDetailPendaftarModal(selectedApplicant);
+    return;
+  }
+
+  if (!approveBtn) {
     return;
   }
 
@@ -249,12 +320,28 @@ colApproved.addEventListener("click", (event) => {
   }
 
   const completeButton = target.closest(".js-complete-logistics");
-  if (!(completeButton instanceof HTMLButtonElement)) {
+  const detailBtn = target.closest(".js-view-detail");
+  const card = target.closest(".maba-card");
+  if (!(card instanceof HTMLDivElement)) {
     return;
   }
 
-  const card = completeButton.closest(".maba-card");
-  if (!(card instanceof HTMLDivElement)) {
+  if (detailBtn) {
+    const registrationIdForDetail = card.dataset.registrationId;
+    if (!registrationIdForDetail) {
+      return;
+    }
+
+    const selectedApplicant = getAllApplicants().find((applicant) => applicant.id === registrationIdForDetail);
+    if (!selectedApplicant) {
+      return;
+    }
+
+    openDetailPendaftarModal(selectedApplicant);
+    return;
+  }
+
+  if (!(completeButton instanceof HTMLButtonElement)) {
     return;
   }
 
@@ -277,6 +364,11 @@ colApproved.addEventListener("click", (event) => {
     statusBadge.textContent = "LUNAS & AKTIF";
     card.appendChild(statusBadge);
 
+    const actionRow = card.querySelector(".action-row");
+    if (actionRow) {
+      completeButton.remove();
+    }
+
     colDone.appendChild(card);
     return;
   }
@@ -291,4 +383,46 @@ colApproved.addEventListener("click", (event) => {
   completeApplicantPayment(registrationId);
 });
 
-renderKanban();
+colDone.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) {
+    return;
+  }
+
+  const detailBtn = target.closest(".js-view-detail");
+  if (!detailBtn) {
+    return;
+  }
+
+  const card = target.closest(".maba-card");
+  if (!(card instanceof HTMLDivElement)) {
+    return;
+  }
+
+  const registrationId = card.dataset.registrationId;
+  if (!registrationId) {
+    return;
+  }
+
+  const selectedApplicant = getAllApplicants().find((applicant) => applicant.id === registrationId);
+  if (!selectedApplicant) {
+    return;
+  }
+
+  openDetailPendaftarModal(selectedApplicant);
+});
+
+closeDetailPendaftarBtn.addEventListener("click", closeDetailPendaftarModal);
+detailPendaftarModal.addEventListener("click", (event) => {
+  if (event.target === detailPendaftarModal) {
+    closeDetailPendaftarModal();
+  }
+});
+
+function initializeTrackingBoard() {
+  getStoredRegistrations();
+  renderKanban();
+}
+
+window.addEventListener("storage", renderKanban);
+initializeTrackingBoard();

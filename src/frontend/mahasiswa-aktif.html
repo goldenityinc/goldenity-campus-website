@@ -4,12 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portal Mahasiswa Aktif</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
     <style>
       :root {
         --ink: #14314d;
@@ -26,7 +20,7 @@
       body {
         margin: 0;
         min-height: 100vh;
-        font-family: "Plus Jakarta Sans", sans-serif;
+        font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         color: var(--ink);
         background: radial-gradient(circle at 12% 14%, #c8f6ff, transparent 36%),
           radial-gradient(circle at 86% 8%, #ffe0af, transparent 32%),
@@ -58,7 +52,18 @@
 
       h1, h2 {
         margin: 8px 0 6px;
-        font-family: "Fraunces", serif;
+        font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-weight: 600;
+      }
+
+      .warn-box {
+        margin-bottom: 10px;
+        border: 1px solid #b8cbeb;
+        border-radius: 10px;
+        padding: 9px 10px;
+        background: #edf5ff;
+        color: #1f446f;
+        font-size: 0.9rem;
       }
 
       .subtitle,
@@ -91,6 +96,14 @@
         color: #fff;
         background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
         cursor: pointer;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-bottom: 10px;
+        text-decoration: none;
+        color: #1f446f;
+        font-weight: 700;
       }
 
       .hidden { display: none; }
@@ -131,6 +144,9 @@
   </head>
   <body>
     <main class="portal-card">
+      <a class="back-link" href="./index.html">⬅️ Kembali ke Menu Utama</a>
+      <p class="warn-box">ℹ️ Simulasi: Menu ini nantinya hanya tersedia setelah mahasiswa berhasil Login.</p>
+
       <section id="loginSection">
         <p class="kicker">Portal Mahasiswa Aktif</p>
         <h1>Akses Dashboard Akademik</h1>
@@ -148,6 +164,9 @@
         <div class="dashboard-meta">
           <p id="studentName" class="helper"></p>
           <p id="studentNim" class="helper"></p>
+          <p class="helper">Semester Aktif: 1</p>
+          <p class="helper">Total IPS: 3.80</p>
+          <p class="helper">Total IPK: 3.80</p>
         </div>
 
         <div class="table-wrap">

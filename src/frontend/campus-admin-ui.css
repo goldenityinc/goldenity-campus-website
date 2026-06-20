@@ -23,11 +23,18 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Manrope", sans-serif;
+  font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: var(--ink);
   background: radial-gradient(circle at 10% 8%, #dcecff, transparent 35%),
     radial-gradient(circle at 90% 20%, #ffe9c4, transparent 28%),
     linear-gradient(135deg, #eef3ff, #f6f8ff 45%, #fff7ee);
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 600;
 }
 
 .app-shell {
@@ -45,7 +52,8 @@ body {
 
 .brand {
   margin: 0 0 20px;
-  font-family: "Archivo Black", sans-serif;
+  font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 700;
   font-size: 1.05rem;
   letter-spacing: 0.02em;
 }
@@ -99,8 +107,36 @@ body {
 
 .page-title {
   margin: 8px 0 6px;
-  font-family: "Archivo Black", sans-serif;
+  font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 700;
   font-size: clamp(1.2rem, 3.4vw, 2rem);
+}
+
+.flow-info-box {
+  margin-top: 12px;
+  border: 1px solid #b8cbeb;
+  background: #edf5ff;
+  color: #1f446f;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.journey-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.journey-item {
+  color: #607a99;
+  font-weight: 600;
+}
+
+.journey-item.active {
+  color: #0f6b45;
 }
 
 .page-subtitle {

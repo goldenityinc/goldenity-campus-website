@@ -22,5 +22,5 @@ nimForm.addEventListener("submit", (event) => {
 });
 
 downloadTranscriptBtn.addEventListener("click", () => {
-  alert("Transkrip berhasil diunduh (simulasi).");
+  alert("Mendownload transkrip...");
 });

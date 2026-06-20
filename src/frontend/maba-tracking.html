@@ -32,6 +32,11 @@
           <p class="page-subtitle">
             Simulasi alur verifikasi hingga generate NIM otomatis dalam format kanban sederhana.
           </p>
+
+          <div class="flow-info-box">
+            FLOW PMB: 1. Pendaftaran Online ➔ 2. Verifikasi Berkas (Approve) ➔ 3. Bayar Daftar Ulang
+            (Otomatis/Manual) ➔ 4. Mahasiswa Aktif
+          </div>
         </section>
 
         <section class="kanban">
@@ -48,7 +53,10 @@
                 <p>Asal Sekolah: SMAN 2 Bekasi</p>
                 <p>Pilihan Prodi: Sistem Informasi</p>
                 <span class="nim-pill">NIM: 2610038</span>
-                <button class="btn btn-primary js-complete-logistics" type="button">Selesaikan Logistik</button>
+                <div class="action-row">
+                  <button class="btn btn-primary js-complete-logistics" type="button">Verifikasi Daftar Ulang</button>
+                  <button class="btn btn-secondary js-view-detail" type="button">Lihat Detail</button>
+                </div>
               </div>
             </div>
           </article>
@@ -65,6 +73,36 @@
           </article>
         </section>
       </main>
+    </div>
+
+    <div id="detailPendaftarModal" class="modal-backdrop" aria-hidden="true">
+      <section class="modal detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailPendaftarTitle">
+        <div class="detail-header">
+          <div>
+            <h3 id="detailPendaftarTitle">Detail Pendaftar</h3>
+            <p id="detailPendaftarMeta" class="detail-meta"></p>
+          </div>
+          <button id="closeDetailPendaftarBtn" class="btn btn-secondary" type="button">Tutup</button>
+        </div>
+
+        <section class="panel detail-panel">
+          <div class="panel-head">
+            <h2>Data Diri</h2>
+          </div>
+          <div class="panel-body">
+            <p id="detailPendaftarBody" class="detail-meta"></p>
+          </div>
+        </section>
+
+        <section class="panel detail-panel">
+          <div class="panel-head">
+            <h2>Status Journey</h2>
+          </div>
+          <div class="panel-body">
+            <ol id="journeyStatusList" class="journey-list"></ol>
+          </div>
+        </section>
+      </section>
     </div>
 
     <script src="./maba-tracking.js"></script>
