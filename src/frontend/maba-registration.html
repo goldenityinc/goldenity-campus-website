@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pendaftaran Mahasiswa Baru</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #14314d;
+        --ink-soft: #476581;
+        --surface: #ffffffdd;
+        --line: #cbd9ea;
+        --primary-1: #0d8790;
+        --primary-2: #22bf9f;
+        --shadow: 0 22px 46px rgba(18, 40, 69, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        color: var(--ink);
+        background: radial-gradient(circle at 12% 14%, #c8f6ff, transparent 36%),
+          radial-gradient(circle at 86% 8%, #ffe0af, transparent 32%),
+          radial-gradient(circle at 78% 82%, #d4ffef, transparent 28%),
+          linear-gradient(145deg, #eef8ff, #f4faff 42%, #fff8ef);
+        display: grid;
+        place-items: center;
+        padding: 20px;
+      }
+
+      .internal-link {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        text-decoration: none;
+        font-size: 0.86rem;
+        font-weight: 800;
+        color: #0f4a79;
+        background: #ffffffde;
+        border: 1px solid #b8d0ea;
+        border-radius: 999px;
+        padding: 9px 13px;
+        box-shadow: 0 8px 16px rgba(20, 47, 78, 0.14);
+      }
+
+      .registration-card {
+        width: min(640px, 100%);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--surface);
+        backdrop-filter: blur(8px);
+        box-shadow: var(--shadow);
+        padding: 24px;
+      }
+
+      .kicker {
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.76rem;
+        font-weight: 800;
+        color: #0c6173;
+      }
+
+      h1 {
+        margin: 8px 0 6px;
+        font-family: "Fraunces", serif;
+        font-size: clamp(1.5rem, 3.8vw, 2.2rem);
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--ink-soft);
+        line-height: 1.5;
+      }
+
+      form {
+        margin-top: 18px;
+        display: grid;
+        gap: 12px;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #2e506f;
+      }
+
+      input,
+      select {
+        border: 1px solid #bad0e8;
+        border-radius: 12px;
+        padding: 11px 12px;
+        font: inherit;
+        background: #fff;
+      }
+
+      input[type="file"] {
+        padding: 8px;
+      }
+
+      .submit-btn {
+        margin-top: 4px;
+        border: 0;
+        border-radius: 12px;
+        padding: 11px 14px;
+        font: inherit;
+        font-weight: 800;
+        color: #fff;
+        background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+        cursor: pointer;
+      }
+
+      .submit-btn:disabled {
+        opacity: 0.7;
+        cursor: wait;
+      }
+
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 26, 45, 0.45);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+
+      .modal-backdrop.show {
+        display: flex;
+      }
+
+      .modal {
+        width: min(520px, 100%);
+        border-radius: 18px;
+        border: 1px solid #bdd0ea;
+        background: #fff;
+        padding: 20px;
+        box-shadow: var(--shadow);
+      }
+
+      .modal h2 {
+        margin: 0 0 8px;
+        font-family: "Fraunces", serif;
+      }
+
+      .modal p {
+        margin: 0;
+        color: #3f5b77;
+        line-height: 1.55;
+      }
+
+      .modal-actions {
+        margin-top: 14px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .ok-btn {
+        border: 0;
+        border-radius: 10px;
+        padding: 9px 14px;
+        font: inherit;
+        font-weight: 800;
+        color: #fff;
+        background: linear-gradient(130deg, #0b638f, #2aaecb);
+        cursor: pointer;
+      }
+
+      @media (max-width: 680px) {
+        .internal-link {
+          top: auto;
+          bottom: 14px;
+          right: 14px;
+        }
+
+        .registration-card {
+          padding: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="internal-link" href="./dosen-wali-dashboard.html">Login Internal Kampus</a>
+
+    <main class="registration-card">
+      <p class="kicker">Penerimaan Mahasiswa Baru</p>
+      <h1>Formulir Pendaftaran Online</h1>
+      <p class="subtitle">
+        Silakan lengkapi data pendaftaran Anda. Tim kami akan melakukan verifikasi berkas setelah data berhasil dikirim.
+      </p>
+
+      <form id="mabaRegistrationForm">
+        <label for="fullName">
+          Nama Lengkap
+          <input id="fullName" name="fullName" type="text" placeholder="Contoh: Nabila Putri" required />
+        </label>
+
+        <label for="schoolOrigin">
+          Asal Sekolah
+          <input id="schoolOrigin" name="schoolOrigin" type="text" placeholder="Contoh: SMAN 8 Jakarta" required />
+        </label>
+
+        <label for="studyProgram">
+          Pilihan Program Studi
+          <select id="studyProgram" name="studyProgram" required>
+            <option value="">Pilih Program Studi</option>
+            <option>Teknik Informatika</option>
+            <option>Sistem Informasi</option>
+            <option>Teknik Komputer</option>
+          </select>
+        </label>
+
+        <label for="certificateFile">
+          Upload Ijazah/Nilai
+          <input id="certificateFile" name="certificateFile" type="file" required />
+        </label>
+
+        <button id="submitBtn" class="submit-btn" type="submit">Kirim Pendaftaran</button>
+      </form>
+    </main>
+
+    <div id="successModal" class="modal-backdrop" aria-hidden="true">
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+        <h2 id="successTitle">Pendaftaran Berhasil!</h2>
+        <p>
+          Data Anda sedang diverifikasi. Silakan tunggu informasi selanjutnya.
+        </p>
+        <div class="modal-actions">
+          <button id="closeModalBtn" class="ok-btn" type="button">Tutup</button>
+        </div>
+      </section>
+    </div>
+
+    <script src="./maba-registration.js"></script>
+  </body>
+</html>
