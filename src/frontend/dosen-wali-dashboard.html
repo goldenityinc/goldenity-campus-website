@@ -75,6 +75,38 @@
       </div>
     </aside>
 
+    <div id="transkripModal" class="modal-backdrop" aria-hidden="true">
+      <section class="modal detail-modal" role="dialog" aria-modal="true" aria-labelledby="transkripModalTitle">
+        <div class="detail-header">
+          <div>
+            <h3 id="transkripModalTitle">Preview Transkrip / KHS</h3>
+            <p id="transkripDetailMeta" class="detail-meta"></p>
+          </div>
+          <button id="closeTranskripModalBtn" class="btn btn-secondary" type="button">Tutup</button>
+        </div>
+
+        <section class="panel detail-panel">
+          <div class="panel-head">
+            <h2>Daftar Nilai Mata Kuliah</h2>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Kode MK</th>
+                  <th>Nama Mata Kuliah</th>
+                  <th>SKS</th>
+                  <th>Nilai Angka</th>
+                  <th>Nilai Huruf</th>
+                </tr>
+              </thead>
+              <tbody id="transkripGradesBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script src="./dosen-wali-dashboard.js"></script>
   </body>

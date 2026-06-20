@@ -65,6 +65,33 @@ const onlyWarningToggle = document.querySelector("#onlyWarning");
 const activeDemoUserSelect = document.querySelector("#activeDemoUser");
 const refreshByRoleButton = document.querySelector("#refreshByRole");
 const activeRoleHint = document.querySelector("#activeRoleHint");
+const transkripModal = document.querySelector("#transkripModal");
+const closeTranskripModalBtn = document.querySelector("#closeTranskripModalBtn");
+const transkripDetailMeta = document.querySelector("#transkripDetailMeta");
+const transkripGradesBody = document.querySelector("#transkripGradesBody");
+
+const transcriptPreviewByStudentId = {
+  "1": [
+    { code: "IF201", name: "Struktur Data", credits: 3, score: 88, letter: "A" },
+    { code: "IF203", name: "Basis Data", credits: 3, score: 84, letter: "A-" },
+    { code: "IF205", name: "Kalkulus", credits: 2, score: 79, letter: "B+" },
+  ],
+  "2": [
+    { code: "SI201", name: "Sistem Informasi Manajemen", credits: 3, score: 72, letter: "B-" },
+    { code: "SI203", name: "Basis Data", credits: 3, score: 68, letter: "C+" },
+    { code: "SI205", name: "Analisis Proses Bisnis", credits: 2, score: 74, letter: "B" },
+  ],
+  "3": [
+    { code: "TK201", name: "Arsitektur Komputer", credits: 3, score: 83, letter: "A-" },
+    { code: "TK203", name: "Rangkaian Digital", credits: 3, score: 78, letter: "B+" },
+    { code: "TK205", name: "Jaringan Komputer", credits: 2, score: 80, letter: "A-" },
+  ],
+  "4": [
+    { code: "IF207", name: "Pemrograman Web", credits: 3, score: 69, letter: "C+" },
+    { code: "IF209", name: "Matematika Diskrit", credits: 3, score: 66, letter: "C" },
+    { code: "IF211", name: "Sistem Operasi", credits: 2, score: 71, letter: "B-" },
+  ],
+};
 
 function getActiveDemoUser() {
   const selectedKey = activeDemoUserSelect.value;
@@ -131,6 +158,9 @@ function renderTable(data) {
         <td>${student.gpa.toFixed(2)}</td>
         <td>${createStatusBadge(student)}</td>
         <td>
+          <button class="btn-detail" data-student-id="${student.studentId}">
+            Lihat Detail
+          </button>
           <button class="btn-transcript" data-student-id="${student.studentId}">
             Unduh Transkrip Sementara
           </button>
@@ -230,6 +260,32 @@ function downloadTranscriptPdf(payload) {
   doc.save(`transkrip-sementara-${transcript.nim}.pdf`);
 }
 
+function openTranscriptModal(student) {
+  const gradeRows = transcriptPreviewByStudentId[student.studentId] ?? [];
+  transkripDetailMeta.textContent = `${student.fullName} | ${student.nim} | ${student.programStudy}`;
+  transkripGradesBody.innerHTML = gradeRows
+    .map(
+      (grade) => `
+        <tr>
+          <td>${grade.code}</td>
+          <td>${grade.name}</td>
+          <td>${grade.credits}</td>
+          <td>${grade.score}</td>
+          <td>${grade.letter}</td>
+        </tr>
+      `,
+    )
+    .join("");
+
+  transkripModal.classList.add("show");
+  transkripModal.setAttribute("aria-hidden", "false");
+}
+
+function closeTranscriptModal() {
+  transkripModal.classList.remove("show");
+  transkripModal.setAttribute("aria-hidden", "true");
+}
+
 async function handleTranscriptDownload(studentId) {
   const button = studentTableBody.querySelector(`[data-student-id="${studentId}"]`);
   if (button instanceof HTMLButtonElement) {
@@ -262,6 +318,18 @@ studentTableBody.addEventListener("click", (event) => {
     return;
   }
 
+  const detailButton = target.closest(".btn-detail");
+  if (detailButton instanceof HTMLButtonElement) {
+    const studentId = detailButton.dataset.studentId;
+    const selectedStudent = students.find((student) => student.studentId === studentId);
+    if (!selectedStudent) {
+      return;
+    }
+
+    openTranscriptModal(selectedStudent);
+    return;
+  }
+
   const button = target.closest(".btn-transcript");
   if (!(button instanceof HTMLButtonElement)) {
     return;
@@ -273,6 +341,13 @@ studentTableBody.addEventListener("click", (event) => {
   }
 
   handleTranscriptDownload(studentId);
+});
+
+closeTranskripModalBtn.addEventListener("click", closeTranscriptModal);
+transkripModal.addEventListener("click", (event) => {
+  if (event.target === transkripModal) {
+    closeTranscriptModal();
+  }
 });
 
 function render() {

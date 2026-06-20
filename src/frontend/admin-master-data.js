@@ -132,7 +132,36 @@ programStudyTableBody.addEventListener("click", (event) => {
 
   const editButton = target.closest(".js-edit-program");
   if (editButton instanceof HTMLButtonElement) {
-    alert("Mode edit belum diaktifkan pada demo ini.");
+    const programId = editButton.dataset.programId;
+    if (!programId) {
+      return;
+    }
+
+    const programStudies = getProgramStudies();
+    const programIndex = programStudies.findIndex((programStudy) => programStudy.id === programId);
+    if (programIndex === -1) {
+      return;
+    }
+
+    const currentQuota = programStudies[programIndex].quota;
+    const nextQuotaValue = window.prompt(
+      "Masukkan jumlah kuota baru untuk prodi ini:",
+      String(currentQuota),
+    );
+
+    if (nextQuotaValue === null) {
+      return;
+    }
+
+    const parsedQuota = Number(nextQuotaValue);
+    if (!Number.isFinite(parsedQuota) || parsedQuota <= 0) {
+      alert("Kuota harus berupa angka lebih dari 0.");
+      return;
+    }
+
+    programStudies[programIndex].quota = parsedQuota;
+    saveProgramStudies(programStudies);
+    renderProgramStudies();
   }
 });
 
