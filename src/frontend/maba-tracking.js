@@ -42,6 +42,32 @@ function saveStoredRegistrations(registrations) {
   localStorage.setItem(MABA_REGISTRATION_STORAGE_KEY, JSON.stringify(registrations));
 }
 
+function syncRegistrationStatusInStorage(registrationId, nextStatus) {
+  const storedRegistrations = getStoredRegistrations();
+  const targetIndex = storedRegistrations.findIndex((registration) => registration.id === registrationId);
+
+  if (targetIndex < 0) {
+    return;
+  }
+
+  const updatedRegistration = {
+    ...storedRegistrations[targetIndex],
+    status: nextStatus,
+  };
+
+  if (nextStatus === "Disetujui") {
+    updatedRegistration.pipelineStatus = "approved";
+  }
+
+  if (nextStatus === "Lunas") {
+    updatedRegistration.pipelineStatus = "done";
+    updatedRegistration.sudahBayar = true;
+  }
+
+  storedRegistrations[targetIndex] = updatedRegistration;
+  saveStoredRegistrations(storedRegistrations);
+}
+
 function getAllApplicants() {
   const storedRegistrations = getStoredRegistrations();
   const mergedApplicants = [...defaultApplicants];
@@ -120,11 +146,13 @@ function createApprovedCard(applicant) {
 }
 
 function createDoneCard(applicant) {
+  const nimValue = applicant.nim ?? "-";
   return `
     <div class="maba-card js-dynamic-card" data-registration-id="${applicant.id}" data-generated-nim="${applicant.nim}">
       <p class="maba-name">${applicant.fullName}</p>
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
       <span class="nim-pill">LUNAS & AKTIF</span>
+      <span class="nim-pill badge">NIM: ${nimValue}</span>
     </div>
   `;
 }
@@ -206,6 +234,11 @@ colPending.addEventListener("click", (event) => {
     return;
   }
 
+  const registrationId = card.dataset.registrationId;
+  if (registrationId) {
+    syncRegistrationStatusInStorage(registrationId, "Disetujui");
+  }
+
   approveCard(card);
 });
 
@@ -228,14 +261,21 @@ colApproved.addEventListener("click", (event) => {
   if (card.dataset.staticCard === "true") {
     completeButton.remove();
     const nimBadge = card.querySelector(".nim-pill");
+    const existingNim = card.dataset.generatedNim ?? "-";
     if (nimBadge) {
-      nimBadge.textContent = "LUNAS & AKTIF";
+      nimBadge.textContent = `NIM: ${existingNim}`;
+      nimBadge.classList.add("badge");
     }
 
     const schoolText = card.querySelector("p:nth-of-type(2)");
     if (schoolText && schoolText.textContent?.startsWith("Asal Sekolah")) {
       schoolText.remove();
     }
+
+    const statusBadge = document.createElement("span");
+    statusBadge.className = "nim-pill";
+    statusBadge.textContent = "LUNAS & AKTIF";
+    card.appendChild(statusBadge);
 
     colDone.appendChild(card);
     return;
@@ -245,6 +285,8 @@ colApproved.addEventListener("click", (event) => {
   if (!registrationId) {
     return;
   }
+
+  syncRegistrationStatusInStorage(registrationId, "Lunas");
 
   completeApplicantPayment(registrationId);
 });

@@ -1,4 +1,4 @@
-const students = [
+const activeStudents = [
   {
     id: "std-1",
     nim: "231401001",
@@ -91,6 +91,8 @@ const students = [
   },
 ];
 
+const MABA_REGISTRATION_STORAGE_KEY = "goldenity.mabaRegistrations";
+
 const programFilter = document.querySelector("#programFilter");
 const semesterFilter = document.querySelector("#semesterFilter");
 const studentDirectoryTableBody = document.querySelector("#studentDirectoryTableBody");
@@ -101,8 +103,57 @@ const ipsValue = document.querySelector("#ipsValue");
 const gpaValue = document.querySelector("#gpaValue");
 const studentDetailGradesBody = document.querySelector("#studentDetailGradesBody");
 
+function getStoredRegistrations() {
+  const savedValue = localStorage.getItem(MABA_REGISTRATION_STORAGE_KEY);
+  if (!savedValue) {
+    return [];
+  }
+
+  try {
+    return JSON.parse(savedValue);
+  } catch (_error) {
+    return [];
+  }
+}
+
+function createFirstSemesterGrades() {
+  return [
+    { code: "KU101", name: "Pancasila", credits: 2, score: 84, letter: "A-" },
+    { code: "KU103", name: "Bahasa Indonesia", credits: 2, score: 82, letter: "A-" },
+    { code: "IF101", name: "Pengantar Komputasi", credits: 3, score: 86, letter: "A" },
+  ];
+}
+
+function loadAllStudents() {
+  const paidMabaStudents = getStoredRegistrations()
+    .filter((registration) => registration.status === "Lunas")
+    .map((registration) => ({
+      id: `maba-${registration.id}`,
+      nim: registration.nim ?? "-",
+      name: registration.fullName ?? "Mahasiswa Baru",
+      programStudy: registration.studyProgram ?? "Belum Ditentukan",
+      semester: 1,
+      status: "Aktif",
+      ips: 3.5,
+      gpa: 3.5,
+      grades: createFirstSemesterGrades(),
+    }));
+
+  const mergedStudents = [...activeStudents, ...paidMabaStudents];
+  const uniqueByNim = new Map();
+
+  mergedStudents.forEach((student) => {
+    const key = student.nim !== "-" ? `nim-${student.nim}` : student.id;
+    if (!uniqueByNim.has(key)) {
+      uniqueByNim.set(key, student);
+    }
+  });
+
+  return [...uniqueByNim.values()];
+}
+
 function getFilteredStudents() {
-  return students.filter((student) => {
+  return loadAllStudents().filter((student) => {
     const matchesProgram =
       programFilter.value === "all" || student.programStudy === programFilter.value;
     const matchesSemester =
@@ -186,7 +237,7 @@ studentDirectoryTableBody.addEventListener("click", (event) => {
   }
 
   const studentId = detailButton.dataset.studentId;
-  const selectedStudent = students.find((student) => student.id === studentId);
+  const selectedStudent = loadAllStudents().find((student) => student.id === studentId);
   if (!selectedStudent) {
     return;
   }
