@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Direktori Mahasiswa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./campus-admin-ui.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <h1 class="brand">Goldenity Campus Admin</h1>
+        <nav class="nav-group">
+          <a class="nav-link" href="./dosen-wali-dashboard.html">Dashboard</a>
+          <a class="nav-link" href="./admin-master-data.html">Master Data</a>
+          <a class="nav-link" href="./maba-tracking.html">Penerimaan MABA</a>
+          <a class="nav-link" href="./keuangan-dashboard.html">Keuangan</a>
+          <a class="nav-link" href="./dosen-wali-dashboard.html">Akademik</a>
+          <a class="nav-link active" href="./admin-direktori-mahasiswa.html">Direktori Mahasiswa</a>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <section class="hero-card">
+          <p class="page-kicker">Modul Akademik</p>
+          <h2 class="page-title">Direktori Seluruh Mahasiswa</h2>
+          <p class="page-subtitle">
+            Preview data mahasiswa lintas program studi dengan filter semester dan akses detail performa akademik.
+          </p>
+        </section>
+
+        <section class="panel">
+          <div class="filter-bar">
+            <label class="filter-field">
+              Program Studi
+              <select id="programFilter">
+                <option value="all">Semua Program Studi</option>
+                <option value="Informatika">Informatika</option>
+                <option value="Sistem Informasi">Sistem Informasi</option>
+                <option value="Teknik Komputer">Teknik Komputer</option>
+              </select>
+            </label>
+            <label class="filter-field">
+              Semester
+              <select id="semesterFilter">
+                <option value="all">Semua Semester</option>
+                <option value="1">1</option>
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="7">7</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>NIM</th>
+                  <th>Nama</th>
+                  <th>Prodi</th>
+                  <th>Semester</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="studentDirectoryTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="studentDetailModal" class="modal-backdrop" aria-hidden="true">
+      <section class="modal detail-modal" role="dialog" aria-modal="true" aria-labelledby="studentDetailTitle">
+        <div class="detail-header">
+          <div>
+            <h3 id="studentDetailTitle">Detail Mahasiswa</h3>
+            <p id="studentDetailMeta" class="detail-meta"></p>
+          </div>
+          <button id="closeStudentDetailBtn" class="btn btn-secondary" type="button">Tutup</button>
+        </div>
+
+        <div class="detail-grid">
+          <article class="metric-card">
+            <p class="metric-label">IPK Semester Aktif (IPS)</p>
+            <p id="ipsValue" class="metric-value">0.00</p>
+          </article>
+          <article class="metric-card">
+            <p class="metric-label">IPK Kumulatif (Overall)</p>
+            <p id="gpaValue" class="metric-value">0.00</p>
+          </article>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Daftar Nilai Semester Aktif</h2>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Kode MK</th>
+                  <th>Nama Mata Kuliah</th>
+                  <th>SKS</th>
+                  <th>Nilai Angka</th>
+                  <th>Nilai Huruf</th>
+                </tr>
+              </thead>
+              <tbody id="studentDetailGradesBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <script src="./admin-direktori-mahasiswa.js"></script>
+  </body>
+</html>

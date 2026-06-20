@@ -285,6 +285,31 @@ th {
   height: 280px;
 }
 
+.filter-bar {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-field {
+  min-width: 180px;
+  display: grid;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #375578;
+}
+
+.filter-field select {
+  border: 1px solid #bfd0eb;
+  border-radius: 9px;
+  padding: 9px;
+  font: inherit;
+  background: #fff;
+}
+
 .badge {
   border-radius: 999px;
   padding: 5px 10px;
@@ -363,6 +388,68 @@ th {
   background: linear-gradient(130deg, #1f7d46, #2ca060);
 }
 
+.detail-modal {
+  width: min(980px, 100%);
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.detail-header h3 {
+  margin: 0 0 6px;
+}
+
+.detail-meta {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.detail-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metric-card {
+  border: 1px solid #d1ddf0;
+  border-radius: 14px;
+  background: #f9fbff;
+  padding: 14px;
+}
+
+.metric-card p {
+  margin: 0;
+}
+
+.metric-label {
+  font-size: 0.76rem;
+  color: #5c708d;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+}
+
+.metric-value {
+  margin-top: 8px;
+  font-size: 1.5rem;
+  font-family: "Archivo Black", sans-serif;
+}
+
+.panel-body {
+  padding: 16px;
+}
+
+.empty-state {
+  padding: 18px 16px;
+  color: var(--ink-soft);
+}
+
 @media (max-width: 1080px) {
   .app-shell {
     grid-template-columns: 1fr;
@@ -379,6 +466,10 @@ th {
   }
 
   .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-grid {
     grid-template-columns: 1fr;
   }
 }

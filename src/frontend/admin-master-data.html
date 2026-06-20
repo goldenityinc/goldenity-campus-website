@@ -21,7 +21,8 @@
           <a class="nav-link active" href="./admin-master-data.html">Master Data</a>
           <a class="nav-link" href="./maba-tracking.html">Penerimaan MABA</a>
           <a class="nav-link" href="./keuangan-dashboard.html">Keuangan</a>
-          <a class="nav-link" href="#">Akademik</a>
+          <a class="nav-link" href="./dosen-wali-dashboard.html">Akademik</a>
+          <a class="nav-link" href="./admin-direktori-mahasiswa.html">Direktori Mahasiswa</a>
         </nav>
       </aside>
 
@@ -50,44 +51,7 @@
                   <th>Aksi</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>IF</td>
-                  <td>Teknik Informatika</td>
-                  <td>Fakultas Teknologi Informasi</td>
-                  <td>240</td>
-                  <td>
-                    <div class="action-row">
-                      <button class="btn btn-secondary" type="button">Edit</button>
-                      <button class="btn btn-danger" type="button">Hapus</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>SI</td>
-                  <td>Sistem Informasi</td>
-                  <td>Fakultas Teknologi Informasi</td>
-                  <td>180</td>
-                  <td>
-                    <div class="action-row">
-                      <button class="btn btn-secondary" type="button">Edit</button>
-                      <button class="btn btn-danger" type="button">Hapus</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>TK</td>
-                  <td>Teknik Komputer</td>
-                  <td>Fakultas Teknik</td>
-                  <td>120</td>
-                  <td>
-                    <div class="action-row">
-                      <button class="btn btn-secondary" type="button">Edit</button>
-                      <button class="btn btn-danger" type="button">Hapus</button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
+              <tbody id="programStudyTableBody"></tbody>
             </table>
           </div>
         </section>
@@ -102,15 +66,15 @@
         <form id="prodiForm" class="form-grid">
           <label>
             Kode Prodi
-            <input type="text" placeholder="Contoh: MI" required />
+            <input id="programCode" name="programCode" type="text" placeholder="Contoh: MI" required />
           </label>
           <label>
             Nama Prodi
-            <input type="text" placeholder="Contoh: Manajemen Informatika" required />
+            <input id="programName" name="programName" type="text" placeholder="Contoh: Manajemen Informatika" required />
           </label>
           <label>
             Fakultas
-            <select>
+            <select id="facultyName" name="facultyName">
               <option>Fakultas Teknologi Informasi</option>
               <option>Fakultas Teknik</option>
               <option>Fakultas Ekonomi</option>
@@ -118,13 +82,13 @@
           </label>
           <label>
             Kuota MABA
-            <input type="number" min="1" value="100" required />
+            <input id="quotaMaba" name="quotaMaba" type="number" min="1" value="100" required />
           </label>
         </form>
 
         <div class="form-actions">
           <button id="cancelModalBtn" class="btn btn-secondary" type="button">Batal</button>
-          <button id="saveProdiBtn" class="btn btn-primary" type="button">Simpan</button>
+          <button id="saveProdiBtn" class="btn btn-primary" type="submit" form="prodiForm">Simpan</button>
         </div>
       </div>
     </div>
