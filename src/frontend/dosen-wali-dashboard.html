@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Dosen Wali</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./dosen-wali-dashboard.css" />
+  </head>
+  <body>
+    <div class="bg-layer bg-layer-1" aria-hidden="true"></div>
+    <div class="bg-layer bg-layer-2" aria-hidden="true"></div>
+
+    <main class="container">
+      <header class="hero">
+        <p class="kicker">Sistem Akademik Kampus</p>
+        <h1>Dashboard Dosen Wali</h1>
+        <p class="subtitle">
+          Pantau performa akademik mahasiswa perwalian secara real-time dan identifikasi risiko dini.
+        </p>
+      </header>
+
+      <section class="summary" id="summaryCards"></section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Daftar Mahasiswa Perwalian</h2>
+          <label class="toggle-wrap" for="onlyWarning">
+            <input id="onlyWarning" type="checkbox" />
+            <span>Tampilkan hanya yang underperforming</span>
+          </label>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>NIM</th>
+                <th>Nama</th>
+                <th>Prodi</th>
+                <th>SKS Lulus</th>
+                <th>IPK</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <aside class="demo-controller" aria-label="Demo Controller">
+      <p class="demo-title">Demo Controller</p>
+      <label class="demo-label" for="activeDemoUser">User Aktif</label>
+      <select id="activeDemoUser" class="demo-select">
+        <option value="dosen-101">Dosen Wali (Role: Dosen, ID: 101)</option>
+        <option value="mahasiswa-1">Mahasiswa A (Role: Mahasiswa, ID: 1)</option>
+        <option value="mahasiswa-2">Mahasiswa B (Role: Mahasiswa, ID: 2)</option>
+      </select>
+      <button id="refreshByRole" class="demo-btn" type="button">Refresh Tabel</button>
+      <p id="activeRoleHint" class="demo-hint"></p>
+    </aside>
+
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="./dosen-wali-dashboard.js"></script>
+  </body>
+</html>

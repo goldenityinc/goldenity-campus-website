@@ -1,0 +1,32 @@
+{
+  "name": "goldenity-campus-website",
+  "version": "1.0.0",
+  "description": "This repository now contains the first MVP foundation: database schema + strict RBAC.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/db/migrate.js && node dist/index.js",
+    "dev": "ts-node-dev src/index.ts",
+    "migrate": "ts-node src/db/migrate.ts",
+    "migrate:prod": "node dist/db/migrate.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.0.0",
+    "@types/pg": "^8.20.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.3"
+  }
+}
