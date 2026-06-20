@@ -50,6 +50,7 @@ h3 {
   padding: 22px 18px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .brand {
@@ -90,12 +91,14 @@ h3 {
 
 .back-btn {
   margin-top: auto;
-  color: #ffd5d5;
-  border-color: rgba(255, 170, 170, 0.2);
+  padding: 15px 20px;
+  color: #cbd9ea;
+  text-decoration: none;
+  display: block;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .back-btn:hover {
-  background: rgba(177, 15, 15, 0.2);
   color: #fff;
 }
 
