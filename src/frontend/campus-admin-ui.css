@@ -48,6 +48,8 @@ h3 {
   background: linear-gradient(180deg, #0f2946, #13355f);
   color: #f0f7ff;
   padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
 }
 
 .brand {
@@ -59,8 +61,10 @@ h3 {
 }
 
 .nav-group {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
+  flex: 1;
 }
 
 .nav-link {
@@ -82,6 +86,17 @@ h3 {
   color: #fff;
   background: linear-gradient(130deg, #1a65b0, #2ba2f5);
   border-color: rgba(255, 255, 255, 0.38);
+}
+
+.back-btn {
+  margin-top: auto;
+  color: #ffd5d5;
+  border-color: rgba(255, 170, 170, 0.2);
+}
+
+.back-btn:hover {
+  background: rgba(177, 15, 15, 0.2);
+  color: #fff;
 }
 
 .main-content {

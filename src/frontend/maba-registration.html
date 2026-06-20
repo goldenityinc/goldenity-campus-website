@@ -54,6 +54,21 @@
         box-shadow: 0 8px 16px rgba(20, 47, 78, 0.14);
       }
 
+      .back-link {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        text-decoration: none;
+        font-size: 0.86rem;
+        font-weight: 800;
+        color: #7c1f1f;
+        background: #ffffffde;
+        border: 1px solid #e7bcbc;
+        border-radius: 999px;
+        padding: 9px 13px;
+        box-shadow: 0 8px 16px rgba(20, 47, 78, 0.14);
+      }
+
       .registration-card {
         width: min(640px, 100%);
         border: 1px solid var(--line);
@@ -181,9 +196,17 @@
       }
 
       @media (max-width: 680px) {
+        .back-link,
         .internal-link {
           top: auto;
           bottom: 14px;
+        }
+
+        .back-link {
+          left: 14px;
+        }
+
+        .internal-link {
           right: 14px;
         }
 
@@ -194,6 +217,7 @@
     </style>
   </head>
   <body>
+    <a class="back-link" href="./index.html">⬅️ Kembali ke Utama</a>
     <a class="internal-link" href="./dosen-wali-dashboard.html">Login Internal Kampus</a>
 
     <main class="registration-card">

@@ -16,6 +16,7 @@ const defaultApplicants = [
     fullName: "Rafi Nuryana",
     schoolOrigin: "SMAN 3 Bandung",
     studyProgram: "Teknik Informatika",
+    status: "Menunggu Verifikasi",
     pipelineStatus: "pending",
     sudahBayar: false,
   },
@@ -25,6 +26,7 @@ const defaultApplicants = [
     fullName: "Mira Puspita",
     schoolOrigin: "SMKN 1 Yogyakarta",
     studyProgram: "Sistem Informasi",
+    status: "Menunggu Verifikasi",
     pipelineStatus: "pending",
     sudahBayar: false,
   },
@@ -216,11 +218,11 @@ function renderKanban() {
   removeDynamicCards();
 
   const allApplicants = getAllApplicants();
-  const pendingApplicants = allApplicants.filter((applicant) => applicant.pipelineStatus === "pending");
-  const approvedApplicants = allApplicants.filter((applicant) => applicant.pipelineStatus === "approved");
-  const doneApplicants = allApplicants.filter(
-    (applicant) => applicant.pipelineStatus === "done" || applicant.sudahBayar === true,
+  const pendingApplicants = allApplicants.filter(
+    (applicant) => (applicant.status ?? "Menunggu Verifikasi") === "Menunggu Verifikasi",
   );
+  const approvedApplicants = allApplicants.filter((applicant) => applicant.status === "Disetujui");
+  const doneApplicants = allApplicants.filter((applicant) => applicant.status === "Lunas");
 
   colPending.insertAdjacentHTML("beforeend", pendingApplicants.map(createPendingCard).join(""));
   colApproved.insertAdjacentHTML("beforeend", approvedApplicants.map(createApprovedCard).join(""));
