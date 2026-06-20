@@ -10,6 +10,10 @@ const acceptedTitle = document.querySelector("#acceptedTitle");
 const payNowBtn = document.querySelector("#payNowBtn");
 const paymentSuccessModal = document.querySelector("#paymentSuccessModal");
 const closePaymentSuccessBtn = document.querySelector("#closePaymentSuccessBtn");
+const mabaSyncChannel =
+  typeof BroadcastChannel !== "undefined"
+    ? new BroadcastChannel("goldenity.mabaRegistrations.sync")
+    : null;
 
 let activeRegistrationId = null;
 
@@ -28,6 +32,10 @@ function getRegistrations() {
 
 function saveRegistrations(registrations) {
   localStorage.setItem(MABA_REGISTRATION_STORAGE_KEY, JSON.stringify(registrations));
+
+  if (mabaSyncChannel) {
+    mabaSyncChannel.postMessage("registrations-updated");
+  }
 }
 
 function createRandomNim() {
@@ -79,8 +87,10 @@ payNowBtn.addEventListener("click", () => {
     const registrationIndex = registrations.findIndex((item) => item.id === activeRegistrationId);
     if (registrationIndex >= 0) {
       registrations[registrationIndex].nim = registrations[registrationIndex].nim ?? createRandomNim();
+      registrations[registrationIndex].sudahBayar = true;
+      registrations[registrationIndex].status = "Lunas";
       registrations[registrationIndex].statusPembayaran = "lunas";
-      registrations[registrationIndex].pipelineStatus = "completed";
+      registrations[registrationIndex].pipelineStatus = "done";
       saveRegistrations(registrations);
     }
 

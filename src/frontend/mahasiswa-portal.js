@@ -10,6 +10,10 @@ const statusMessage = document.querySelector("#statusMessage");
 const invoiceStep = document.querySelector("#invoiceStep");
 const invoiceGreeting = document.querySelector("#invoiceGreeting");
 const payNowBtn = document.querySelector("#payNowBtn");
+const mabaSyncChannel =
+  typeof BroadcastChannel !== "undefined"
+    ? new BroadcastChannel("goldenity.mabaRegistrations.sync")
+    : null;
 
 let activeRegistrationId = null;
 
@@ -28,6 +32,10 @@ function getRegistrations() {
 
 function saveRegistrations(registrations) {
   localStorage.setItem(MABA_REGISTRATION_STORAGE_KEY, JSON.stringify(registrations));
+
+  if (mabaSyncChannel) {
+    mabaSyncChannel.postMessage("registrations-updated");
+  }
 }
 
 function hideAllResultSections() {

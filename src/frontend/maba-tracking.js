@@ -64,7 +64,17 @@ function derivePipelineStatus(registration) {
     return pipeline;
   }
 
+  if (pipeline === "completed" || pipeline === "finish" || pipeline === "finished") {
+    return "done";
+  }
+
   const status = normalizeText(registration.status);
+  const paymentStatus = normalizeText(registration.statusPembayaran);
+
+  if (paymentStatus === "lunas" || paymentStatus === "paid") {
+    return "done";
+  }
+
   if (status.includes("lunas") || status.includes("aktif") || status.includes("selesai")) {
     return "done";
   }
@@ -119,7 +129,20 @@ function getAllApplicants() {
     const normalizedRegistration = {
       ...registration,
       id: registration.id ?? registration.registrationNumber ?? `${Date.now()}-${Math.random()}`,
-      registrationNumber: registration.registrationNumber ?? registration.id,
+      registrationNumber:
+        registration.registrationNumber ??
+        registration.nomorPendaftaran ??
+        registration.noPendaftaran ??
+        registration.id,
+      fullName:
+        registration.fullName ??
+        registration.namaLengkap ??
+        registration.namaPendaftar ??
+        registration.nama ??
+        "Mahasiswa Baru",
+      schoolOrigin: registration.schoolOrigin ?? registration.asalSekolah ?? "-",
+      studyProgram:
+        registration.studyProgram ?? registration.pilihanProdi ?? registration.programStudy ?? "-",
       status: normalizedStatus,
       pipelineStatus: normalizedPipelineStatus,
       sudahBayar: registration.sudahBayar ?? registration.statusPembayaran === "lunas",
