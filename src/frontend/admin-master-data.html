@@ -43,6 +43,12 @@
         font-size: 0.76rem;
         font-weight: 700;
       }
+
+      .semester-status-badge.done {
+        background: #eff3f9;
+        color: #48607d;
+        border-color: #c9d8ea;
+      }
     </style>
   </head>
   <body>
@@ -78,6 +84,19 @@
             <p id="activeSemesterInfo" class="semester-meta"></p>
             <span id="activeSemesterStatus" class="semester-status-badge">Berjalan</span>
           </article>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tahun Ajaran</th>
+                  <th>Tipe</th>
+                  <th>Bulan Dimulai</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="semesterHistoryTableBody"></tbody>
+            </table>
+          </div>
         </section>
 
         <section class="panel">
@@ -134,6 +153,36 @@
         <div class="form-actions">
           <button id="cancelModalBtn" class="btn btn-secondary" type="button">Batal</button>
           <button id="saveProdiBtn" class="btn btn-primary" type="submit" form="prodiForm">Simpan</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modalSemesterBaru" class="modal-backdrop" aria-hidden="true">
+      <div class="modal">
+        <h3>Mulai Semester Baru</h3>
+        <p class="page-subtitle">Isi detail semester untuk memperbarui semester berjalan.</p>
+
+        <form id="semesterBaruForm" class="form-grid">
+          <label>
+            Tahun Ajaran
+            <input id="semesterTahunAjaran" name="semesterTahunAjaran" type="text" placeholder="Contoh: 2027/2028" required />
+          </label>
+          <label>
+            Tipe
+            <select id="semesterTipe" name="semesterTipe">
+              <option value="Ganjil">Ganjil</option>
+              <option value="Genap">Genap</option>
+            </select>
+          </label>
+          <label style="grid-column: span 2;">
+            Bulan Dimulai
+            <input id="semesterBulanMulai" name="semesterBulanMulai" type="text" placeholder="Contoh: Agustus 2027" required />
+          </label>
+        </form>
+
+        <div class="form-actions">
+          <button id="cancelSemesterModalBtn" class="btn btn-secondary" type="button">Batal</button>
+          <button class="btn btn-primary" type="submit" form="semesterBaruForm">Simpan Semester</button>
         </div>
       </div>
     </div>

@@ -6,14 +6,30 @@ const programStudyTableBody = document.querySelector("#programStudyTableBody");
 const startSemesterBtn = document.querySelector("#startSemesterBtn");
 const activeSemesterInfo = document.querySelector("#activeSemesterInfo");
 const activeSemesterStatus = document.querySelector("#activeSemesterStatus");
+const semesterHistoryTableBody = document.querySelector("#semesterHistoryTableBody");
+const modalSemesterBaru = document.querySelector("#modalSemesterBaru");
+const semesterBaruForm = document.querySelector("#semesterBaruForm");
+const cancelSemesterModalBtn = document.querySelector("#cancelSemesterModalBtn");
+const semesterTahunAjaranInput = document.querySelector("#semesterTahunAjaran");
+const semesterTipeInput = document.querySelector("#semesterTipe");
+const semesterBulanMulaiInput = document.querySelector("#semesterBulanMulai");
 
 const PROGRAM_STUDY_STORAGE_KEY = "goldenity.programStudies";
+const SEMESTER_HISTORY_STORAGE_KEY = "goldenity.semesterHistory";
 const ACTIVE_SEMESTER_STORAGE_KEY = "goldenity.activeSemester";
+const defaultSemesterHistory = [
+  {
+    tahun: "2026/2027",
+    tipe: "Ganjil",
+    mulai: "Agustus 2026",
+    status: "Berjalan",
+  },
+];
 const defaultActiveSemester = {
   tahun: "2026/2027",
   tipe: "Ganjil",
   mulai: "Agustus 2026",
-  status: "Aktif",
+  status: "Berjalan",
 };
 const defaultProgramStudies = [
   {
@@ -58,65 +74,89 @@ function saveProgramStudies(programStudies) {
   localStorage.setItem(PROGRAM_STUDY_STORAGE_KEY, JSON.stringify(programStudies));
 }
 
-function getActiveSemester() {
-  const savedValue = localStorage.getItem(ACTIVE_SEMESTER_STORAGE_KEY);
+function getSemesterHistory() {
+  const savedValue = localStorage.getItem(SEMESTER_HISTORY_STORAGE_KEY);
   if (!savedValue) {
-    localStorage.setItem(ACTIVE_SEMESTER_STORAGE_KEY, JSON.stringify(defaultActiveSemester));
-    return { ...defaultActiveSemester };
+    localStorage.setItem(SEMESTER_HISTORY_STORAGE_KEY, JSON.stringify(defaultSemesterHistory));
+    return [...defaultSemesterHistory];
   }
 
   try {
     const parsedValue = JSON.parse(savedValue);
-    return {
-      tahun: parsedValue.tahun ?? defaultActiveSemester.tahun,
-      tipe: parsedValue.tipe ?? defaultActiveSemester.tipe,
-      mulai: parsedValue.mulai ?? defaultActiveSemester.mulai,
-      status: parsedValue.status ?? defaultActiveSemester.status,
-    };
+    if (!Array.isArray(parsedValue) || parsedValue.length === 0) {
+      localStorage.setItem(SEMESTER_HISTORY_STORAGE_KEY, JSON.stringify(defaultSemesterHistory));
+      return [...defaultSemesterHistory];
+    }
+
+    return parsedValue.map((semester) => ({
+      tahun: semester.tahun ?? defaultActiveSemester.tahun,
+      tipe: semester.tipe ?? defaultActiveSemester.tipe,
+      mulai: semester.mulai ?? defaultActiveSemester.mulai,
+      status: semester.status === "Berjalan" ? "Berjalan" : "Selesai",
+    }));
   } catch (_error) {
-    localStorage.setItem(ACTIVE_SEMESTER_STORAGE_KEY, JSON.stringify(defaultActiveSemester));
-    return { ...defaultActiveSemester };
+    localStorage.setItem(SEMESTER_HISTORY_STORAGE_KEY, JSON.stringify(defaultSemesterHistory));
+    return [...defaultSemesterHistory];
   }
 }
 
-function saveActiveSemester(activeSemester) {
-  localStorage.setItem(ACTIVE_SEMESTER_STORAGE_KEY, JSON.stringify(activeSemester));
+function saveSemesterHistory(semesterHistory) {
+  localStorage.setItem(SEMESTER_HISTORY_STORAGE_KEY, JSON.stringify(semesterHistory));
 }
 
-function renderActiveSemester() {
-  const activeSemester = getActiveSemester();
+function getCurrentActiveSemester(semesterHistory) {
+  return semesterHistory.find((semester) => semester.status === "Berjalan") ?? semesterHistory[semesterHistory.length - 1];
+}
+
+function syncLegacyActiveSemester(activeSemester) {
+  localStorage.setItem(
+    ACTIVE_SEMESTER_STORAGE_KEY,
+    JSON.stringify({
+      tahun: activeSemester.tahun,
+      tipe: activeSemester.tipe,
+      mulai: activeSemester.mulai,
+      status: activeSemester.status,
+    }),
+  );
+}
+
+function renderSemesterManagement() {
+  const semesterHistory = getSemesterHistory();
+  const activeSemester = getCurrentActiveSemester(semesterHistory);
+
   activeSemesterInfo.textContent = `Tahun Ajaran: ${activeSemester.tahun} | Tipe: ${activeSemester.tipe} | Dimulai: ${activeSemester.mulai}`;
-  activeSemesterStatus.textContent = activeSemester.status === "Aktif" ? "Berjalan" : activeSemester.status;
+  activeSemesterStatus.textContent = activeSemester.status;
+  activeSemesterStatus.classList.toggle("done", activeSemester.status !== "Berjalan");
+
+  semesterHistoryTableBody.innerHTML = semesterHistory
+    .map(
+      (semester) => `
+        <tr>
+          <td>${semester.tahun}</td>
+          <td>${semester.tipe}</td>
+          <td>${semester.mulai}</td>
+          <td>
+            <span class="semester-status-badge ${semester.status === "Berjalan" ? "" : "done"}">${semester.status}</span>
+          </td>
+        </tr>
+      `,
+    )
+    .join("");
+
+  syncLegacyActiveSemester(activeSemester);
 }
 
-function startNewSemester() {
-  const nextTahun = window.prompt("Masukkan Tahun Ajaran Baru (contoh: 2027/2028)", "2027/2028");
-  if (nextTahun === null) {
-    return;
-  }
+function openSemesterModal() {
+  semesterTahunAjaranInput.value = "";
+  semesterTipeInput.value = "Ganjil";
+  semesterBulanMulaiInput.value = "";
+  modalSemesterBaru.classList.add("show");
+  modalSemesterBaru.setAttribute("aria-hidden", "false");
+}
 
-  const nextTipe = window.prompt("Masukkan Tipe Semester (Ganjil/Genap)", "Genap");
-  if (nextTipe === null) {
-    return;
-  }
-
-  const nextMulai = window.prompt("Masukkan Bulan Dimulai (contoh: Februari 2027)", "Februari 2027");
-  if (nextMulai === null) {
-    return;
-  }
-
-  const cleanedTipe = String(nextTipe).trim();
-  const validTipe = cleanedTipe.toLowerCase() === "genap" ? "Genap" : "Ganjil";
-
-  const nextSemester = {
-    tahun: String(nextTahun).trim() || defaultActiveSemester.tahun,
-    tipe: validTipe,
-    mulai: String(nextMulai).trim() || defaultActiveSemester.mulai,
-    status: "Aktif",
-  };
-
-  saveActiveSemester(nextSemester);
-  renderActiveSemester();
+function closeSemesterModal() {
+  modalSemesterBaru.classList.remove("show");
+  modalSemesterBaru.setAttribute("aria-hidden", "true");
 }
 
 function renderProgramStudies() {
@@ -182,6 +222,47 @@ modal.addEventListener("click", (event) => {
   }
 });
 
+startSemesterBtn.addEventListener("click", openSemesterModal);
+cancelSemesterModalBtn.addEventListener("click", closeSemesterModal);
+
+modalSemesterBaru.addEventListener("click", (event) => {
+  if (event.target === modalSemesterBaru) {
+    closeSemesterModal();
+  }
+});
+
+semesterBaruForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(semesterBaruForm);
+  const tahun = String(formData.get("semesterTahunAjaran") ?? "").trim();
+  const tipeRaw = String(formData.get("semesterTipe") ?? "Ganjil").trim();
+  const mulai = String(formData.get("semesterBulanMulai") ?? "").trim();
+
+  if (!tahun || !mulai) {
+    alert("Tahun ajaran dan bulan dimulai wajib diisi.");
+    return;
+  }
+
+  const tipe = tipeRaw.toLowerCase() === "genap" ? "Genap" : "Ganjil";
+  const previousSemesters = getSemesterHistory().map((semester) => ({
+    ...semester,
+    status: "Selesai",
+  }));
+
+  const nextSemester = {
+    tahun,
+    tipe,
+    mulai,
+    status: "Berjalan",
+  };
+
+  const updatedHistory = [...previousSemesters, nextSemester];
+  saveSemesterHistory(updatedHistory);
+  renderSemesterManagement();
+  closeSemesterModal();
+});
+
 programStudyTableBody.addEventListener("click", (event) => {
   const target = event.target;
   if (!(target instanceof HTMLElement)) {
@@ -236,7 +317,5 @@ programStudyTableBody.addEventListener("click", (event) => {
   }
 });
 
-startSemesterBtn.addEventListener("click", startNewSemester);
-
-renderActiveSemester();
+renderSemesterManagement();
 renderProgramStudies();

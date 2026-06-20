@@ -135,7 +135,7 @@ function createPendingCard(applicant) {
       <p class="maba-name">${applicant.fullName}</p>
       <p>Asal Sekolah: ${applicant.schoolOrigin}</p>
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
-      <div class="kanban-actions">
+      <div class="kanban-action-bar">
         <button class="btn-kanban-primary js-approve" type="button">
           <i class="fa-solid fa-check-circle" aria-hidden="true"></i>
           Approve
@@ -156,7 +156,7 @@ function createApprovedCard(applicant) {
       <p>Asal Sekolah: ${applicant.schoolOrigin}</p>
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
       <span class="nim-pill">NIM: ${applicant.nim}</span>
-      <div class="kanban-actions">
+      <div class="kanban-action-bar">
         <button class="btn-kanban-primary js-complete-logistics" type="button">
           <i class="fa-solid fa-check-circle" aria-hidden="true"></i>
           Verifikasi Daftar Ulang
@@ -178,7 +178,7 @@ function createDoneCard(applicant) {
       <p>Pilihan Prodi: ${applicant.studyProgram}</p>
       <span class="nim-pill">LUNAS & AKTIF</span>
       <span class="nim-pill badge">NIM: ${nimValue}</span>
-      <div class="kanban-actions">
+      <div class="kanban-action-bar">
         <button class="btn-kanban-secondary js-view-detail" type="button">
           <i class="fa-solid fa-eye" aria-hidden="true"></i>
           Lihat Detail
@@ -381,7 +381,7 @@ colApproved.addEventListener("click", (event) => {
     statusBadge.textContent = "LUNAS & AKTIF";
     card.appendChild(statusBadge);
 
-    const actionRow = card.querySelector(".kanban-actions");
+    const actionRow = card.querySelector(".kanban-action-bar");
     if (actionRow) {
       completeButton.remove();
     }
