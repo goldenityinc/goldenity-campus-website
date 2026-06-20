@@ -82,7 +82,17 @@
                   <td>Sistem Informasi</td>
                   <td><span class="badge badge-danger">Belum Dibayar</span></td>
                   <td>Rp 8.500.000</td>
-                  <td><button class="btn btn-primary js-pay-va" type="button">Simulasikan Bayar VA</button></td>
+                  <td>
+                    <button
+                      class="btn btn-primary js-view-invoice"
+                      type="button"
+                      data-nim="231401006"
+                      data-name="Bima Pratama"
+                      data-program-study="Sistem Informasi"
+                    >
+                      Lihat Rincian Tagihan
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>231401022</td>
@@ -90,13 +100,57 @@
                   <td>Teknik Informatika</td>
                   <td><span class="badge badge-warning">Sebagian</span></td>
                   <td>Rp 4.250.000</td>
-                  <td><button class="btn btn-primary js-pay-va" type="button">Simulasikan Bayar VA</button></td>
+                  <td>
+                    <button
+                      class="btn btn-primary js-view-invoice"
+                      type="button"
+                      data-nim="231401022"
+                      data-name="Daffa Kurnia"
+                      data-program-study="Teknik Informatika"
+                    >
+                      Lihat Rincian Tagihan
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </section>
       </main>
+    </div>
+
+    <div id="invoiceModal" class="modal-backdrop" aria-hidden="true">
+      <section class="modal detail-modal" role="dialog" aria-modal="true" aria-labelledby="invoiceModalTitle">
+        <div class="detail-header">
+          <div>
+            <h3 id="invoiceModalTitle">Rincian Biaya Kuliah</h3>
+            <p id="invoiceStudentMeta" class="detail-meta"></p>
+          </div>
+          <button id="closeInvoiceModalBtn" class="btn btn-secondary" type="button">Tutup</button>
+        </div>
+
+        <section class="panel detail-panel">
+          <div class="panel-head">
+            <h2>Invoice Breakdown</h2>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Komponen Biaya</th>
+                  <th>Nominal</th>
+                </tr>
+              </thead>
+              <tbody id="invoiceBreakdownBody"></tbody>
+            </table>
+          </div>
+          <div class="panel-body">
+            <button id="processInvoicePaymentBtn" class="btn btn-primary" type="button">
+              Proses Pembayaran (VA)
+            </button>
+          </div>
+        </section>
+      </section>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
