@@ -7,6 +7,8 @@ const detailPendaftarMeta = document.querySelector("#detailPendaftarMeta");
 const detailPendaftarGrid = document.querySelector("#detailPendaftarGrid");
 const detailDokumenGrid = document.querySelector("#detailDokumenGrid");
 const journeyStatusList = document.querySelector("#journeyStatusList");
+const tabelRekapMabaBody = document.querySelector("#tabelRekapMabaBody");
+const btnDownloadRekapMaba = document.querySelector("#btnDownloadRekapMaba");
 const mabaSyncChannel =
   typeof BroadcastChannel !== "undefined"
     ? new BroadcastChannel("goldenity.mabaRegistrations.sync")
@@ -14,6 +16,7 @@ const mabaSyncChannel =
 
 const generatedNim = new Set();
 const MABA_REGISTRATION_STORAGE_KEY = "goldenity.mabaRegistrations";
+const ACTIVE_SEMESTER_STORAGE_KEY = "goldenity.activeSemester";
 const MABA_PUBLIC_API_ENDPOINT = "/api/public/maba-registrations";
 const defaultApplicants = [
   {
@@ -53,6 +56,82 @@ function getStoredRegistrations() {
 
 function saveStoredRegistrations(registrations) {
   localStorage.setItem(MABA_REGISTRATION_STORAGE_KEY, JSON.stringify(registrations));
+}
+
+function getActiveAcademicYear() {
+  const savedValue = localStorage.getItem(ACTIVE_SEMESTER_STORAGE_KEY);
+  if (!savedValue) {
+    return "2026/2027";
+  }
+
+  try {
+    const parsedValue = JSON.parse(savedValue);
+    if (typeof parsedValue === "string" && parsedValue.trim()) {
+      return parsedValue.trim();
+    }
+
+    if (parsedValue && typeof parsedValue.tahun === "string" && parsedValue.tahun.trim()) {
+      return parsedValue.tahun.trim();
+    }
+
+    return "2026/2027";
+  } catch (_error) {
+    return "2026/2027";
+  }
+}
+
+function getRekapNim(applicant, index) {
+  if (applicant?.nim) {
+    return applicant.nim;
+  }
+
+  const fallbackNumber = String(index + 1).padStart(4, "0");
+  return `2626${fallbackNumber}`;
+}
+
+function renderTabelRekapMaba() {
+  if (!(tabelRekapMabaBody instanceof HTMLElement)) {
+    return;
+  }
+
+  const registrations = getStoredRegistrations();
+  const acceptedApplicants = registrations.filter((registration) => {
+    const status = normalizeText(registration.status);
+    const pipelineStatus = normalizeText(registration.pipelineStatus);
+    return status === "lunas" || pipelineStatus === "done";
+  });
+  const activeAcademicYear = getActiveAcademicYear();
+
+  if (acceptedApplicants.length === 0) {
+    tabelRekapMabaBody.innerHTML = `
+      <tr>
+        <td colspan="6">Belum ada mahasiswa baru berstatus lunas.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  tabelRekapMabaBody.innerHTML = acceptedApplicants
+    .map((applicant, index) => {
+      const registrationNumber =
+        applicant.registrationNumber ?? applicant.nomorPendaftaran ?? applicant.noPendaftaran ?? applicant.id ?? "-";
+      const fullName =
+        applicant.fullName ?? applicant.namaLengkap ?? applicant.namaPendaftar ?? applicant.nama ?? "Mahasiswa Baru";
+      const studyProgram =
+        applicant.studyProgram ?? applicant.pilihanProdi ?? applicant.programStudy ?? "-";
+
+      return `
+        <tr>
+          <td>${registrationNumber}</td>
+          <td>${fullName}</td>
+          <td>${studyProgram}</td>
+          <td>${activeAcademicYear}</td>
+          <td>${getRekapNim(applicant, index)}</td>
+          <td><span class="maba-rekap-status">Resmi Diterima</span></td>
+        </tr>
+      `;
+    })
+    .join("");
 }
 
 function normalizeText(value) {
@@ -323,6 +402,7 @@ function renderKanban() {
   colPending.insertAdjacentHTML("beforeend", pendingApplicants.map(createPendingCard).join(""));
   colApproved.insertAdjacentHTML("beforeend", approvedApplicants.map(createApprovedCard).join(""));
   colDone.insertAdjacentHTML("beforeend", doneApplicants.map(createDoneCard).join(""));
+  renderTabelRekapMaba();
 }
 
 function createRandomNim() {
@@ -520,6 +600,7 @@ detailPendaftarModal.addEventListener("click", (event) => {
 function initializeTrackingBoard() {
   getStoredRegistrations();
   renderKanban();
+  renderTabelRekapMaba();
 }
 
 async function hydrateRegistrationsFromApi() {
@@ -584,6 +665,12 @@ if (mabaSyncChannel) {
       renderKanban();
       void hydrateRegistrationsFromApi();
     }
+  });
+}
+
+if (btnDownloadRekapMaba instanceof HTMLButtonElement) {
+  btnDownloadRekapMaba.addEventListener("click", () => {
+    alert("Memproses pengunduhan daftar mahasiswa baru yang diterima (PDF)...");
   });
 }
 

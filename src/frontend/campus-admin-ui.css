@@ -435,6 +435,28 @@ th {
   gap: 12px;
 }
 
+.maba-rekap-section {
+  margin-top: 16px;
+}
+
+.maba-rekap-header {
+  justify-content: space-between;
+}
+
+.maba-rekap-status {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-weight: 800;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #0a5c34;
+  background: #e8f7ef;
+  border: 1px solid #b4e0c7;
+}
+
 .kanban-col {
   border: 1px solid #cbd9ef;
   border-radius: 16px;
