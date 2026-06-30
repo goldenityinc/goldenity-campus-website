@@ -5,9 +5,14 @@ const invoiceStudentMeta = document.querySelector("#invoiceStudentMeta");
 const invoiceBreakdownBody = document.querySelector("#invoiceBreakdownBody");
 const processInvoicePaymentBtn = document.querySelector("#processInvoicePaymentBtn");
 const financeOutstandingTableBody = document.querySelector("#financeOutstandingTableBody");
+const generateSppBtn = document.querySelector("#generateSppBtn");
+const sppTableBody = document.querySelector("#sppTableBody");
 
 const MABA_REGISTRATION_STORAGE_KEY = "goldenity.mabaRegistrations";
+const STUDENT_ROSTER_STORAGE_KEY = "goldenity.studentRoster";
+const SPP_STORAGE_KEY = "goldenity.tagihanSPP";
 const REGISTRATION_TOTAL_BILL = 13500000;
+const MONTHLY_SPP_BILL = 500000;
 
 const invoiceBreakdownMap = {
   "231401006": [
@@ -28,6 +33,137 @@ function formatCurrency(value) {
     currency: "IDR",
     maximumFractionDigits: 0,
   }).format(value);
+}
+
+function getStoredArray(key) {
+  const raw = localStorage.getItem(key);
+  if (!raw) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (_error) {
+    return [];
+  }
+}
+
+function saveStoredArray(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function getCurrentMonthLabel() {
+  return new Intl.DateTimeFormat("id-ID", {
+    month: "long",
+    year: "numeric",
+  }).format(new Date());
+}
+
+function getActiveStudents() {
+  const roster = getStoredArray(STUDENT_ROSTER_STORAGE_KEY);
+  if (roster.length > 0) {
+    const mapped = roster.map((student) => ({
+      id: student.id ?? `STD-${student.nis}`,
+      name: student.name ?? "Murid",
+      className: student.classLevel ?? "Kelas X",
+    }));
+
+    if (!mapped.some((student) => student.id === "MURID-001")) {
+      mapped.unshift({ id: "MURID-001", name: "Bima Pratama", className: "XI IPA 1" });
+    }
+
+    return mapped;
+  }
+
+  return [
+    { id: "MURID-001", name: "Bima Pratama", className: "XI IPA 1" },
+    { id: "MURID-002", name: "Alya Maharani", className: "XI IPA 1" },
+    { id: "MURID-003", name: "Rafi Wijaya", className: "XI IPA 1" },
+    { id: "MURID-004", name: "Kevin Saputra", className: "XI IPA 2" },
+  ];
+}
+
+function getSppBills() {
+  return getStoredArray(SPP_STORAGE_KEY);
+}
+
+function saveSppBills(data) {
+  saveStoredArray(SPP_STORAGE_KEY, data);
+}
+
+function renderSppTable() {
+  const rows = getSppBills();
+
+  if (rows.length === 0) {
+    sppTableBody.innerHTML = `
+      <tr>
+        <td colspan="5" class="empty-state">Belum ada tagihan SPP. Silakan klik tombol generate.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  sppTableBody.innerHTML = rows
+    .map(
+      (bill) => `
+        <tr>
+          <td>${bill.studentName}</td>
+          <td>${bill.className}</td>
+          <td>${formatCurrency(bill.amount)}</td>
+          <td>${bill.status}</td>
+          <td>
+            ${
+              bill.status === "Lunas"
+                ? '<button class="btn btn-secondary" type="button" disabled>Sudah Lunas</button>'
+                : `<button class="btn btn-primary js-mark-spp-paid" type="button" data-id="${bill.id}">Tandai Lunas</button>`
+            }
+          </td>
+        </tr>
+      `,
+    )
+    .join("");
+}
+
+function generateMonthlySpp() {
+  const activeStudents = getActiveStudents();
+  const currentMonth = getCurrentMonthLabel();
+  const existing = getSppBills();
+
+  const existingByMonth = existing.filter((bill) => bill.monthLabel === currentMonth);
+  const nonCurrentMonth = existing.filter((bill) => bill.monthLabel !== currentMonth);
+  const existingIds = new Set(existingByMonth.map((bill) => bill.studentId));
+
+  const newBills = activeStudents
+    .filter((student) => !existingIds.has(student.id))
+    .map((student) => ({
+      id: `SPP-${student.id}-${new Date().getTime()}`,
+      studentId: student.id,
+      studentName: student.name,
+      className: student.className,
+      monthLabel: currentMonth,
+      amount: MONTHLY_SPP_BILL,
+      status: "Belum Lunas",
+      createdAt: new Date().toISOString(),
+    }));
+
+  const merged = [...nonCurrentMonth, ...existingByMonth, ...newBills];
+  saveSppBills(merged);
+  renderSppTable();
+  alert(`Tagihan SPP ${currentMonth} berhasil digenerate (${merged.length} murid).`);
+}
+
+function markSppAsPaid(billId) {
+  const rows = getSppBills();
+  const index = rows.findIndex((bill) => bill.id === billId);
+  if (index < 0) {
+    return;
+  }
+
+  rows[index].status = "Lunas";
+  rows[index].paidAt = new Date().toISOString();
+  saveSppBills(rows);
+  renderSppTable();
 }
 
 function closeInvoiceModal() {
@@ -184,5 +320,27 @@ processInvoicePaymentBtn.addEventListener("click", () => {
   closeInvoiceModal();
 });
 
+generateSppBtn?.addEventListener("click", generateMonthlySpp);
+
+sppTableBody?.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) {
+    return;
+  }
+
+  const button = target.closest(".js-mark-spp-paid");
+  if (!(button instanceof HTMLButtonElement)) {
+    return;
+  }
+
+  const billId = button.dataset.id;
+  if (!billId) {
+    return;
+  }
+
+  markSppAsPaid(billId);
+});
+
 window.addEventListener("storage", renderOutstandingTable);
 renderOutstandingTable();
+renderSppTable();

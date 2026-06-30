@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Presensi & Pengumuman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./campus-admin-ui.css" />
+    <style>
+      .tabs {
+        margin-top: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tab-btn {
+        border: 1px solid #bed0ea;
+        border-radius: 10px;
+        background: #eef4ff;
+        color: #31547a;
+        padding: 9px 14px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .tab-btn.active {
+        border-color: #2d8fe0;
+        background: linear-gradient(135deg, #0c63b0, #24a0f4);
+        color: #fff;
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      .toolbar {
+        padding: 14px 16px;
+        border-bottom: 1px solid #dbe5f4;
+      }
+
+      .toolbar .form-grid {
+        margin-top: 0;
+      }
+
+      .radio-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .radio-group label {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        color: #355676;
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .muted-note {
+        margin: 0;
+        color: #557091;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <h1 class="brand">Goldenity Campus Admin</h1>
+        <nav class="nav-group">
+          <a class="nav-link" href="./dosen-wali-dashboard.html">Dashboard (Akademik)</a>
+          <a class="nav-link" href="./admin-master-data.html">Master Data</a>
+          <a class="nav-link" href="./maba-tracking.html">Penerimaan MABA</a>
+          <a class="nav-link" href="./keuangan-dashboard.html">Keuangan</a>
+          <a class="nav-link" href="./admin-direktori-mahasiswa.html">Direktori Mahasiswa</a>
+          <a class="nav-link" href="./admin-jadwal-kelas.html">Master Jadwal Kelas</a>
+          <a class="nav-link" href="./admin-materi-pembelajaran.html">Master Materi Pembelajaran</a>
+          <a class="nav-link" href="./admin-management-akademik.html">Manajemen Kelas & Guru</a>
+          <a class="nav-link" href="./admin-sistem-nilai-kenaikan.html">Nilai & Kenaikan Kelas</a>
+          <a class="nav-link" href="./admin-management-alumni.html">Manajemen Alumni</a>
+          <a class="nav-link active" href="./admin-presensi-pengumuman.html">Presensi & Pengumuman</a>
+          <a class="nav-link back-btn" href="./index.html">⬅️ Kembali ke Utama</a>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <section class="hero-card">
+          <p class="page-kicker">Panel Admin</p>
+          <h2 class="page-title">Presensi Kelas & Papan Pengumuman</h2>
+          <p class="page-subtitle">Absensi murid harian dan pengumuman broadcast terhubung langsung ke dashboard murid.</p>
+        </section>
+
+        <div class="tabs" role="tablist" aria-label="Tab presensi dan pengumuman">
+          <button id="tabPresensiBtn" class="tab-btn active" type="button">Section Presensi</button>
+          <button id="tabPengumumanBtn" class="tab-btn" type="button">Section Pengumuman</button>
+        </div>
+
+        <section id="presensiPanel" class="panel tab-panel active">
+          <div class="panel-head">
+            <h2>Input Presensi Harian</h2>
+            <button id="saveAttendanceBtn" class="btn btn-primary" type="button">Simpan Presensi</button>
+          </div>
+          <div class="toolbar">
+            <form class="form-grid" id="attendanceFilterForm">
+              <label>
+                Pilih Kelas
+                <select id="classFilter" name="classFilter"></select>
+              </label>
+              <label>
+                Pilih Tanggal
+                <input id="attendanceDate" name="attendanceDate" type="date" required />
+              </label>
+            </form>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>NIS</th>
+                  <th>Nama Murid</th>
+                  <th>Status Kehadiran</th>
+                </tr>
+              </thead>
+              <tbody id="attendanceTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="pengumumanPanel" class="panel tab-panel">
+          <div class="panel-head">
+            <h2>Kirim Pengumuman</h2>
+          </div>
+          <div class="panel-body" style="padding: 14px 16px; border-bottom: 1px solid #dbe5f4;">
+            <p class="muted-note">Pengumuman akan tampil pada widget Papan Pengumuman di Student Portal.</p>
+          </div>
+          <div class="panel-body" style="padding: 14px 16px;">
+            <form id="announcementForm" class="form-grid">
+              <label style="grid-column: span 2;">
+                Judul Pengumuman
+                <input id="announcementTitle" name="announcementTitle" type="text" required />
+              </label>
+              <label style="grid-column: span 2;">
+                Isi Pesan
+                <textarea
+                  id="announcementMessage"
+                  name="announcementMessage"
+                  rows="4"
+                  style="border:1px solid #bfd0eb;border-radius:9px;padding:9px;font:inherit"
+                  required
+                ></textarea>
+              </label>
+              <label>
+                Target
+                <select id="announcementTarget" name="announcementTarget">
+                  <option value="all">Semua Murid</option>
+                  <option value="class">Kelas Tertentu</option>
+                </select>
+              </label>
+              <label id="targetClassWrap" style="display:none;">
+                Pilih Kelas Target
+                <select id="announcementClass" name="announcementClass"></select>
+              </label>
+              <div class="form-actions" style="grid-column: span 2; margin-top: 4px;">
+                <button class="btn btn-primary" type="submit">Kirim Pengumuman</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./admin-presensi-pengumuman.js"></script>
+  </body>
+</html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - Master Materi Pembelajaran</title>
+    <title>Admin - LMS Materi & Tugas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -11,6 +11,43 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./campus-admin-ui.css" />
+    <style>
+      .tabs {
+        margin-top: 16px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .tab-btn {
+        border: 1px solid #bed0ea;
+        border-radius: 10px;
+        background: #eef4ff;
+        color: #31547a;
+        padding: 9px 14px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .tab-btn.active {
+        border-color: #2d8fe0;
+        background: linear-gradient(135deg, #0c63b0, #24a0f4);
+        color: #fff;
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      .muted-note {
+        margin: 0;
+        color: #557091;
+      }
+    </style>
   </head>
   <body>
     <div class="app-shell">
@@ -27,6 +64,7 @@
           <a class="nav-link" href="./admin-management-akademik.html">Manajemen Kelas & Guru</a>
           <a class="nav-link" href="./admin-sistem-nilai-kenaikan.html">Nilai & Kenaikan Kelas</a>
           <a class="nav-link" href="./admin-management-alumni.html">Manajemen Alumni</a>
+          <a class="nav-link" href="./admin-presensi-pengumuman.html">Presensi & Pengumuman</a>
           <a class="nav-link back-btn" href="./index.html">⬅️ Kembali ke Utama</a>
         </nav>
       </aside>
@@ -34,13 +72,18 @@
       <main class="main-content">
         <section class="hero-card">
           <p class="page-kicker">Panel Admin</p>
-          <h2 class="page-title">Bank Materi Pembelajaran</h2>
+          <h2 class="page-title">LMS - Materi & Tugas</h2>
           <p class="page-subtitle">
-            Sentralisasi dokumen materi, silabus, dan modul perkuliahan (PDF/Video).
+            Sentralisasi materi pembelajaran dan penugasan interaktif dalam satu dashboard LMS mini.
           </p>
         </section>
 
-        <section class="panel" style="margin-top: 16px;">
+        <div class="tabs" role="tablist" aria-label="Tab LMS">
+          <button id="tabMateriBtn" class="tab-btn active" type="button">Bank Materi</button>
+          <button id="tabTugasBtn" class="tab-btn" type="button">Manajemen Tugas</button>
+        </div>
+
+        <section id="materiPanel" class="panel tab-panel active" style="margin-top: 16px;">
           <div class="panel-head">
             <h2>Repositori Materi Kuliah</h2>
             <button id="uploadMaterialBtn" class="btn btn-primary" type="button">Upload Materi Baru</button>
@@ -82,6 +125,58 @@
                 </tr>
               </thead>
               <tbody id="materiTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="tugasPanel" class="panel tab-panel" style="margin-top: 16px;">
+          <div class="panel-head">
+            <h2>Manajemen Tugas</h2>
+          </div>
+          <div class="panel-body" style="padding: 14px 16px; border-bottom: 1px solid #dbe5f4;">
+            <p class="muted-note">Buat tugas baru dan pantau jumlah jawaban masuk dari murid.</p>
+          </div>
+          <div class="panel-body" style="padding: 14px 16px;">
+            <form id="taskForm" class="form-grid">
+              <label>
+                Judul Tugas
+                <input id="taskTitle" name="taskTitle" type="text" required />
+              </label>
+              <label>
+                Mata Pelajaran
+                <input id="taskCourse" name="taskCourse" type="text" required />
+              </label>
+              <label>
+                Tenggat Waktu/Deadline
+                <input id="taskDeadline" name="taskDeadline" type="date" required />
+              </label>
+              <label style="grid-column: span 2;">
+                Deskripsi
+                <textarea
+                  id="taskDescription"
+                  name="taskDescription"
+                  rows="4"
+                  style="border:1px solid #bfd0eb;border-radius:9px;padding:9px;font:inherit"
+                  required
+                ></textarea>
+              </label>
+              <div class="form-actions" style="grid-column: span 2; margin-top: 4px;">
+                <button class="btn btn-primary" type="submit">Buat Tugas Baru</button>
+              </div>
+            </form>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Judul Tugas</th>
+                  <th>Mata Pelajaran</th>
+                  <th>Deadline</th>
+                  <th>Deskripsi</th>
+                  <th>Jumlah Terkumpul</th>
+                </tr>
+              </thead>
+              <tbody id="taskTableBody"></tbody>
             </table>
           </div>
         </section>

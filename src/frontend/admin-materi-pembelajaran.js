@@ -1,4 +1,6 @@
 const MATERI_STORAGE_KEY = "goldenity.materiBelajar";
+const TUGAS_STORAGE_KEY = "goldenity.tugasLMS";
+const JAWABAN_STORAGE_KEY = "goldenity.jawabanTugas";
 
 const defaultMateri = [
   {
@@ -39,6 +41,12 @@ const courseFilter = document.querySelector("#courseFilter");
 const semesterFilter = document.querySelector("#semesterFilter");
 const materiTableBody = document.querySelector("#materiTableBody");
 const uploadMaterialBtn = document.querySelector("#uploadMaterialBtn");
+const tabMateriBtn = document.querySelector("#tabMateriBtn");
+const tabTugasBtn = document.querySelector("#tabTugasBtn");
+const materiPanel = document.querySelector("#materiPanel");
+const tugasPanel = document.querySelector("#tugasPanel");
+const taskForm = document.querySelector("#taskForm");
+const taskTableBody = document.querySelector("#taskTableBody");
 
 function getStoredMateri() {
   const raw = localStorage.getItem(MATERI_STORAGE_KEY);
@@ -48,6 +56,38 @@ function getStoredMateri() {
 
   try {
     return JSON.parse(raw);
+  } catch (_error) {
+    return [];
+  }
+}
+
+function getStoredTasks() {
+  const raw = localStorage.getItem(TUGAS_STORAGE_KEY);
+  if (!raw) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (_error) {
+    return [];
+  }
+}
+
+function saveStoredTasks(data) {
+  localStorage.setItem(TUGAS_STORAGE_KEY, JSON.stringify(data));
+}
+
+function getStoredAnswers() {
+  const raw = localStorage.getItem(JAWABAN_STORAGE_KEY);
+  if (!raw) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
   } catch (_error) {
     return [];
   }
@@ -146,6 +186,74 @@ function renderTable() {
 function rerenderAll() {
   renderCourseFilter();
   renderTable();
+  renderTaskTable();
+}
+
+function switchTab(nextTab) {
+  const isMateri = nextTab === "materi";
+  tabMateriBtn.classList.toggle("active", isMateri);
+  tabTugasBtn.classList.toggle("active", !isMateri);
+  materiPanel.classList.toggle("active", isMateri);
+  tugasPanel.classList.toggle("active", !isMateri);
+}
+
+function renderTaskTable() {
+  const tasks = getStoredTasks();
+  const answers = getStoredAnswers();
+
+  if (tasks.length === 0) {
+    taskTableBody.innerHTML = `
+      <tr>
+        <td colspan="5" class="empty-state">Belum ada tugas dibuat.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  taskTableBody.innerHTML = tasks
+    .map((task) => {
+      const submissionCount = answers.filter((answer) => answer.taskId === task.id).length;
+
+      return `
+        <tr>
+          <td>${task.title}</td>
+          <td>${task.course}</td>
+          <td>${toDisplayDate(task.deadline)}</td>
+          <td>${task.description}</td>
+          <td>${submissionCount}</td>
+        </tr>
+      `;
+    })
+    .join("");
+}
+
+function handleCreateTask(event) {
+  event.preventDefault();
+
+  const formData = new FormData(taskForm);
+  const title = String(formData.get("taskTitle") ?? "").trim();
+  const course = String(formData.get("taskCourse") ?? "").trim();
+  const deadline = String(formData.get("taskDeadline") ?? "").trim();
+  const description = String(formData.get("taskDescription") ?? "").trim();
+
+  if (!title || !course || !deadline || !description) {
+    alert("Lengkapi semua field tugas.");
+    return;
+  }
+
+  const nextTask = {
+    id: `TASK-${Date.now()}`,
+    title,
+    course,
+    deadline,
+    description,
+    createdAt: new Date().toISOString(),
+  };
+
+  saveStoredTasks([nextTask, ...getStoredTasks()]);
+  taskForm.reset();
+  renderTaskTable();
+  alert("Tugas baru berhasil dibuat.");
 }
 
 function uploadNewMaterial() {
@@ -189,6 +297,9 @@ function handleDownload(materialId) {
 uploadMaterialBtn.addEventListener("click", uploadNewMaterial);
 courseFilter.addEventListener("change", renderTable);
 semesterFilter.addEventListener("change", renderTable);
+tabMateriBtn.addEventListener("click", () => switchTab("materi"));
+tabTugasBtn.addEventListener("click", () => switchTab("tugas"));
+taskForm.addEventListener("submit", handleCreateTask);
 
 materiTableBody.addEventListener("click", (event) => {
   const target = event.target;
@@ -211,3 +322,4 @@ materiTableBody.addEventListener("click", (event) => {
 
 initializeMateri();
 rerenderAll();
+switchTab("materi");

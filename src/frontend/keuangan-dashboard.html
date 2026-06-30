@@ -27,7 +27,8 @@
           <a class="nav-link" href="./admin-management-akademik.html">Manajemen Kelas & Guru</a>
           <a class="nav-link" href="./admin-sistem-nilai-kenaikan.html">Nilai & Kenaikan Kelas</a>
           <a class="nav-link" href="./admin-management-alumni.html">Manajemen Alumni</a>
-          <a class="nav-link back-btn" href="./index.html">⬅️ Kembali ke Utama</a>
+                    <a class="nav-link" href="./admin-presensi-pengumuman.html">Presensi & Pengumuman</a>
+
         </nav>
       </aside>
 
@@ -81,6 +82,30 @@
                 </tr>
               </thead>
               <tbody id="financeOutstandingTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Manajemen SPP Bulanan</h2>
+            <button id="generateSppBtn" class="btn btn-primary" type="button">Generate Tagihan SPP Bulan Ini</button>
+          </div>
+          <div class="panel-body" style="padding: 14px 16px; border-bottom: 1px solid #dbe5f4;">
+            <p class="page-subtitle" style="margin:0;">Tagihan otomatis akan disimpan ke localStorage key: goldenity.tagihanSPP</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nama Murid</th>
+                  <th>Kelas</th>
+                  <th>Nominal</th>
+                  <th>Status Pembayaran</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="sppTableBody"></tbody>
             </table>
           </div>
         </section>
