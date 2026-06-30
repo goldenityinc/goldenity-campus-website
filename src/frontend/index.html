@@ -3,156 +3,144 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Goldenity Smart Login Gateway</title>
+    <title>Goldenity Campus - Official Website</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <style>
-      :root {
-        --ink: #0f2c45;
-        --ink-soft: #4d6785;
-        --line: #c4d7ed;
-        --teal-1: #0b8f91;
-        --teal-2: #2bc4aa;
-        --card-shadow: 0 26px 50px rgba(14, 45, 79, 0.2);
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: "Plus Jakarta Sans", sans-serif;
-        color: var(--ink);
-        background: radial-gradient(circle at 10% 12%, #cdf7ff, transparent 34%),
-          radial-gradient(circle at 86% 16%, #ffe0b5, transparent 28%),
-          radial-gradient(circle at 76% 84%, #d9fff3, transparent 31%),
-          linear-gradient(145deg, #edf8ff, #f3fbff 45%, #fff7ed);
-        display: grid;
-        place-items: center;
-        padding: 20px;
-      }
-
-      .gateway-card {
-        width: min(470px, 100%);
-        border: 1px solid var(--line);
-        border-radius: 28px;
-        background: #ffffffde;
-        backdrop-filter: blur(8px);
-        box-shadow: var(--card-shadow);
-        padding: 26px;
-      }
-
-      .logo-wrap {
-        text-align: center;
-        margin-bottom: 16px;
-      }
-
-      .logo-badge {
-        width: 80px;
-        height: 80px;
-        border-radius: 22px;
-        margin: 0 auto 12px;
-        display: grid;
-        place-items: center;
-        font-family: "Fraunces", serif;
-        font-size: 1.65rem;
-        color: #fff;
-        background: linear-gradient(145deg, var(--teal-1), var(--teal-2));
-        box-shadow: 0 16px 30px rgba(11, 91, 101, 0.3);
-      }
-
-      h1 {
-        margin: 0;
-        font-family: "Fraunces", serif;
-        font-size: clamp(1.55rem, 3.8vw, 2rem);
-      }
-
-      .subtitle {
-        margin: 8px auto 0;
-        max-width: 36ch;
-        color: var(--ink-soft);
-        line-height: 1.6;
-      }
-
-      .login-form {
-        margin-top: 16px;
-        display: grid;
-        gap: 11px;
-      }
-
-      .field {
-        display: grid;
-        gap: 7px;
-      }
-
-      .field label {
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: #2e4f73;
-      }
-
-      .field input {
-        border: 1px solid #bad0ea;
-        border-radius: 12px;
-        padding: 11px 12px;
-        font: inherit;
-      }
-
-      .field input:focus {
-        outline: 2px solid #99dce2;
-        border-color: #6fb6d5;
-      }
-
-      .btn-submit {
-        margin-top: 6px;
-        border: 0;
-        border-radius: 12px;
-        padding: 11px 14px;
-        font: inherit;
-        font-weight: 800;
-        color: #fff;
-        background: linear-gradient(140deg, #0d7da0, #27bea5);
-        cursor: pointer;
-      }
-
-      .hint {
-        margin: 8px 0 0;
-        font-size: 0.84rem;
-        color: #5a7390;
-        line-height: 1.5;
-      }
-    </style>
+    <link rel="stylesheet" href="./public-landing.css" />
   </head>
   <body>
-    <main class="gateway-card">
-      <header class="logo-wrap">
-        <div class="logo-badge">G</div>
-        <h1>Smart Login Gateway</h1>
-        <p class="subtitle">Gerbang autentikasi tunggal untuk akses Admin Portal dan Student Portal Goldenity.</p>
+    <div class="landing-page">
+      <header class="site-header">
+        <div class="brand-wrap">
+          <div class="brand-logo">G</div>
+          <div>
+            <p class="brand-name">Goldenity Campus</p>
+            <p class="brand-tagline">Future Digital University</p>
+          </div>
+        </div>
+
+        <nav class="main-nav" aria-label="Navigasi utama">
+          <a href="#beranda">Beranda</a>
+          <a href="#profil">Profil</a>
+          <a href="#akademik">Akademik</a>
+          <a href="#fasilitas">Fasilitas</a>
+        </nav>
+
+        <div class="header-actions">
+          <a class="btn btn-gold" href="./maba-registration.html">Pendaftaran MABA</a>
+          <a class="btn btn-navy" href="./login.html">Login Portal</a>
+        </div>
       </header>
 
-      <form id="gatewayLoginForm" class="login-form">
-        <div class="field">
-          <label for="usernameInput">Username</label>
-          <input id="usernameInput" name="username" type="text" autocomplete="username" required />
+      <main>
+        <section id="beranda" class="hero-section">
+          <div class="hero-content">
+            <p class="hero-kicker">Website Resmi Kampus</p>
+            <h1>Selamat Datang di Goldenity Campus</h1>
+            <p class="hero-subtitle">Membangun Generasi Inovator Digital Masa Depan</p>
+            <a class="hero-cta" href="./maba-registration.html">Daftar Sekarang</a>
+          </div>
+        </section>
+
+        <section id="profil" class="section section-profile">
+          <div class="section-head">
+            <p class="section-kicker">Profil Kampus</p>
+            <h2>Kampus Berbasis Teknologi, Riset, dan Karakter</h2>
+          </div>
+          <p class="profile-copy">
+            Goldenity Campus menghadirkan ekosistem pendidikan modern dengan kurikulum adaptif industri,
+            penguatan soft skill, dan pembelajaran berbasis proyek agar lulusan siap berkompetisi secara global.
+          </p>
+        </section>
+
+        <section id="akademik" class="section">
+          <div class="section-head">
+            <p class="section-kicker">Program Studi Unggulan</p>
+            <h2>Jalur Akademik Berorientasi Masa Depan</h2>
+          </div>
+
+          <div class="card-grid prodi-grid">
+            <article class="info-card">
+              <span class="icon-pill">💻</span>
+              <h3>S1 Teknik Informatika</h3>
+              <p>Fokus pada software engineering, AI, data science, dan cloud-native development.</p>
+            </article>
+
+            <article class="info-card">
+              <span class="icon-pill">🧠</span>
+              <h3>S1 Sistem Informasi</h3>
+              <p>Integrasi teknologi, bisnis digital, enterprise architecture, dan transformasi proses.</p>
+            </article>
+
+            <article class="info-card">
+              <span class="icon-pill">🛠️</span>
+              <h3>S1 Teknik Komputer</h3>
+              <p>Pengembangan IoT, embedded systems, jaringan cerdas, dan otomasi perangkat.</p>
+            </article>
+
+            <article class="info-card">
+              <span class="icon-pill">📈</span>
+              <h3>S1 Bisnis Digital</h3>
+              <p>Perpaduan product management, growth marketing, analytics, dan strategi startup.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="fasilitas" class="section section-news">
+          <div class="section-head">
+            <p class="section-kicker">Berita & Acara</p>
+            <h2>Update Kegiatan Terbaru Goldenity Campus</h2>
+          </div>
+
+          <div class="card-grid news-grid">
+            <article class="news-card">
+              <p class="news-date">24 Juni 2026</p>
+              <h3>Seminar AI Nasional</h3>
+              <p>Kolaborasi pakar industri dan akademisi membahas masa depan AI di Indonesia.</p>
+            </article>
+
+            <article class="news-card">
+              <p class="news-date">18 Juni 2026</p>
+              <h3>Penerimaan Mahasiswa Baru Dibuka</h3>
+              <p>Pendaftaran gelombang utama resmi dibuka dengan jalur prestasi dan reguler.</p>
+            </article>
+
+            <article class="news-card">
+              <p class="news-date">02 Juni 2026</p>
+              <h3>Prestasi Mahasiswa Internasional</h3>
+              <p>Tim inovasi Goldenity meraih penghargaan global pada kompetisi smart city challenge.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-grid">
+          <div>
+            <h4>Alamat Kampus</h4>
+            <p>Jl. Inovasi Digital No. 88, Jakarta Selatan</p>
+            <p>Jl. Teknologi Nusantara No. 21, Surakarta</p>
+          </div>
+
+          <div>
+            <h4>Kontak</h4>
+            <p>Email: info@goldenity.campus</p>
+            <p>Telepon: +62 21 7000 8899</p>
+          </div>
+
+          <div>
+            <h4>Tautan Cepat</h4>
+            <p><a href="./maba-registration.html">Pendaftaran MABA</a></p>
+            <p><a href="./mahasiswa-portal.html">Cek Status Pendaftaran</a></p>
+            <p><a href="./login.html">Login Portal</a></p>
+          </div>
         </div>
-
-        <div class="field">
-          <label for="passwordInput">Password</label>
-          <input id="passwordInput" name="password" type="password" autocomplete="current-password" required />
-        </div>
-
-        <button class="btn-submit" type="submit">Login ke Sistem</button>
-        <p class="hint">Gunakan username 'guru' untuk Admin Portal, dan 'murid' untuk Student Portal.</p>
-      </form>
-    </main>
-
-    <script src="./index.js"></script>
+        <p class="copyright">© 2026 Goldenity Inc. All rights reserved.</p>
+      </footer>
+    </div>
   </body>
 </html>
