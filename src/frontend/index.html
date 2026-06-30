@@ -3,161 +3,156 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Goldenity Campus</title>
+    <title>Goldenity Smart Login Gateway</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
     <style>
-      * { box-sizing: border-box; }
+      :root {
+        --ink: #0f2c45;
+        --ink-soft: #4d6785;
+        --line: #c4d7ed;
+        --teal-1: #0b8f91;
+        --teal-2: #2bc4aa;
+        --card-shadow: 0 26px 50px rgba(14, 45, 79, 0.2);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
 
       body {
         margin: 0;
         min-height: 100vh;
         font-family: "Plus Jakarta Sans", sans-serif;
-        color: #13304a;
-        background: radial-gradient(circle at 15% 20%, #d2f6ff, transparent 34%),
-          radial-gradient(circle at 86% 14%, #ffe0b7, transparent 30%),
-          linear-gradient(150deg, #eef8ff, #f6fbff 45%, #fff8ef);
+        color: var(--ink);
+        background: radial-gradient(circle at 10% 12%, #cdf7ff, transparent 34%),
+          radial-gradient(circle at 86% 16%, #ffe0b5, transparent 28%),
+          radial-gradient(circle at 76% 84%, #d9fff3, transparent 31%),
+          linear-gradient(145deg, #edf8ff, #f3fbff 45%, #fff7ed);
         display: grid;
         place-items: center;
-        padding: 24px;
+        padding: 20px;
       }
 
-      .container {
-        width: min(1060px, 100%);
+      .gateway-card {
+        width: min(470px, 100%);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: #ffffffde;
+        backdrop-filter: blur(8px);
+        box-shadow: var(--card-shadow);
+        padding: 26px;
       }
 
       .logo-wrap {
         text-align: center;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
       }
 
-      .logo {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 76px;
-        height: 76px;
-        border-radius: 20px;
-        background: linear-gradient(140deg, #0f6994, #2dbb9a);
-        color: #fff;
+      .logo-badge {
+        width: 80px;
+        height: 80px;
+        border-radius: 22px;
+        margin: 0 auto 12px;
+        display: grid;
+        place-items: center;
         font-family: "Fraunces", serif;
-        font-size: 1.35rem;
-        box-shadow: 0 16px 34px rgba(16, 55, 92, 0.25);
-        margin-bottom: 12px;
+        font-size: 1.65rem;
+        color: #fff;
+        background: linear-gradient(145deg, var(--teal-1), var(--teal-2));
+        box-shadow: 0 16px 30px rgba(11, 91, 101, 0.3);
       }
 
       h1 {
         margin: 0;
         font-family: "Fraunces", serif;
-        font-size: clamp(1.8rem, 4.4vw, 2.8rem);
+        font-size: clamp(1.55rem, 3.8vw, 2rem);
       }
 
       .subtitle {
         margin: 8px auto 0;
-        max-width: 64ch;
-        color: #4a6783;
+        max-width: 36ch;
+        color: var(--ink-soft);
         line-height: 1.6;
-        text-align: center;
       }
 
-      .grid {
-        margin-top: 24px;
+      .login-form {
+        margin-top: 16px;
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
+        gap: 11px;
       }
 
-      .card {
-        border: 1px solid #c8d8ea;
-        border-radius: 22px;
-        background: #ffffffd9;
-        backdrop-filter: blur(8px);
-        padding: 22px;
-        box-shadow: 0 16px 32px rgba(19, 48, 78, 0.14);
+      .field {
+        display: grid;
+        gap: 7px;
       }
 
-      .card h2 {
-        margin: 0 0 8px;
-        font-family: "Fraunces", serif;
+      .field label {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #2e4f73;
       }
 
-      .card p {
-        margin: 0;
-        color: #4e6882;
-        line-height: 1.6;
+      .field input {
+        border: 1px solid #bad0ea;
+        border-radius: 12px;
+        padding: 11px 12px;
+        font: inherit;
       }
 
-      .actions {
-        margin-top: 14px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
+      .field input:focus {
+        outline: 2px solid #99dce2;
+        border-color: #6fb6d5;
       }
 
-      .btn {
-        text-decoration: none;
-        border-radius: 10px;
-        padding: 9px 12px;
-        font-size: 0.9rem;
+      .btn-submit {
+        margin-top: 6px;
+        border: 0;
+        border-radius: 12px;
+        padding: 11px 14px;
+        font: inherit;
         font-weight: 800;
-      }
-
-      .btn-primary {
         color: #fff;
-        background: linear-gradient(135deg, #0e6a96, #29b99d);
+        background: linear-gradient(140deg, #0d7da0, #27bea5);
+        cursor: pointer;
       }
 
-      .btn-secondary {
-        color: #19456b;
-        background: #e8f2ff;
-        border: 1px solid #bed2ee;
-      }
-
-      @media (max-width: 860px) {
-        .grid { grid-template-columns: 1fr; }
+      .hint {
+        margin: 8px 0 0;
+        font-size: 0.84rem;
+        color: #5a7390;
+        line-height: 1.5;
       }
     </style>
   </head>
   <body>
-    <main class="container">
+    <main class="gateway-card">
       <header class="logo-wrap">
-        <div class="logo">G</div>
-        <h1>Goldenity Campus</h1>
-        <p class="subtitle">
-          Sistem terpadu untuk pendaftaran, keuangan, dan operasional akademik kampus.
-        </p>
+        <div class="logo-badge">G</div>
+        <h1>Smart Login Gateway</h1>
+        <p class="subtitle">Gerbang autentikasi tunggal untuk akses Admin Portal dan Student Portal Goldenity.</p>
       </header>
 
-      <section class="grid">
-        <article class="card">
-          <h2>Portal Calon Mahasiswa</h2>
-          <p>Daftar Baru & Cek Status Pembayaran.</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="./maba-registration.html">Daftar Baru</a>
-            <a class="btn btn-secondary" href="./mahasiswa-portal.html">Cek Status & Bayar</a>
-          </div>
-        </article>
+      <form id="gatewayLoginForm" class="login-form">
+        <div class="field">
+          <label for="usernameInput">Username</label>
+          <input id="usernameInput" name="username" type="text" autocomplete="username" required />
+        </div>
 
-        <article class="card">
-          <h2>Portal Internal Kampus</h2>
-          <p>Dashboard Admin, Dosen, dan Keuangan.</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="./dosen-wali-dashboard.html">Masuk Portal Internal</a>
-          </div>
-        </article>
+        <div class="field">
+          <label for="passwordInput">Password</label>
+          <input id="passwordInput" name="password" type="password" autocomplete="current-password" required />
+        </div>
 
-        <article class="card">
-          <h2>Portal Mahasiswa Aktif</h2>
-          <p>Login untuk melihat KRS, KHS, dan Transkrip Nilai.</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="./mahasiswa-aktif.html">Masuk Portal Mahasiswa</a>
-          </div>
-        </article>
-      </section>
+        <button class="btn-submit" type="submit">Login ke Sistem</button>
+        <p class="hint">Gunakan username 'guru' untuk Admin Portal, dan 'murid' untuk Student Portal.</p>
+      </form>
     </main>
+
+    <script src="./index.js"></script>
   </body>
 </html>
