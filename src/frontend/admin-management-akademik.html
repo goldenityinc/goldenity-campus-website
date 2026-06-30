@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Manajemen Kelas & Guru</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./campus-admin-ui.css" />
+    <style>
+      .tabs {
+        margin-top: 16px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .tab-btn {
+        border: 1px solid #bed0ea;
+        border-radius: 10px;
+        background: #eef4ff;
+        color: #31547a;
+        padding: 9px 14px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .tab-btn.active {
+        border-color: #2d8fe0;
+        background: linear-gradient(135deg, #0c63b0, #24a0f4);
+        color: #fff;
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      .action-stack {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .panel-caption {
+        margin: 0;
+        color: #557091;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #b8d0ec;
+        background: #edf4ff;
+        color: #2d4f76;
+        border-radius: 999px;
+        padding: 3px 10px;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <h1 class="brand">Goldenity Campus Admin</h1>
+        <nav class="nav-group">
+          <a class="nav-link" href="./dosen-wali-dashboard.html">Dashboard (Akademik)</a>
+          <a class="nav-link" href="./admin-master-data.html">Master Data</a>
+          <a class="nav-link" href="./maba-tracking.html">Penerimaan MABA</a>
+          <a class="nav-link" href="./keuangan-dashboard.html">Keuangan</a>
+          <a class="nav-link" href="./admin-direktori-mahasiswa.html">Direktori Mahasiswa</a>
+          <a class="nav-link" href="./admin-jadwal-kelas.html">Master Jadwal Kelas</a>
+          <a class="nav-link" href="./admin-materi-pembelajaran.html">Master Materi Pembelajaran</a>
+          <a class="nav-link active" href="./admin-management-akademik.html">Manajemen Kelas & Guru</a>
+          <a class="nav-link" href="./admin-sistem-nilai-kenaikan.html">Nilai & Kenaikan Kelas</a>
+          <a class="nav-link" href="./admin-management-alumni.html">Manajemen Alumni</a>
+          <a class="nav-link back-btn" href="./index.html">⬅️ Kembali ke Utama</a>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <section class="hero-card">
+          <p class="page-kicker">Panel Admin</p>
+          <h2 class="page-title">Manajemen Kelas, Guru, & Penugasan</h2>
+          <p class="page-subtitle">
+            Kelola data master kelas dan guru, lalu lakukan penugasan secara interaktif melalui modal.
+          </p>
+        </section>
+
+        <div class="tabs" role="tablist" aria-label="Tab manajemen akademik">
+          <button id="tabKelasBtn" class="tab-btn active" type="button" role="tab" aria-selected="true">
+            Manajemen Kelas
+          </button>
+          <button id="tabGuruBtn" class="tab-btn" type="button" role="tab" aria-selected="false">
+            Manajemen Guru
+          </button>
+        </div>
+
+        <section id="tabKelasPanel" class="panel tab-panel active" role="tabpanel">
+          <div class="panel-head">
+            <h2>Daftar Kelas</h2>
+            <div class="action-stack">
+              <button id="addClassBtn" class="btn btn-primary" type="button">Tambah Kelas</button>
+              <button id="assignStudentBtn" class="btn btn-secondary" type="button">Assign Murid ke Kelas</button>
+            </div>
+          </div>
+          <div class="panel-body" style="padding: 14px 16px; border-bottom: 1px solid #dbe5f4;">
+            <p class="panel-caption">Data kelas disimpan di localStorage key: goldenity.schoolClasses</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nama Kelas</th>
+                  <th>Wali Kelas</th>
+                  <th>Jumlah Murid</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="classTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="tabGuruPanel" class="panel tab-panel" role="tabpanel" aria-hidden="true">
+          <div class="panel-head">
+            <h2>Daftar Guru</h2>
+            <div class="action-stack">
+              <button id="addTeacherBtn" class="btn btn-primary" type="button">Tambah Guru Baru</button>
+              <button id="assignTeacherBtn" class="btn btn-secondary" type="button">Assign Guru ke Kelas</button>
+            </div>
+          </div>
+          <div class="panel-body" style="padding: 14px 16px; border-bottom: 1px solid #dbe5f4;">
+            <p class="panel-caption">Data guru disimpan di localStorage key: goldenity.schoolTeachers</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>NIP</th>
+                  <th>Nama Guru</th>
+                  <th>Mata Pelajaran Utama</th>
+                  <th>Kelas Diampu</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="teacherTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="academicModal" class="modal-backdrop" aria-hidden="true">
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="academicModalTitle">
+        <h3 id="academicModalTitle">Modal</h3>
+        <p id="academicModalSubtitle" class="page-subtitle"></p>
+        <form id="academicModalForm" class="form-grid"></form>
+        <div class="form-actions">
+          <button id="cancelAcademicModalBtn" class="btn btn-secondary" type="button">Batal</button>
+          <button id="saveAcademicModalBtn" class="btn btn-primary" type="submit" form="academicModalForm">Simpan</button>
+        </div>
+      </section>
+    </div>
+
+    <script src="./admin-management-akademik.js"></script>
+  </body>
+</html>

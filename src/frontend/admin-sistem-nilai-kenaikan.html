@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Nilai & Kenaikan Kelas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./campus-admin-ui.css" />
+    <style>
+      .formula-preview {
+        margin-top: 12px;
+        border: 1px dashed #b8cae5;
+        border-radius: 12px;
+        background: #f3f8ff;
+        color: #274f7a;
+        padding: 10px 12px;
+        font-weight: 700;
+      }
+
+      .badge {
+        display: inline-flex;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 0.75rem;
+        font-weight: 800;
+      }
+
+      .badge.pass {
+        background: #e9f9ef;
+        border: 1px solid #bbe5c9;
+        color: #0f7a42;
+      }
+
+      .badge.pending {
+        background: #fff8eb;
+        border: 1px solid #efd9ab;
+        color: #8b5a00;
+      }
+
+      .muted-note {
+        margin: 0;
+        color: #557091;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <h1 class="brand">Goldenity Campus Admin</h1>
+        <nav class="nav-group">
+          <a class="nav-link" href="./dosen-wali-dashboard.html">Dashboard (Akademik)</a>
+          <a class="nav-link" href="./admin-master-data.html">Master Data</a>
+          <a class="nav-link" href="./maba-tracking.html">Penerimaan MABA</a>
+          <a class="nav-link" href="./keuangan-dashboard.html">Keuangan</a>
+          <a class="nav-link" href="./admin-direktori-mahasiswa.html">Direktori Mahasiswa</a>
+          <a class="nav-link" href="./admin-jadwal-kelas.html">Master Jadwal Kelas</a>
+          <a class="nav-link" href="./admin-materi-pembelajaran.html">Master Materi Pembelajaran</a>
+          <a class="nav-link" href="./admin-management-akademik.html">Manajemen Kelas & Guru</a>
+          <a class="nav-link active" href="./admin-sistem-nilai-kenaikan.html">Nilai & Kenaikan Kelas</a>
+          <a class="nav-link" href="./admin-management-alumni.html">Manajemen Alumni</a>
+          <a class="nav-link back-btn" href="./index.html">⬅️ Kembali ke Utama</a>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <section class="hero-card">
+          <p class="page-kicker">Panel Admin</p>
+          <h2 class="page-title">Sistem Nilai, Kenaikan Kelas, & Virtual Meeting</h2>
+          <p class="page-subtitle">
+            Formulasikan bobot rapot, jalankan kenaikan kelas massal, dan auto-generate ruang belajar virtual unik.
+          </p>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Formulasi Rapot</h2>
+          </div>
+          <div class="panel-body" style="padding: 14px 16px;">
+            <form id="rapotFormulaForm" class="form-grid">
+              <label>
+                Bobot Tugas (%)
+                <input id="taskWeight" name="taskWeight" type="number" min="0" max="100" required />
+              </label>
+              <label>
+                Bobot UTS (%)
+                <input id="utsWeight" name="utsWeight" type="number" min="0" max="100" required />
+              </label>
+              <label style="grid-column: span 2;">
+                Bobot UAS (%)
+                <input id="uasWeight" name="uasWeight" type="number" min="0" max="100" required />
+              </label>
+              <div class="form-actions" style="grid-column: span 2; margin-top: 4px;">
+                <button class="btn btn-primary" type="submit">Simpan Formulasi</button>
+              </div>
+            </form>
+            <div id="formulaPreview" class="formula-preview"></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Sistem Kenaikan Kelas</h2>
+            <button id="massPromotionBtn" class="btn btn-primary" type="button">Proses Kenaikan Kelas Massal</button>
+          </div>
+          <div class="panel-body" style="padding: 14px 16px; border-bottom: 1px solid #dbe5f4;">
+            <p class="muted-note">Saat diproses, tingkat kelas murid diperbarui di localStorage.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>NIS</th>
+                  <th>Nama Murid</th>
+                  <th>Tingkat Kelas</th>
+                  <th>Status Kenaikan</th>
+                </tr>
+              </thead>
+              <tbody id="promotionTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Auto-Generate Ruang Meeting</h2>
+            <button id="generateMeetingBtn" class="btn btn-primary" type="button">Auto-Generate Meeting Rooms</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID Pelajaran</th>
+                  <th>Kelas</th>
+                  <th>Mata Pelajaran</th>
+                  <th>Jadwal</th>
+                  <th>Virtual Class Link</th>
+                </tr>
+              </thead>
+              <tbody id="meetingTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./admin-sistem-nilai-kenaikan.js"></script>
+  </body>
+</html>

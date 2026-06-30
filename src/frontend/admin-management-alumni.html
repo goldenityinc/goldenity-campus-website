@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Manajemen Alumni</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./campus-admin-ui.css" />
+    <style>
+      .status-chip {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 0.74rem;
+        font-weight: 800;
+      }
+
+      .status-chip.working {
+        background: #e9f9ef;
+        border: 1px solid #b8e5c8;
+        color: #0f7a42;
+      }
+
+      .status-chip.studying {
+        background: #edf5ff;
+        border: 1px solid #bed3f0;
+        color: #215685;
+      }
+
+      .status-chip.searching {
+        background: #fff6eb;
+        border: 1px solid #eed7af;
+        color: #845300;
+      }
+
+      .helper-note {
+        margin: 0;
+        color: #577291;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <h1 class="brand">Goldenity Campus Admin</h1>
+        <nav class="nav-group">
+          <a class="nav-link" href="./dosen-wali-dashboard.html">Dashboard (Akademik)</a>
+          <a class="nav-link" href="./admin-master-data.html">Master Data</a>
+          <a class="nav-link" href="./maba-tracking.html">Penerimaan MABA</a>
+          <a class="nav-link" href="./keuangan-dashboard.html">Keuangan</a>
+          <a class="nav-link" href="./admin-direktori-mahasiswa.html">Direktori Mahasiswa</a>
+          <a class="nav-link" href="./admin-jadwal-kelas.html">Master Jadwal Kelas</a>
+          <a class="nav-link" href="./admin-materi-pembelajaran.html">Master Materi Pembelajaran</a>
+          <a class="nav-link" href="./admin-management-akademik.html">Manajemen Kelas & Guru</a>
+          <a class="nav-link" href="./admin-sistem-nilai-kenaikan.html">Nilai & Kenaikan Kelas</a>
+          <a class="nav-link active" href="./admin-management-alumni.html">Manajemen Alumni</a>
+          <a class="nav-link back-btn" href="./index.html">⬅️ Kembali ke Utama</a>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <section class="hero-card">
+          <p class="page-kicker">Panel Admin</p>
+          <h2 class="page-title">Manajemen Alumni & Pelacakan Karir</h2>
+          <p class="page-subtitle">
+            Rekap jejak karir lulusan untuk mendukung presentasi mutu lulusan ke calon mitra dan calon klien.
+          </p>
+        </section>
+
+        <section class="summary-grid">
+          <article class="summary-card">
+            <p class="summary-label">Total Alumni</p>
+            <p id="totalAlumniValue" class="summary-value">0</p>
+          </article>
+          <article class="summary-card">
+            <p class="summary-label">Alumni Bekerja</p>
+            <p id="workingAlumniValue" class="summary-value green">0</p>
+          </article>
+          <article class="summary-card">
+            <p class="summary-label">Alumni Studi Lanjut</p>
+            <p id="studyingAlumniValue" class="summary-value">0</p>
+          </article>
+          <article class="summary-card">
+            <p class="summary-label">Alumni Wirausaha</p>
+            <p id="entrepreneurAlumniValue" class="summary-value">0</p>
+          </article>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Rekapitulasi Alumni</h2>
+            <button id="addAlumniBtn" class="btn btn-primary" type="button">Tambah Data Alumni Manusiawi</button>
+          </div>
+          <div class="panel-body" style="padding: 14px 16px; border-bottom: 1px solid #dbe5f4;">
+            <p class="helper-note">Data tersimpan pada localStorage key: goldenity.alumniData</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tahun Kelulusan</th>
+                  <th>Nama Alumni</th>
+                  <th>Program Studi/Jurusan</th>
+                  <th>Status</th>
+                  <th>Perusahaan/Universitas Lanjutan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="alumniTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="alumniModal" class="modal-backdrop" aria-hidden="true">
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="alumniModalTitle">
+        <h3 id="alumniModalTitle">Update Data Alumni</h3>
+        <p id="alumniModalSubtitle" class="page-subtitle"></p>
+        <form id="alumniModalForm" class="form-grid"></form>
+        <div class="form-actions">
+          <button id="cancelAlumniModalBtn" class="btn btn-secondary" type="button">Batal</button>
+          <button id="saveAlumniModalBtn" class="btn btn-primary" type="submit" form="alumniModalForm">Simpan</button>
+        </div>
+      </section>
+    </div>
+
+    <script src="./admin-management-alumni.js"></script>
+  </body>
+</html>
