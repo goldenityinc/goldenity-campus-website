@@ -267,6 +267,18 @@
         text-transform: uppercase;
       }
 
+      .badge-row {
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .badge-row .badge {
+        margin-top: 0;
+      }
+
       .badge.success {
         color: var(--ok);
         background: #e8f8ef;
@@ -277,6 +289,47 @@
         color: var(--pending);
         background: #fff6e4;
         border: 1px solid #efd39c;
+      }
+
+      .badge.info {
+        color: #11457f;
+        background: #e6f1ff;
+        border: 1px solid #b8d5ff;
+      }
+
+      .step-extra {
+        margin-top: 10px;
+      }
+
+      .map-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        font-size: 0.86rem;
+        font-weight: 700;
+        color: #15467d;
+        border: 1px solid #bdd7fb;
+        border-radius: 999px;
+        padding: 7px 12px;
+        background: #f2f8ff;
+        transition: all 0.2s ease;
+      }
+
+      .map-link:hover {
+        color: #0f3a68;
+        background: #e4f0ff;
+        transform: translateY(-1px);
+      }
+
+      .map-link::before {
+        content: "[**";
+        font-weight: 800;
+      }
+
+      .map-link::after {
+        content: "]";
+        font-weight: 800;
       }
 
       .payment-wrap {

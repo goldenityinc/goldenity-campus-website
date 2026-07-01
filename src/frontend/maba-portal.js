@@ -88,12 +88,46 @@ function derivePipelineStatus(registration) {
   return "pending";
 }
 
-function ensureTestSchedule(registration) {
-  if (registration.testSchedule && registration.testSchedule.trim()) {
-    return registration.testSchedule;
+function deriveTestMode(registration) {
+  const explicitMode = normalizeText(registration.testMode ?? registration.testType ?? registration.examMode);
+  if (explicitMode.includes("online")) {
+    return "online";
   }
 
-  return "Test Online, 15 Juli 2026, 09:00 WIB";
+  if (explicitMode.includes("offline") || explicitMode.includes("on-site") || explicitMode.includes("onsite")) {
+    return "offline";
+  }
+
+  const scheduleHint = normalizeText(registration.testSchedule);
+  if (scheduleHint.includes("online")) {
+    return "online";
+  }
+
+  if (scheduleHint.includes("offline") || scheduleHint.includes("on-site") || scheduleHint.includes("onsite")) {
+    return "offline";
+  }
+
+  return "offline";
+}
+
+function buildTestStepContent(registration) {
+  const testMode = deriveTestMode(registration);
+
+  if (testMode === "online") {
+    return {
+      scheduleInfo: "Test Online, 15 Juli 2026, 09:00 WIB<br />Platform: Goldenity Secure Exam Browser (Remote).",
+      secondaryBadgeHtml: '<span class="badge info">ONLINE TEST</span>',
+      extraHtml: "",
+    };
+  }
+
+  return {
+    scheduleInfo:
+      "Test Offline (On-Site), 18 Juli 2026, 08:00 WIB<br />Lokasi: Laboratorium Pusat Komputer, Gedung B, Lantai 2.",
+    secondaryBadgeHtml: '<span class="badge info">OFFLINE TEST</span>',
+    extraHtml:
+      '<div class="step-extra"><a class="map-link" href="https://maps.app.goo.gl/TxxLzGZ5X8dMv1Vv8" target="_blank" rel="noopener noreferrer">Lihat Peta Lokasi (Google Maps)</a></div>',
+  };
 }
 
 function findRegistrationByNumber(registrationNumber) {
@@ -141,14 +175,17 @@ function updateRegistrationAsPaid(registration) {
   return updatedRegistration;
 }
 
-function createStepItem(index, title, meta, badgeLabel, badgeType, stateClass, extraHtml = "") {
+function createStepItem(index, title, meta, badgeLabel, badgeType, stateClass, extraHtml = "", secondaryBadgeHtml = "") {
   return `
     <li class="step-item ${stateClass}">
       <span class="step-index">${index}</span>
       <div>
         <p class="step-title">${title}</p>
         <p class="step-meta">${meta}</p>
-        <span class="badge ${badgeType}">${badgeLabel}</span>
+        <div class="badge-row">
+          <span class="badge ${badgeType}">${badgeLabel}</span>
+          ${secondaryBadgeHtml}
+        </div>
         ${extraHtml}
       </div>
     </li>
@@ -161,7 +198,7 @@ function renderJourney(registration) {
   const pipelineStatus = derivePipelineStatus(registration);
   const isAccepted = pipelineStatus === "approved" || pipelineStatus === "done";
   const hasPaid = pipelineStatus === "done" || registration.sudahBayar === true;
-  const scheduleInfo = ensureTestSchedule(registration);
+  const testStepContent = buildTestStepContent(registration);
 
   const registrationKey = registration.registrationNumber ?? registration.id ?? "";
   currentRegistrationKey = String(registrationKey);
@@ -192,7 +229,16 @@ function renderJourney(registration) {
 
   journeyStepper.innerHTML = [
     createStepItem(1, "Kelengkapan Berkas", "Dokumen awal pendaftaran dan validasi administrasi.", berkasBadge, berkasType, berkasState),
-    createStepItem(2, "Jadwal & Lokasi Test", scheduleInfo, "Jadwal Aktif", "success", "is-success"),
+    createStepItem(
+      2,
+      "Jadwal & Lokasi Test",
+      testStepContent.scheduleInfo,
+      "Jadwal Aktif",
+      "success",
+      "is-success",
+      testStepContent.extraHtml,
+      testStepContent.secondaryBadgeHtml,
+    ),
     createStepItem(3, "Hasil Seleksi", "Status hasil seleksi terbaru dari panitia PMB.", hasilLabel, hasilType, hasilState),
     createStepItem(4, "Daftar Ulang & Pembayaran", daftarUlangMeta, isAccepted ? "Siap Diproses" : "Menunggu Hasil", isAccepted ? "success" : "pending", isAccepted ? "is-active" : "", paymentButton),
   ].join("");
