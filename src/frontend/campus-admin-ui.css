@@ -48,9 +48,10 @@ h3 {
   background: linear-gradient(180deg, #0f2946, #13355f);
   color: #f0f7ff;
   padding: 22px 18px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .brand {
@@ -98,7 +99,7 @@ h3 {
 
 .back-btn {
   margin-top: auto;
-  padding: 15px 20px;
+  padding: 10px 12px;
   color: #cbd9ea;
   text-decoration: none;
   display: block;

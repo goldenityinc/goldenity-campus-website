@@ -871,7 +871,7 @@
         <section id="section-pelaporan" class="content-section">
           <section class="hero">
             <p class="page-kicker">Bimbingan & Pelaporan</p>
-            <h2 class="page-title">Sampaikan Konseling, Kritik, atau Aduan</h2>
+            <h2 class="page-title">Layanan Bimbingan & Pelaporan Murid</h2>
             <p class="page-subtitle">Laporan Anda akan diteruskan ke guru/dosen wali terkait untuk ditindaklanjuti.</p>
           </section>
 
@@ -882,6 +882,17 @@
               </div>
               <div class="card-body">
                 <form id="studentReportForm" class="task-grid">
+                  <label for="reportTeacherName">
+                    Pilih Guru Terkait
+                    <select id="reportTeacherName" name="reportTeacherName" required>
+                      <option value="">Pilih Guru Terkait</option>
+                      <option value="Ibu Cyntia Mahesa">Ibu Cyntia Mahesa</option>
+                      <option value="Bapak Riyan Nugroho">Bapak Riyan Nugroho</option>
+                      <option value="Ibu Dinda Lestari">Ibu Dinda Lestari</option>
+                      <option value="Bapak Arga Saputra">Bapak Arga Saputra</option>
+                    </select>
+                  </label>
+
                   <label for="reportCategory">
                     Kategori
                     <select id="reportCategory" name="reportCategory" required>
@@ -890,11 +901,6 @@
                       <option value="Kedisiplinan/Perilaku Guru">Kedisiplinan/Perilaku Guru</option>
                       <option value="Fasilitas">Fasilitas</option>
                     </select>
-                  </label>
-
-                  <label for="reportTeacherName">
-                    Nama Guru Terkait
-                    <input id="reportTeacherName" name="reportTeacherName" type="text" placeholder="Contoh: Ibu Cyntia Mahesa" required />
                   </label>
 
                   <label for="reportDescription">

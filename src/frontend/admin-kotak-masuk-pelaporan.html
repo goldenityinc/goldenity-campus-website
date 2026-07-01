@@ -3,16 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - Master Jadwal Kelas</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <title>Kotak Masuk Pelaporan Murid</title>
     <link rel="stylesheet" href="./campus-admin-ui.css" />
-  
-      <link
+    <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
@@ -33,65 +26,43 @@
           <a class="nav-link" href="./admin-sistem-nilai-kenaikan.html"><span class="menu-item"><i class="fa-solid fa-chart-line"></i>Nilai & Kenaikan Kelas</span></a>
           <a class="nav-link" href="./admin-management-alumni.html"><span class="menu-item"><i class="fa-solid fa-user-graduate"></i>Manajemen Alumni</span></a>
           <a class="nav-link" href="./admin-presensi-pengumuman.html"><span class="menu-item"><i class="fa-solid fa-bullhorn"></i>Presensi & Pengumuman</span></a>
-          <a class="nav-link" href="./admin-kotak-masuk-pelaporan.html"><span class="menu-item"><i class="fa-solid fa-inbox"></i>Kotak Masuk Pelaporan</span></a>
+          <a class="nav-link active" href="./admin-kotak-masuk-pelaporan.html"><span class="menu-item"><i class="fa-solid fa-inbox"></i>Kotak Masuk Pelaporan</span></a>
           <a class="nav-link back-btn" href="./login.html"><span class="menu-item"><i class="fa-solid fa-arrow-left"></i>Kembali ke Utama</span></a>
         </nav>
       </aside>
 
       <main class="main-content">
         <section class="hero-card">
-          <p class="page-kicker">Panel Admin</p>
-          <h2 class="page-title">Master Jadwal Kelas</h2>
-          <p class="page-subtitle">
-            Kelola jadwal perkuliahan, ruang kelas, dan dosen pengampu.
-          </p>
+          <p class="page-kicker">Bimbingan & Pelaporan</p>
+          <h2 class="page-title">Kotak Masuk Pelaporan Murid</h2>
+          <p class="page-subtitle">Kelola laporan murid dan tandai penyelesaian tindak lanjut secara langsung.</p>
         </section>
 
-        <section class="panel" style="margin-top: 16px;">
+        <section class="panel">
           <div class="panel-head">
-            <h2>Daftar Jadwal Perkuliahan</h2>
-            <button id="addScheduleBtn" class="btn btn-primary" type="button">Tambah Jadwal Baru</button>
+            <h2>Daftar Laporan Masuk</h2>
           </div>
-
-          <div class="filter-bar">
-            <label class="filter-field">
-              Pilih Program Studi
-              <select id="programStudyFilter">
-                <option value="all">Semua Program Studi</option>
-              </select>
-            </label>
-            <label class="filter-field">
-              Pilih Hari
-              <select id="dayFilter">
-                <option value="all">Semua Hari</option>
-                <option value="Senin">Senin</option>
-                <option value="Selasa">Selasa</option>
-                <option value="Rabu">Rabu</option>
-                <option value="Kamis">Kamis</option>
-                <option value="Jumat">Jumat</option>
-              </select>
-            </label>
-          </div>
-
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>Jam</th>
-                  <th>Mata Kuliah</th>
-                  <th>Dosen Pengampu</th>
-                  <th>Ruangan</th>
+                  <th>Tanggal</th>
+                  <th>Murid</th>
                   <th>Kelas</th>
+                  <th>Kategori</th>
+                  <th>Guru Terkait</th>
+                  <th>Isi Laporan</th>
+                  <th>Status</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
-              <tbody id="jadwalTableBody"></tbody>
+              <tbody id="tableLaporanMasukBody"></tbody>
             </table>
           </div>
         </section>
       </main>
     </div>
 
-    <script src="./admin-jadwal-kelas.js"></script>
+    <script src="./admin-kotak-masuk-pelaporan.js"></script>
   </body>
 </html>
