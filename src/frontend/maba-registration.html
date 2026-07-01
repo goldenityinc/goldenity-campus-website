@@ -255,6 +255,99 @@
         cursor: pointer;
       }
 
+      #modalSuccessRegistration {
+        position: fixed;
+        inset: 0;
+        z-index: 120;
+        background: rgba(0, 27, 58, 0.56);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+
+      .success-modal-panel {
+        width: min(560px, 100%);
+        border-radius: 20px;
+        border: 1px solid #dbe4ef;
+        background: #ffffff;
+        box-shadow: 0 24px 48px rgba(6, 26, 48, 0.26);
+        padding: 22px;
+        text-align: center;
+      }
+
+      .success-check {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 12px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, #1fbe68, #0f914a);
+        color: #fff;
+        font-size: 2rem;
+        font-weight: 800;
+        box-shadow: 0 10px 20px rgba(13, 112, 57, 0.28);
+      }
+
+      .success-modal-title {
+        margin: 0;
+        color: #001b3a;
+        font-family: "Fraunces", serif;
+        font-size: clamp(1.3rem, 3vw, 1.8rem);
+      }
+
+      .success-modal-copy {
+        margin: 10px 0 0;
+        color: #4d6884;
+        line-height: 1.6;
+      }
+
+      .generated-reg {
+        margin: 16px auto 0;
+        width: fit-content;
+        border: 1px solid rgba(212, 175, 55, 0.5);
+        border-radius: 12px;
+        background: linear-gradient(135deg, #fff6dc, #fffef8);
+        padding: 11px 16px;
+        color: #001b3a;
+        font-size: clamp(1.12rem, 3vw, 1.45rem);
+        font-weight: 800;
+        letter-spacing: 0.04em;
+      }
+
+      .success-modal-actions {
+        margin-top: 16px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .success-btn {
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .success-btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .success-btn.gold {
+        color: #0e213c;
+        background: linear-gradient(135deg, #d4af37, #e8ca74);
+      }
+
+      .success-btn.teal {
+        color: #fff;
+        background: linear-gradient(135deg, #10858a, #29c5a8);
+      }
+
       @media (max-width: 680px) {
         .back-link,
         .internal-link {
@@ -318,14 +411,17 @@
       </form>
     </main>
 
-    <div id="successModal" class="modal-backdrop" aria-hidden="true">
-      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="successTitle">
-        <h2 id="successTitle">Pendaftaran Berhasil!</h2>
-        <p>
-          Data Anda sedang diverifikasi. Silakan tunggu informasi selanjutnya.
+    <div id="modalSuccessRegistration" style="display: none;" aria-hidden="true">
+      <section class="success-modal-panel" role="dialog" aria-modal="true" aria-labelledby="successRegistrationTitle">
+        <div class="success-check" aria-hidden="true">✓</div>
+        <h2 id="successRegistrationTitle" class="success-modal-title">Pendaftaran Berhasil!</h2>
+        <p class="success-modal-copy">
+          Berikut adalah Nomor Pendaftaran Anda. Harap simpan nomor ini untuk mengecek status seleksi di Portal MABA.
         </p>
-        <div class="modal-actions">
-          <button id="closeModalBtn" class="ok-btn" type="button">Tutup</button>
+        <div id="generatedRegNumber" class="generated-reg">REG-0000-0000</div>
+        <div class="success-modal-actions">
+          <button id="btnCopyReg" class="success-btn gold" type="button">Salin Nomor</button>
+          <button id="btnGoToPortal" class="success-btn teal" type="button">Menuju Portal MABA</button>
         </div>
       </section>
     </div>

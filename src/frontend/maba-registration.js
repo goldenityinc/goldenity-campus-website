@@ -1,8 +1,9 @@
 const registrationForm = document.querySelector("#mabaRegistrationForm");
 const submitBtn = document.querySelector("#submitBtn");
-const successModal = document.querySelector("#successModal");
-const closeModalBtn = document.querySelector("#closeModalBtn");
-const successModalMessage = successModal?.querySelector("p");
+const modalSuccessRegistration = document.querySelector("#modalSuccessRegistration");
+const generatedRegNumber = document.querySelector("#generatedRegNumber");
+const btnCopyReg = document.querySelector("#btnCopyReg");
+const btnGoToPortal = document.querySelector("#btnGoToPortal");
 const mabaSyncChannel =
   typeof BroadcastChannel !== "undefined"
     ? new BroadcastChannel("goldenity.mabaRegistrations.sync")
@@ -22,6 +23,10 @@ function getMabaRegistrations() {
   } catch (_error) {
     return [];
   }
+}
+
+function isRegNumberExists(registrationNumber) {
+  return getMabaRegistrations().some((item) => item.registrationNumber === registrationNumber);
 }
 
 async function saveMabaRegistration(registration) {
@@ -47,20 +52,25 @@ async function saveMabaRegistration(registration) {
 }
 
 function openSuccessModal() {
-  successModal.classList.add("show");
-  successModal.setAttribute("aria-hidden", "false");
+  if (!(modalSuccessRegistration instanceof HTMLElement)) {
+    return;
+  }
+
+  modalSuccessRegistration.style.display = "flex";
+  modalSuccessRegistration.setAttribute("aria-hidden", "false");
 }
 
 function createRegistrationNumber() {
-  return `REG-${String(Math.floor(Math.random() * 9000) + 1000)}`;
+  let nextRegistrationNumber = "";
+
+  do {
+    nextRegistrationNumber = `REG-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+  } while (isRegNumberExists(nextRegistrationNumber));
+
+  return nextRegistrationNumber;
 }
 
-function closeSuccessModal() {
-  successModal.classList.remove("show");
-  successModal.setAttribute("aria-hidden", "true");
-}
-
-registrationForm.addEventListener("submit", (event) => {
+registrationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const originalLabel = submitBtn.textContent;
@@ -70,10 +80,10 @@ registrationForm.addEventListener("submit", (event) => {
   const formData = new FormData(registrationForm);
   const uploadedFile = formData.get("certificateFile");
 
-  setTimeout(() => {
-    const registrationId = `${Date.now()}`;
-    const registrationNumber = createRegistrationNumber();
-    void saveMabaRegistration({
+  const registrationId = `${Date.now()}`;
+  const registrationNumber = createRegistrationNumber();
+
+  await saveMabaRegistration({
       id: registrationId,
       registrationNumber,
       fullName: String(formData.get("fullName") ?? "").trim(),
@@ -84,23 +94,39 @@ registrationForm.addEventListener("submit", (event) => {
       pipelineStatus: "pending",
       sudahBayar: false,
       createdAt: new Date().toISOString(),
-    });
+  });
 
-    if (successModalMessage) {
-      successModalMessage.textContent = `Pendaftaran Berhasil! Nomor Pendaftaran Anda: ${registrationNumber}. Harap simpan nomor ini untuk mengecek status pendaftaran dan melakukan pembayaran.`;
-    }
+  if (generatedRegNumber instanceof HTMLElement) {
+    generatedRegNumber.textContent = registrationNumber;
+  }
 
-    submitBtn.disabled = false;
-    submitBtn.textContent = originalLabel;
-    openSuccessModal();
-    registrationForm.reset();
-  }, 1500);
+  submitBtn.disabled = false;
+  submitBtn.textContent = originalLabel;
+  openSuccessModal();
+  registrationForm.reset();
 });
 
-closeModalBtn.addEventListener("click", closeSuccessModal);
-
-successModal.addEventListener("click", (event) => {
-  if (event.target === successModal) {
-    closeSuccessModal();
+btnCopyReg?.addEventListener("click", async () => {
+  if (!(generatedRegNumber instanceof HTMLElement) || !(btnCopyReg instanceof HTMLButtonElement)) {
+    return;
   }
+
+  const originalLabel = btnCopyReg.textContent || "Salin Nomor";
+
+  try {
+    await navigator.clipboard.writeText(generatedRegNumber.textContent || "");
+    btnCopyReg.textContent = "Tersalin!";
+    setTimeout(() => {
+      btnCopyReg.textContent = originalLabel;
+    }, 1500);
+  } catch (_error) {
+    btnCopyReg.textContent = "Gagal Salin";
+    setTimeout(() => {
+      btnCopyReg.textContent = originalLabel;
+    }, 1500);
+  }
+});
+
+btnGoToPortal?.addEventListener("click", () => {
+  window.location.href = "maba-portal.html";
 });
