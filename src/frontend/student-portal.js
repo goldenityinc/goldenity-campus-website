@@ -12,6 +12,8 @@ const taskSubmitForm = document.querySelector("#taskSubmitForm");
 const taskAnswerInput = document.querySelector("#taskAnswerInput");
 const taskFileInput = document.querySelector("#taskFileInput");
 const cancelTaskSubmitBtn = document.querySelector("#cancelTaskSubmitBtn");
+const studentReportForm = document.querySelector("#studentReportForm");
+const studentReportHistoryBody = document.querySelector("#studentReportHistoryBody");
 const contentSections = document.querySelectorAll(".content-section");
 const sidebarMenuLinks = document.querySelectorAll(".nav-group .nav-link[data-section-target]");
 
@@ -20,6 +22,7 @@ const PRESENSI_STORAGE_KEY = "goldenity.presensi";
 const TAGIHAN_SPP_KEY = "goldenity.tagihanSPP";
 const TUGAS_STORAGE_KEY = "goldenity.tugasLMS";
 const JAWABAN_STORAGE_KEY = "goldenity.jawabanTugas";
+const LAPORAN_MURID_STORAGE_KEY = "goldenity.laporanMurid";
 
 const STUDENT_PROFILE = {
   id: "MURID-001",
@@ -416,6 +419,80 @@ function renderGradeChart() {
   });
 }
 
+function createReportStatusBadge(statusValue) {
+  const normalizedStatus = String(statusValue ?? "").toLowerCase();
+  if (normalizedStatus === "selesai") {
+    return '<span class="badge success">Selesai</span>';
+  }
+
+  return '<span class="badge warning">Menunggu Tanggapan</span>';
+}
+
+function renderStudentReportHistory() {
+  if (!(studentReportHistoryBody instanceof HTMLElement)) {
+    return;
+  }
+
+  const reports = getStoredArray(LAPORAN_MURID_STORAGE_KEY)
+    .filter((report) => report.studentId === STUDENT_PROFILE.id)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+  if (reports.length === 0) {
+    studentReportHistoryBody.innerHTML = `
+      <tr>
+        <td colspan="4">Belum ada laporan yang Anda kirim.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  studentReportHistoryBody.innerHTML = reports
+    .map(
+      (report) => `
+        <tr>
+          <td>${toDisplayDate(report.createdAt)}</td>
+          <td>${report.category}</td>
+          <td>${report.teacherName}</td>
+          <td>${createReportStatusBadge(report.status)}</td>
+        </tr>
+      `,
+    )
+    .join("");
+}
+
+function handleStudentReportSubmit(event) {
+  event.preventDefault();
+  if (!(studentReportForm instanceof HTMLFormElement)) {
+    return;
+  }
+
+  const formData = new FormData(studentReportForm);
+  const category = String(formData.get("reportCategory") ?? "").trim();
+  const teacherName = String(formData.get("reportTeacherName") ?? "").trim();
+  const reportContent = String(formData.get("reportDescription") ?? "").trim();
+
+  if (!category || !teacherName || !reportContent) {
+    return;
+  }
+
+  const reports = getStoredArray(LAPORAN_MURID_STORAGE_KEY);
+  reports.push({
+    id: `LPR-${Date.now()}`,
+    studentId: STUDENT_PROFILE.id,
+    studentName: STUDENT_PROFILE.name,
+    className: STUDENT_PROFILE.className,
+    category,
+    teacherName,
+    reportContent,
+    status: "Menunggu Tanggapan",
+    createdAt: new Date().toISOString(),
+  });
+
+  saveStoredArray(LAPORAN_MURID_STORAGE_KEY, reports);
+  studentReportForm.reset();
+  renderStudentReportHistory();
+}
+
 updateClock();
 setInterval(updateClock, 1000);
 registerSidebarNavigation();
@@ -425,6 +502,7 @@ renderAnnouncementBoard();
 renderAttendanceWidget();
 renderBillingSection();
 renderTaskSection();
+renderStudentReportHistory();
 
 studentTaskList?.addEventListener("click", (event) => {
   const target = event.target;
@@ -447,6 +525,7 @@ studentTaskList?.addEventListener("click", (event) => {
 });
 
 taskSubmitForm?.addEventListener("submit", submitTaskAnswer);
+studentReportForm?.addEventListener("submit", handleStudentReportSubmit);
 cancelTaskSubmitBtn?.addEventListener("click", closeSubmitModal);
 taskSubmitModal?.addEventListener("click", (event) => {
   if (event.target === taskSubmitModal) {

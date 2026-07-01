@@ -48,12 +48,14 @@ const transkripModal = document.querySelector("#transkripModal");
 const closeTranskripModalBtn = document.querySelector("#closeTranskripModalBtn");
 const transkripDetailMeta = document.querySelector("#transkripDetailMeta");
 const transkripGradesBody = document.querySelector("#transkripGradesBody");
+const laporanMuridTableBody = document.querySelector("#laporanMuridTableBody");
 
 const ACTIVE_SEMESTER_STORAGE_KEY = "goldenity.activeSemester";
 const DEFAULT_ACTIVE_SEMESTER = {
   tahun: "2026/2027",
   tipe: "Ganjil",
 };
+const LAPORAN_MURID_STORAGE_KEY = "goldenity.laporanMurid";
 
 const activeDemoUser = {
   userId: "101",
@@ -98,6 +100,129 @@ function getActiveSemesterLabel() {
   } catch (_error) {
     return `${DEFAULT_ACTIVE_SEMESTER.tahun} - ${DEFAULT_ACTIVE_SEMESTER.tipe}`;
   }
+}
+
+function getStoredArray(key) {
+  const raw = localStorage.getItem(key);
+  if (!raw) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (_error) {
+    return [];
+  }
+}
+
+function saveStoredArray(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function toDisplayDate(dateValue) {
+  const date = new Date(dateValue);
+  if (Number.isNaN(date.getTime())) {
+    return dateValue;
+  }
+
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+}
+
+function ensureDummyReportSeed() {
+  const reports = getStoredArray(LAPORAN_MURID_STORAGE_KEY);
+  if (reports.length > 0) {
+    return reports;
+  }
+
+  const seededReports = [
+    {
+      id: `LPR-SEED-${Date.now()}`,
+      studentId: "MURID-001",
+      studentName: "Bima Pratama",
+      className: "XI IPA 1",
+      category: "Akademik",
+      teacherName: "Bapak Reza Pranata",
+      reportContent: "Pak/Bu, metode pengajaran materi Fisika hari ini terlalu cepat.",
+      status: "Menunggu Tanggapan",
+      createdAt: new Date().toISOString(),
+    },
+  ];
+
+  saveStoredArray(LAPORAN_MURID_STORAGE_KEY, seededReports);
+  return seededReports;
+}
+
+function createReportStatusBadge(statusValue) {
+  if (String(statusValue ?? "").toLowerCase() === "selesai") {
+    return '<span class="badge badge-ok">Selesai</span>';
+  }
+
+  return '<span class="badge badge-warning">Menunggu</span>';
+}
+
+function renderTabelLaporan() {
+  if (!(laporanMuridTableBody instanceof HTMLElement)) {
+    return;
+  }
+
+  const reports = ensureDummyReportSeed();
+  if (reports.length === 0) {
+    laporanMuridTableBody.innerHTML = `
+      <tr>
+        <td colspan="6">Belum ada laporan murid.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  laporanMuridTableBody.innerHTML = reports
+    .slice()
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .map(
+      (report) => `
+        <tr>
+          <td>${toDisplayDate(report.createdAt)}</td>
+          <td>${report.studentName ?? "-"}</td>
+          <td>${report.category ?? "-"}</td>
+          <td>${report.reportContent ?? "-"}</td>
+          <td>${createReportStatusBadge(report.status)}</td>
+          <td>
+            <button class="btn-kanban-secondary js-resolve-report" type="button" data-report-id="${report.id}">
+              Tanggapi/Selesaikan
+            </button>
+          </td>
+        </tr>
+      `,
+    )
+    .join("");
+}
+
+function handleReportResolution(reportId) {
+  const reports = getStoredArray(LAPORAN_MURID_STORAGE_KEY);
+  const reportIndex = reports.findIndex((report) => report.id === reportId);
+  if (reportIndex < 0) {
+    return;
+  }
+
+  const responseNote = prompt("Masukkan tanggapan/catatan penyelesaian:");
+  if (!responseNote || !responseNote.trim()) {
+    return;
+  }
+
+  reports[reportIndex] = {
+    ...reports[reportIndex],
+    status: "Selesai",
+    responseNote: responseNote.trim(),
+    respondedAt: new Date().toISOString(),
+  };
+
+  saveStoredArray(LAPORAN_MURID_STORAGE_KEY, reports);
+  renderTabelLaporan();
 }
 
 function getVisibleStudents(activeUser) {
@@ -345,6 +470,25 @@ studentTableBody.addEventListener("click", (event) => {
   handleTranscriptDownload(studentId);
 });
 
+laporanMuridTableBody?.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) {
+    return;
+  }
+
+  const resolveButton = target.closest(".js-resolve-report");
+  if (!(resolveButton instanceof HTMLButtonElement)) {
+    return;
+  }
+
+  const reportId = resolveButton.dataset.reportId;
+  if (!reportId) {
+    return;
+  }
+
+  handleReportResolution(reportId);
+});
+
 closeTranskripModalBtn.addEventListener("click", closeTranscriptModal);
 transkripModal.addEventListener("click", (event) => {
   if (event.target === transkripModal) {
@@ -364,6 +508,7 @@ function render() {
 
 onlyWarningToggle.addEventListener("change", render);
 render();
+renderTabelLaporan();
 
 // ── Chart.js: Tren IPK & Pendaftar ──────────────────────────────────────────
 const chartYears = ["2023", "2024", "2025", "2026"];

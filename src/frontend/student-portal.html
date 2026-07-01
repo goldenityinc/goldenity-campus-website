@@ -10,6 +10,10 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
     <style>
       :root {
         --ink: #0f354e;
@@ -77,6 +81,17 @@
         border: 1px solid transparent;
         border-radius: 10px;
         padding: 10px 11px;
+      }
+
+      .nav-link i {
+        margin-right: 10px;
+        width: 18px;
+        text-align: center;
+        color: #2ea69b;
+      }
+
+      .nav-link.active i {
+        color: #d4ffe8;
       }
 
       .nav-link:hover {
@@ -369,6 +384,23 @@
         cursor: pointer;
       }
 
+      .btn-kanban-primary {
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+        color: #fff;
+        background: linear-gradient(135deg, #0f4e8a, #1662a8);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .btn-kanban-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 12px rgba(20, 57, 96, 0.18);
+      }
+
       .summary-ip {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -515,12 +547,13 @@
         </div>
 
         <nav class="nav-group">
-          <a class="nav-link active" href="#section-dashboard" data-section-target="section-dashboard">Dashboard Murid</a>
-          <a class="nav-link" href="#section-jadwal" data-section-target="section-jadwal">Jadwal Pelajaran</a>
-          <a class="nav-link" href="#section-khs" data-section-target="section-khs">Kartu Hasil Studi / Rapot</a>
-          <a class="nav-link" href="#section-keuangan" data-section-target="section-keuangan">Keuangan & Tagihan</a>
-          <a class="nav-link" href="#section-lms" data-section-target="section-lms">Tugas & LMS</a>
-          <a class="nav-link logout" href="./index.html">Logout</a>
+          <a class="nav-link active" href="#section-dashboard" data-section-target="section-dashboard"><i class="fa-solid fa-house"></i>Dashboard Murid</a>
+          <a class="nav-link" href="#section-jadwal" data-section-target="section-jadwal"><i class="fa-solid fa-calendar-days"></i>Jadwal Pelajaran</a>
+          <a class="nav-link" href="#section-khs" data-section-target="section-khs"><i class="fa-solid fa-graduation-cap"></i>Kartu Hasil Studi / Rapot</a>
+          <a class="nav-link" href="#section-keuangan" data-section-target="section-keuangan"><i class="fa-solid fa-credit-card"></i>Keuangan & Tagihan</a>
+          <a class="nav-link" href="#section-lms" data-section-target="section-lms"><i class="fa-solid fa-laptop-code"></i>Tugas & LMS</a>
+          <a class="nav-link" href="#section-pelaporan" data-section-target="section-pelaporan"><i class="fa-solid fa-comments"></i>Bimbingan & Pelaporan</a>
+          <a class="nav-link logout" href="./index.html"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
         </nav>
       </aside>
 
@@ -832,6 +865,74 @@
                 </article>
               </div>
             </div>
+          </section>
+        </section>
+
+        <section id="section-pelaporan" class="content-section">
+          <section class="hero">
+            <p class="page-kicker">Bimbingan & Pelaporan</p>
+            <h2 class="page-title">Sampaikan Konseling, Kritik, atau Aduan</h2>
+            <p class="page-subtitle">Laporan Anda akan diteruskan ke guru/dosen wali terkait untuk ditindaklanjuti.</p>
+          </section>
+
+          <section class="panel-grid">
+            <article class="card">
+              <div class="card-head">
+                <h2>Formulir Laporan Baru</h2>
+              </div>
+              <div class="card-body">
+                <form id="studentReportForm" class="task-grid">
+                  <label for="reportCategory">
+                    Kategori
+                    <select id="reportCategory" name="reportCategory" required>
+                      <option value="">Pilih Kategori</option>
+                      <option value="Akademik">Akademik</option>
+                      <option value="Kedisiplinan/Perilaku Guru">Kedisiplinan/Perilaku Guru</option>
+                      <option value="Fasilitas">Fasilitas</option>
+                    </select>
+                  </label>
+
+                  <label for="reportTeacherName">
+                    Nama Guru Terkait
+                    <input id="reportTeacherName" name="reportTeacherName" type="text" placeholder="Contoh: Ibu Cyntia Mahesa" required />
+                  </label>
+
+                  <label for="reportDescription">
+                    Isi Laporan/Aduan
+                    <textarea
+                      id="reportDescription"
+                      name="reportDescription"
+                      rows="5"
+                      placeholder="Tuliskan detail laporan atau kebutuhan konseling Anda..."
+                      required
+                    ></textarea>
+                  </label>
+
+                  <div>
+                    <button class="btn-kanban-primary" type="submit">Kirim Laporan</button>
+                  </div>
+                </form>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <h2>Riwayat Laporan Saya</h2>
+              </div>
+              <div class="card-body">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Tanggal</th>
+                      <th>Kategori</th>
+                      <th>Guru Terkait</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="studentReportHistoryBody"></tbody>
+                </table>
+              </div>
+            </article>
           </section>
         </section>
       </main>
