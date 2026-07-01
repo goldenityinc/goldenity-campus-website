@@ -54,8 +54,23 @@ h3 {
   justify-content: flex-start;
 }
 
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+}
+
 .brand {
-  margin: 0 0 20px;
+  margin: 0;
   font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-weight: 700;
   font-size: 1.05rem;
@@ -74,20 +89,30 @@ h3 {
   color: #dceaf9;
   padding: 10px 12px;
   border-radius: 10px;
-  font-weight: 700;
+  font-weight: 500;
   border: 1px solid transparent;
-  transition: transform 0.15s ease, background-color 0.15s ease;
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
 }
 
 .nav-link:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateX(2px);
+  color: #d4af37;
+  background: rgba(212, 175, 55, 0.1);
+  border-left-color: #d4af37;
 }
 
 .nav-link.active {
-  color: #fff;
-  background: linear-gradient(130deg, #1a65b0, #2ba2f5);
-  border-color: rgba(255, 255, 255, 0.38);
+  color: #d4af37;
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(212, 175, 55, 0.3);
+  border-left-color: #d4af37;
+}
+
+.sidebar .menu-item {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .sidebar .menu-item i {
@@ -95,6 +120,7 @@ h3 {
   width: 20px;
   text-align: center;
   font-size: 16px;
+  color: currentColor;
 }
 
 .back-btn {
@@ -116,9 +142,9 @@ h3 {
 
 .hero-card {
   border: 1px solid #c9d7ee;
-  border-radius: 20px;
+  border-radius: 16px;
   background: linear-gradient(140deg, #ffffff, #f2f7ff 55%, #fff6eb);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 4px 12px rgba(14, 35, 73, 0.08);
   padding: 22px;
 }
 
@@ -134,8 +160,12 @@ h3 {
 .page-title {
   margin: 8px 0 6px;
   font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: clamp(1.2rem, 3.4vw, 2rem);
+}
+
+h2.slide-title {
+  font-weight: 600;
 }
 
 .flow-info-box {
@@ -173,9 +203,9 @@ h3 {
 .panel {
   margin-top: 16px;
   border: 1px solid #cbd8ef;
-  border-radius: 20px;
+  border-radius: 16px;
   background: var(--panel);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 3px 10px rgba(20, 41, 75, 0.06);
   overflow: hidden;
 }
 
