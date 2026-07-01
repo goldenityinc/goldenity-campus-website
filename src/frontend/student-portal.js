@@ -12,6 +12,8 @@ const taskSubmitForm = document.querySelector("#taskSubmitForm");
 const taskAnswerInput = document.querySelector("#taskAnswerInput");
 const taskFileInput = document.querySelector("#taskFileInput");
 const cancelTaskSubmitBtn = document.querySelector("#cancelTaskSubmitBtn");
+const contentSections = document.querySelectorAll(".content-section");
+const sidebarMenuLinks = document.querySelectorAll(".nav-group .nav-link[data-section-target]");
 
 const PENGUMUMAN_STORAGE_KEY = "goldenity.pengumuman";
 const PRESENSI_STORAGE_KEY = "goldenity.presensi";
@@ -75,6 +77,42 @@ function updateClock() {
   }).format(now);
 
   digitalClock.textContent = `Waktu server sekolah: ${formattedTime}`;
+}
+
+function switchSection(targetSectionId) {
+  if (!targetSectionId) {
+    return;
+  }
+
+  contentSections.forEach((section) => {
+    if (!(section instanceof HTMLElement)) {
+      return;
+    }
+
+    const shouldShow = section.id === targetSectionId;
+    section.classList.toggle("active", shouldShow);
+  });
+
+  sidebarMenuLinks.forEach((link) => {
+    if (!(link instanceof HTMLElement)) {
+      return;
+    }
+
+    const isActive = link.getAttribute("data-section-target") === targetSectionId;
+    link.classList.toggle("active", isActive);
+  });
+}
+
+function registerSidebarNavigation() {
+  sidebarMenuLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const targetSectionId = link.getAttribute("data-section-target") || "section-dashboard";
+      switchSection(targetSectionId);
+    });
+  });
+
+  switchSection("section-dashboard");
 }
 
 function registerJoinButtons() {
@@ -380,6 +418,7 @@ function renderGradeChart() {
 
 updateClock();
 setInterval(updateClock, 1000);
+registerSidebarNavigation();
 registerJoinButtons();
 renderGradeChart();
 renderAnnouncementBoard();

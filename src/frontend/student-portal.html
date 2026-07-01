@@ -86,7 +86,7 @@
 
       .nav-link.active {
         color: #fff;
-        background: linear-gradient(130deg, var(--teal-1), var(--teal-2));
+        background: linear-gradient(130deg, #198b47, #2fbd72);
         border-color: rgba(255, 255, 255, 0.5);
       }
 
@@ -169,6 +169,20 @@
         padding: 14px;
       }
 
+      .content-section {
+        display: none;
+      }
+
+      .content-section.active {
+        display: block;
+      }
+
+      .panel-grid {
+        margin-top: 16px;
+        display: grid;
+        gap: 14px;
+      }
+
       .profile-wrap {
         display: grid;
         grid-template-columns: 80px 1fr;
@@ -212,7 +226,7 @@
 
       th,
       td {
-        padding: 10px 8px;
+        padding: 12px 10px;
         border-bottom: 1px solid #e6eef8;
         text-align: left;
         font-size: 0.88rem;
@@ -223,6 +237,13 @@
         letter-spacing: 0.07em;
         color: #587491;
         font-size: 0.74rem;
+      }
+
+      .day-divider td {
+        background: #f5f9ff;
+        color: #456687;
+        font-weight: 800;
+        letter-spacing: 0.05em;
       }
 
       .join-btn {
@@ -348,6 +369,64 @@
         cursor: pointer;
       }
 
+      .summary-ip {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .summary-box {
+        border: 1px solid #d8e4f2;
+        border-radius: 12px;
+        background: #fff;
+        padding: 12px;
+      }
+
+      .summary-box p {
+        margin: 0;
+      }
+
+      .summary-label {
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: #648099;
+      }
+
+      .summary-value {
+        margin-top: 6px;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #194f7c;
+      }
+
+      .list-stack {
+        display: grid;
+        gap: 10px;
+      }
+
+      .list-item {
+        border: 1px solid #d5e3f4;
+        border-radius: 12px;
+        background: #fff;
+        padding: 12px;
+      }
+
+      .list-item p {
+        margin: 0;
+        color: #4f6b85;
+      }
+
+      .list-item-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+        flex-wrap: wrap;
+      }
+
       .modal-backdrop {
         position: fixed;
         inset: 0;
@@ -420,6 +499,10 @@
         .dashboard-grid {
           grid-template-columns: 1fr;
         }
+
+        .summary-ip {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -432,44 +515,121 @@
         </div>
 
         <nav class="nav-group">
-          <a class="nav-link active" href="./student-portal.html">Dashboard Murid</a>
-          <a class="nav-link" href="#jadwal">Jadwal Pelajaran</a>
-          <a class="nav-link" href="#rapot">Kartu Hasil Studi / Rapot</a>
-          <a class="nav-link" href="#keuangan">Keuangan & Tagihan</a>
-          <a class="nav-link" href="#tugas">Tugas & LMS</a>
+          <a class="nav-link active" href="#section-dashboard" data-section-target="section-dashboard">Dashboard Murid</a>
+          <a class="nav-link" href="#section-jadwal" data-section-target="section-jadwal">Jadwal Pelajaran</a>
+          <a class="nav-link" href="#section-khs" data-section-target="section-khs">Kartu Hasil Studi / Rapot</a>
+          <a class="nav-link" href="#section-keuangan" data-section-target="section-keuangan">Keuangan & Tagihan</a>
+          <a class="nav-link" href="#section-lms" data-section-target="section-lms">Tugas & LMS</a>
           <a class="nav-link logout" href="./index.html">Logout</a>
         </nav>
       </aside>
 
       <main class="main-content">
-        <section class="hero">
-          <p class="page-kicker">Dashboard Murid</p>
-          <h2 class="page-title">Selamat Datang, Bima Pratama</h2>
-          <p class="page-subtitle">Pantau jadwal belajar, status kehadiran, dan perkembangan nilai dalam satu layar.</p>
-          <span id="digitalClock" class="clock-chip">Memuat jam...</span>
-        </section>
+        <section id="section-dashboard" class="content-section active">
+          <section class="hero">
+            <p class="page-kicker">Dashboard Murid</p>
+            <h2 class="page-title">Selamat Datang, Bima Pratama</h2>
+            <p class="page-subtitle">Pantau jadwal belajar, status kehadiran, dan perkembangan nilai dalam satu layar.</p>
+            <span id="digitalClock" class="clock-chip">Memuat jam...</span>
+          </section>
 
-        <section class="dashboard-grid">
-          <article class="card">
-            <div class="card-head">
-              <h2>Kartu Profil</h2>
-            </div>
-            <div class="card-body">
-              <div class="profile-wrap">
-                <div class="profile-avatar">BP</div>
-                <div class="profile-meta">
-                  <p><strong>Nama:</strong> Bima Pratama</p>
-                  <p><strong>NISN/NIM:</strong> 24001021</p>
-                  <p><strong>Kelas Aktif:</strong> XI IPA 1</p>
-                  <p><strong>Status:</strong> <span class="status-pill">Aktif</span></p>
+          <section class="dashboard-grid">
+            <article class="card">
+              <div class="card-head">
+                <h2>Kartu Profil</h2>
+              </div>
+              <div class="card-body">
+                <div class="profile-wrap">
+                  <div class="profile-avatar">BP</div>
+                  <div class="profile-meta">
+                    <p><strong>Nama:</strong> Bima Pratama</p>
+                    <p><strong>NISN/NIM:</strong> 24001021</p>
+                    <p><strong>Kelas Aktif:</strong> XI IPA 1</p>
+                    <p><strong>Status:</strong> <span class="status-pill">Aktif</span></p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </article>
+            </article>
 
-          <article id="jadwal" class="card">
+            <article class="card">
+              <div class="card-head">
+                <h2>Widget Jadwal Hari Ini</h2>
+              </div>
+              <div class="card-body">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Jam</th>
+                      <th>Mata Pelajaran</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>08:00</td>
+                      <td>Matematika Lanjut</td>
+                      <td><button class="join-btn js-join-class" type="button" data-subject="Matematika Lanjut">Join Virtual Class</button></td>
+                    </tr>
+                    <tr>
+                      <td>10:00</td>
+                      <td>Fisika Dasar</td>
+                      <td><button class="join-btn js-join-class" type="button" data-subject="Fisika Dasar">Join Virtual Class</button></td>
+                    </tr>
+                    <tr>
+                      <td>13:00</td>
+                      <td>Kimia Terapan</td>
+                      <td><button class="join-btn js-join-class" type="button" data-subject="Kimia Terapan">Join Virtual Class</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <h2>Persentase Kehadiran</h2>
+              </div>
+              <div class="card-body">
+                <p id="attendancePercentText" style="margin:0;font-size:1.7rem;font-weight:800;color:#1c7a61;">95%</p>
+                <p style="margin:6px 0 0;color:#55708b;">Akumulasi status Hadir dari data presensi terbaru.</p>
+                <div class="meter-wrap">
+                  <div id="attendanceMeterBar" class="meter-bar" style="width:95%;"></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="card wide-card">
+              <div class="card-head">
+                <h2>Papan Pengumuman</h2>
+              </div>
+              <div class="card-body">
+                <div id="announcementList" class="info-list"></div>
+              </div>
+            </article>
+
+            <article class="card wide-card">
+              <div class="card-head">
+                <h2>Ringkasan Nilai Akademik - Perkembangan Nilai Rata-rata Semester</h2>
+              </div>
+              <div class="card-body">
+                <div class="chart-wrap">
+                  <canvas id="gradeProgressChart"></canvas>
+                </div>
+              </div>
+            </article>
+          </section>
+        </section>
+
+        <section id="section-jadwal" class="content-section">
+          <section class="hero">
+            <p class="page-kicker">Jadwal Pelajaran</p>
+            <h2 class="page-title">Jadwal Mingguan (Senin - Jumat)</h2>
+            <p class="page-subtitle">Simulasi jadwal belajar mingguan yang terintegrasi dengan ruang dan guru pengampu.</p>
+          </section>
+
+          <section class="card section-panel">
             <div class="card-head">
-              <h2>Widget Jadwal Hari Ini</h2>
+              <h2>Tabel Jadwal Mingguan</h2>
             </div>
             <div class="card-body">
               <table>
@@ -477,80 +637,202 @@
                   <tr>
                     <th>Jam</th>
                     <th>Mata Pelajaran</th>
-                    <th>Aksi</th>
+                    <th>Ruangan</th>
+                    <th>Nama Guru</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>08:00</td>
-                    <td>Matematika Lanjut</td>
-                    <td><button class="join-btn js-join-class" type="button" data-subject="Matematika Lanjut">Join Virtual Class</button></td>
-                  </tr>
-                  <tr>
-                    <td>10:00</td>
-                    <td>Fisika Dasar</td>
-                    <td><button class="join-btn js-join-class" type="button" data-subject="Fisika Dasar">Join Virtual Class</button></td>
-                  </tr>
-                  <tr>
-                    <td>13:00</td>
-                    <td>Kimia Terapan</td>
-                    <td><button class="join-btn js-join-class" type="button" data-subject="Kimia Terapan">Join Virtual Class</button></td>
-                  </tr>
+                  <tr class="day-divider"><td colspan="4">Senin</td></tr>
+                  <tr><td>07:30 - 08:45</td><td>Matematika Wajib</td><td>R-201</td><td>Ibu Lestari Wulandari</td></tr>
+                  <tr><td>09:00 - 10:15</td><td>Fisika Dasar</td><td>Lab Fisika 1</td><td>Bapak Reza Pranata</td></tr>
+                  <tr><td>10:30 - 11:45</td><td>Bahasa Inggris Akademik</td><td>R-105</td><td>Ibu Cyntia Mahesa</td></tr>
+                  <tr><td>13:00 - 14:15</td><td>Informatika</td><td>Lab Komputer A</td><td>Bapak Andri Wijaya</td></tr>
+
+                  <tr class="day-divider"><td colspan="4">Selasa</td></tr>
+                  <tr><td>07:30 - 08:45</td><td>Kimia Dasar</td><td>Lab Kimia</td><td>Ibu Nia Maharani</td></tr>
+                  <tr><td>09:00 - 10:15</td><td>Sejarah Indonesia</td><td>R-204</td><td>Bapak Hendra Kusuma</td></tr>
+                  <tr><td>10:30 - 11:45</td><td>Pendidikan Agama</td><td>R-101</td><td>Ibu Fitria Nurbani</td></tr>
+                  <tr><td>13:00 - 14:15</td><td>Biologi</td><td>R-202</td><td>Bapak Dimas Arya</td></tr>
+
+                  <tr class="day-divider"><td colspan="4">Rabu</td></tr>
+                  <tr><td>07:30 - 08:45</td><td>Bahasa Indonesia</td><td>R-203</td><td>Ibu Nurlaila Putri</td></tr>
+                  <tr><td>09:00 - 10:15</td><td>Ekonomi</td><td>R-104</td><td>Bapak Rio Maulana</td></tr>
+                  <tr><td>10:30 - 11:45</td><td>Fisika Lanjutan</td><td>Lab Fisika 1</td><td>Bapak Reza Pranata</td></tr>
+                  <tr><td>13:00 - 14:15</td><td>Seni Budaya</td><td>Studio Seni</td><td>Ibu Aulia Permata</td></tr>
+
+                  <tr class="day-divider"><td colspan="4">Kamis</td></tr>
+                  <tr><td>07:30 - 08:45</td><td>Matematika Peminatan</td><td>R-201</td><td>Ibu Lestari Wulandari</td></tr>
+                  <tr><td>09:00 - 10:15</td><td>Geografi</td><td>R-205</td><td>Bapak Rahmat Saputra</td></tr>
+                  <tr><td>10:30 - 11:45</td><td>Bahasa Inggris Conversation</td><td>R-105</td><td>Ibu Cyntia Mahesa</td></tr>
+                  <tr><td>13:00 - 14:15</td><td>Praktikum Informatika</td><td>Lab Komputer A</td><td>Bapak Andri Wijaya</td></tr>
+
+                  <tr class="day-divider"><td colspan="4">Jumat</td></tr>
+                  <tr><td>07:30 - 08:45</td><td>PJOK</td><td>Lapangan Indoor</td><td>Bapak Bayu Prakoso</td></tr>
+                  <tr><td>09:00 - 10:15</td><td>Kimia Terapan</td><td>Lab Kimia</td><td>Ibu Nia Maharani</td></tr>
+                  <tr><td>10:30 - 11:45</td><td>PPKn</td><td>R-103</td><td>Ibu Maya Salsabila</td></tr>
                 </tbody>
               </table>
             </div>
-          </article>
-
-          <article class="card">
-            <div class="card-head">
-              <h2>Persentase Kehadiran</h2>
-            </div>
-            <div class="card-body">
-              <p id="attendancePercentText" style="margin:0;font-size:1.7rem;font-weight:800;color:#1c7a61;">95%</p>
-              <p style="margin:6px 0 0;color:#55708b;">Akumulasi status Hadir dari data presensi terbaru.</p>
-              <div class="meter-wrap">
-                <div id="attendanceMeterBar" class="meter-bar" style="width:95%;"></div>
-              </div>
-            </div>
-          </article>
-
-          <article class="card wide-card">
-            <div class="card-head">
-              <h2>Papan Pengumuman</h2>
-            </div>
-            <div class="card-body">
-              <div id="announcementList" class="info-list"></div>
-            </div>
-          </article>
-
-          <article id="rapot" class="card wide-card">
-            <div class="card-head">
-              <h2>Ringkasan Nilai Akademik - Perkembangan Nilai Rata-rata Semester</h2>
-            </div>
-            <div class="card-body">
-              <div class="chart-wrap">
-                <canvas id="gradeProgressChart"></canvas>
-              </div>
-            </div>
-          </article>
+          </section>
         </section>
 
-        <section id="keuangan" class="card section-panel">
-          <div class="card-head">
-            <h2>Keuangan & Tagihan</h2>
-          </div>
-          <div class="card-body">
-            <div id="billingCardContainer"></div>
-          </div>
+        <section id="section-khs" class="content-section">
+          <section class="hero">
+            <p class="page-kicker">Kartu Hasil Studi</p>
+            <h2 class="page-title">Ringkasan Nilai Semester Aktif</h2>
+            <p class="page-subtitle">Nilai akademik terbaru beserta ringkasan indeks prestasi semester berjalan.</p>
+          </section>
+
+          <section class="panel-grid">
+            <article class="card">
+              <div class="card-head">
+                <h2>Rincian KHS Semester Genap 2025/2026</h2>
+              </div>
+              <div class="card-body">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Kode MK</th>
+                      <th>Nama Matkul</th>
+                      <th>SKS</th>
+                      <th>Nilai Huruf</th>
+                      <th>Bobot</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>MAT211</td><td>Kalkulus Lanjut</td><td>3</td><td>A</td><td>4.00</td></tr>
+                    <tr><td>FIS204</td><td>Fisika Modern</td><td>3</td><td>A-</td><td>3.70</td></tr>
+                    <tr><td>KIM206</td><td>Kimia Analitik</td><td>2</td><td>B+</td><td>3.30</td></tr>
+                    <tr><td>INF220</td><td>Pemrograman Dasar</td><td>3</td><td>A</td><td>4.00</td></tr>
+                    <tr><td>ENG210</td><td>English for Academic Writing</td><td>2</td><td>A-</td><td>3.70</td></tr>
+                    <tr><td>STA208</td><td>Statistika Terapan</td><td>3</td><td>B+</td><td>3.30</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <h2>Ringkasan IP Semester</h2>
+              </div>
+              <div class="card-body">
+                <div class="summary-ip">
+                  <div class="summary-box">
+                    <p class="summary-label">Total SKS Diambil</p>
+                    <p class="summary-value">16</p>
+                  </div>
+                  <div class="summary-box">
+                    <p class="summary-label">Total Mutu</p>
+                    <p class="summary-value">60.0</p>
+                  </div>
+                  <div class="summary-box">
+                    <p class="summary-label">IP Semester</p>
+                    <p class="summary-value">3.75</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </section>
         </section>
 
-        <section id="tugas" class="card section-panel">
-          <div class="card-head">
-            <h2>Tugas & LMS</h2>
-          </div>
-          <div class="card-body">
-            <div id="studentTaskList" class="task-grid"></div>
-          </div>
+        <section id="section-keuangan" class="content-section">
+          <section class="hero">
+            <p class="page-kicker">Keuangan & Tagihan</p>
+            <h2 class="page-title">Tagihan Aktif dan Riwayat Pembayaran</h2>
+            <p class="page-subtitle">Simulasi data keuangan murid yang terintegrasi dengan admin keuangan kampus.</p>
+          </section>
+
+          <section class="panel-grid">
+            <article class="card">
+              <div class="card-head">
+                <h2>Tagihan Aktif</h2>
+              </div>
+              <div class="card-body">
+                <div class="list-stack">
+                  <article class="list-item">
+                    <div class="list-item-head">
+                      <strong>SPP Juli 2026</strong>
+                      <span class="badge warning">Tertunggak</span>
+                    </div>
+                    <p>Jatuh tempo: 10 Juli 2026 | Nominal: Rp750.000</p>
+                  </article>
+                  <article class="list-item">
+                    <div class="list-item-head">
+                      <strong>Uang Lab Semester Genap</strong>
+                      <span class="badge success">Siap Bayar</span>
+                    </div>
+                    <p>Jatuh tempo: 20 Juli 2026 | Nominal: Rp250.000</p>
+                  </article>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <h2>Riwayat Pembayaran</h2>
+              </div>
+              <div class="card-body">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>No. Kwitansi</th>
+                      <th>Tanggal</th>
+                      <th>Nominal</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>KW-202606-1181</td><td>10 Juni 2026</td><td>Rp750.000</td><td><span class="badge success">Lunas</span></td></tr>
+                    <tr><td>KW-202605-0934</td><td>10 Mei 2026</td><td>Rp750.000</td><td><span class="badge success">Lunas</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+        </section>
+
+        <section id="section-lms" class="content-section">
+          <section class="hero">
+            <p class="page-kicker">Tugas & LMS</p>
+            <h2 class="page-title">Daftar Tugas Aktif</h2>
+            <p class="page-subtitle">Pantau progres tugas kelas secara ringkas dan mudah dibaca.</p>
+          </section>
+
+          <section class="card section-panel">
+            <div class="card-head">
+              <h2>List Card Tugas</h2>
+            </div>
+            <div class="card-body">
+              <div class="task-grid">
+                <article class="task-card">
+                  <h4>Latihan Logaritma</h4>
+                  <p><strong>Mata Pelajaran:</strong> Matematika Peminatan</p>
+                  <p><strong>Deadline:</strong> 05 Juli 2026, 21:00 WIB</p>
+                  <div class="task-footer">
+                    <span class="badge warning">Belum Dikerjakan</span>
+                  </div>
+                </article>
+
+                <article class="task-card">
+                  <h4>Paper Termodinamika</h4>
+                  <p><strong>Mata Pelajaran:</strong> Fisika Modern</p>
+                  <p><strong>Deadline:</strong> 08 Juli 2026, 23:00 WIB</p>
+                  <div class="task-footer">
+                    <span class="badge warning">Belum Dikerjakan</span>
+                  </div>
+                </article>
+
+                <article class="task-card">
+                  <h4>Ringkasan Artikel Climate Change</h4>
+                  <p><strong>Mata Pelajaran:</strong> Bahasa Inggris Akademik</p>
+                  <p><strong>Deadline:</strong> 01 Juli 2026, 16:00 WIB</p>
+                  <div class="task-footer">
+                    <span class="badge success">Terkumpul</span>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </section>
         </section>
       </main>
     </div>
