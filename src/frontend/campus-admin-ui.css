@@ -682,3 +682,101 @@ th {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* Design refinement: global consistency, softer surfaces, and Goldenity brand accents. */
+:root {
+  --goldenity-gold: #d4af37;
+  --radius-card: 16px;
+  --radius-btn: 8px;
+  --soft-line: #e2e8f0;
+  --soft-shadow: 0 8px 20px rgba(15, 32, 58, 0.07);
+}
+
+body {
+  font-family: "Plus Jakarta Sans", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+h1,
+.page-title {
+  font-size: clamp(1.7rem, 3.1vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+h2,
+.panel-head h2 {
+  font-size: clamp(1.12rem, 1.8vw, 1.3rem);
+  font-weight: 700;
+}
+
+p,
+td,
+th,
+label {
+  line-height: 1.6;
+}
+
+.hero-card,
+.panel,
+.summary-card,
+.kanban-col,
+.maba-card,
+.metric-card,
+.info-field,
+.doc-card,
+.modal {
+  border-color: var(--soft-line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--soft-shadow);
+}
+
+.btn,
+.btn-kanban-primary,
+.btn-kanban-secondary,
+.doc-card .btn-doc {
+  border-radius: var(--radius-btn);
+  transition: all 0.3s ease;
+}
+
+.btn-primary,
+.btn-kanban-primary {
+  background: linear-gradient(135deg, #0e67b8, #3f93d8);
+}
+
+.btn:hover,
+.btn-kanban-primary:hover,
+.btn-kanban-secondary:hover,
+.doc-card .btn-doc:hover {
+  transform: translateY(-1px);
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+tbody tr:nth-child(even) td {
+  background: #fbfdff;
+}
+
+.page-kicker,
+.summary-label,
+.maba-rekap-status {
+  color: #876500;
+}
+
+.badge,
+.nav-link.active,
+.maba-rekap-status {
+  border-color: rgba(212, 175, 55, 0.45);
+}
+
+.nav-link.active {
+  box-shadow: inset 0 0 0 1px rgba(212, 175, 55, 0.28);
+}

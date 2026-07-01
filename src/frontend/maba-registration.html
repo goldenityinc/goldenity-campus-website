@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pendaftaran Mahasiswa Baru</title>
+    <title>Pendaftaran Mahasiswa Baru - Goldenity Premium</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,13 +12,14 @@
     />
     <style>
       :root {
-        --ink: #14314d;
-        --ink-soft: #476581;
-        --surface: #ffffffdd;
-        --line: #cbd9ea;
-        --primary-1: #0d8790;
-        --primary-2: #22bf9f;
-        --shadow: 0 22px 46px rgba(18, 40, 69, 0.18);
+        --navy: #001b3a;
+        --gold: #d4af37;
+        --smoke: #f5f7fa;
+        --ink: #1a2f4a;
+        --ink-soft: #5a6f8a;
+        --surface: #ffffffeb;
+        --line: #dde5ef;
+        --shadow: 0 18px 42px rgba(7, 24, 46, 0.18);
       }
 
       * {
@@ -30,46 +31,61 @@
         min-height: 100vh;
         font-family: "Plus Jakarta Sans", sans-serif;
         color: var(--ink);
-        background: radial-gradient(circle at 12% 14%, #c8f6ff, transparent 36%),
-          radial-gradient(circle at 86% 8%, #ffe0af, transparent 32%),
-          radial-gradient(circle at 78% 82%, #d4ffef, transparent 28%),
-          linear-gradient(145deg, #eef8ff, #f4faff 42%, #fff8ef);
+        background:
+          radial-gradient(circle at 16% 12%, rgba(212, 175, 55, 0.15), transparent 35%),
+          radial-gradient(circle at 88% 14%, rgba(0, 27, 58, 0.1), transparent 32%),
+          linear-gradient(150deg, #f3f6fb, #fffaf1 56%, #f7fafe);
         display: grid;
         place-items: center;
         padding: 20px;
       }
 
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(120deg, rgba(0, 27, 58, 0.03) 1px, transparent 1px),
+          linear-gradient(30deg, rgba(0, 27, 58, 0.02) 1px, transparent 1px);
+        background-size: 58px 58px;
+      }
+
       .internal-link {
+        z-index: 2;
         position: fixed;
         top: 16px;
         right: 16px;
         text-decoration: none;
         font-size: 0.86rem;
         font-weight: 800;
-        color: #0f4a79;
+        color: #10243f;
         background: #ffffffde;
-        border: 1px solid #b8d0ea;
+        border: 1px solid #d8e1ed;
         border-radius: 999px;
         padding: 9px 13px;
         box-shadow: 0 8px 16px rgba(20, 47, 78, 0.14);
       }
 
       .back-link {
+        z-index: 2;
         position: fixed;
         top: 16px;
         left: 16px;
         text-decoration: none;
         font-size: 0.86rem;
         font-weight: 800;
-        color: #7c1f1f;
+        color: #10243f;
         background: #ffffffde;
-        border: 1px solid #e7bcbc;
+        border: 1px solid #d8e1ed;
         border-radius: 999px;
         padding: 9px 13px;
         box-shadow: 0 8px 16px rgba(20, 47, 78, 0.14);
       }
 
       .registration-card {
+        position: relative;
+        z-index: 1;
         width: min(640px, 100%);
         border: 1px solid var(--line);
         border-radius: 24px;
@@ -79,25 +95,56 @@
         padding: 24px;
       }
 
+      .registration-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        border-radius: 24px 24px 0 0;
+        background: linear-gradient(135deg, #d4af37, #f0d48a);
+      }
+
+      .brand-emblem {
+        width: 72px;
+        height: 72px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        margin: 0 auto 10px;
+        border: 1px solid rgba(212, 175, 55, 0.55);
+        color: var(--navy);
+        font-family: "Fraunces", serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: radial-gradient(circle at 30% 20%, rgba(212, 175, 55, 0.32), rgba(212, 175, 55, 0.06) 55%),
+          #fff;
+      }
+
       .kicker {
         margin: 0;
+        text-align: center;
         text-transform: uppercase;
         letter-spacing: 0.12em;
         font-size: 0.76rem;
         font-weight: 800;
-        color: #0c6173;
+        color: #8d6a00;
       }
 
       h1 {
         margin: 8px 0 6px;
         font-family: "Fraunces", serif;
         font-size: clamp(1.5rem, 3.8vw, 2.2rem);
+        color: #132b4b;
+        text-align: center;
       }
 
       .subtitle {
         margin: 0;
         color: var(--ink-soft);
         line-height: 1.5;
+        text-align: center;
       }
 
       form {
@@ -116,11 +163,18 @@
 
       input,
       select {
-        border: 1px solid #bad0e8;
+        border: 1px solid #d1dbe8;
         border-radius: 12px;
         padding: 11px 12px;
         font: inherit;
         background: #fff;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: rgba(212, 175, 55, 0.75);
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
       }
 
       input[type="file"] {
@@ -134,9 +188,15 @@
         padding: 11px 14px;
         font: inherit;
         font-weight: 800;
-        color: #fff;
-        background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+        color: #0e213c;
+        background: linear-gradient(135deg, #d4af37, #e8ca74);
         cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.03);
       }
 
       .submit-btn:disabled {
@@ -161,7 +221,7 @@
       .modal {
         width: min(520px, 100%);
         border-radius: 18px;
-        border: 1px solid #bdd0ea;
+        border: 1px solid #d6e0ec;
         background: #fff;
         padding: 20px;
         box-shadow: var(--shadow);
@@ -190,8 +250,8 @@
         padding: 9px 14px;
         font: inherit;
         font-weight: 800;
-        color: #fff;
-        background: linear-gradient(130deg, #0b638f, #2aaecb);
+        color: #0e213c;
+        background: linear-gradient(130deg, #d4af37, #e8ca74);
         cursor: pointer;
       }
 
@@ -221,6 +281,7 @@
     <a class="internal-link" href="./dosen-wali-dashboard.html">Login Internal Kampus</a>
 
     <main class="registration-card">
+      <div class="brand-emblem" aria-hidden="true">G</div>
       <p class="kicker">Penerimaan Mahasiswa Baru</p>
       <h1>Formulir Pendaftaran Online</h1>
       <p class="subtitle">

@@ -3,144 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Goldenity Campus - Official Website</title>
+    <title>Goldenity Campus - Gateway Portal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./public-landing.css" />
   </head>
   <body>
-    <div class="landing-page">
-      <header class="site-header">
-        <div class="brand-wrap">
-          <div class="brand-logo">G</div>
-          <div>
-            <p class="brand-name">Goldenity Campus</p>
-            <p class="brand-tagline">Future Digital University</p>
-          </div>
+    <main class="gateway-shell">
+      <section class="gateway-hero" aria-label="Goldenity Gateway">
+        <div class="brand-mark" aria-hidden="true">
+          <span class="mark-ring"></span>
+          <span class="mark-core">G</span>
         </div>
 
-        <nav class="main-nav" aria-label="Navigasi utama">
-          <a href="#beranda">Beranda</a>
-          <a href="#profil">Profil</a>
-          <a href="#akademik">Akademik</a>
-          <a href="#fasilitas">Fasilitas</a>
-        </nav>
+        <p class="hero-kicker">Goldenity Premium Access</p>
+        <h1>Gerbang Layanan Digital Goldenity Campus</h1>
+        <p class="hero-subtitle">
+          Satu pintu masuk untuk seluruh perjalanan akademik Anda, dari pendaftaran hingga portal internal.
+        </p>
+      </section>
 
-        <div class="header-actions">
-          <a class="btn btn-gold" href="./maba-registration.html">Pendaftaran MABA</a>
-          <a class="btn btn-navy" href="./login.html">Login Portal</a>
-        </div>
-      </header>
+      <section class="gateway-grid" aria-label="Pilihan portal">
+        <article class="gateway-card">
+          <p class="card-label">Pendaftaran MABA</p>
+          <h2>Calon Mahasiswa Baru</h2>
+          <p>Mulai perjalanan akademik Anda di sini.</p>
+          <a class="gateway-btn" href="./maba-registration.html">Daftar Sekarang</a>
+        </article>
 
-      <main>
-        <section id="beranda" class="hero-section">
-          <div class="hero-content">
-            <p class="hero-kicker">Website Resmi Kampus</p>
-            <h1>Selamat Datang di Goldenity Campus</h1>
-            <p class="hero-subtitle">Membangun Generasi Inovator Digital Masa Depan</p>
-            <a class="hero-cta" href="./maba-registration.html">Daftar Sekarang</a>
-          </div>
-        </section>
+        <article class="gateway-card">
+          <p class="card-label">Portal MABA</p>
+          <h2>Portal Calon Mahasiswa</h2>
+          <p>Cek status seleksi, jadwal test, dan pengumuman hasil.</p>
+          <a class="gateway-btn" href="./maba-portal.html">Track Pendaftaran</a>
+        </article>
 
-        <section id="profil" class="section section-profile">
-          <div class="section-head">
-            <p class="section-kicker">Profil Kampus</p>
-            <h2>Kampus Berbasis Teknologi, Riset, dan Karakter</h2>
-          </div>
-          <p class="profile-copy">
-            Goldenity Campus menghadirkan ekosistem pendidikan modern dengan kurikulum adaptif industri,
-            penguatan soft skill, dan pembelajaran berbasis proyek agar lulusan siap berkompetisi secara global.
-          </p>
-        </section>
-
-        <section id="akademik" class="section">
-          <div class="section-head">
-            <p class="section-kicker">Program Studi Unggulan</p>
-            <h2>Jalur Akademik Berorientasi Masa Depan</h2>
-          </div>
-
-          <div class="card-grid prodi-grid">
-            <article class="info-card">
-              <span class="icon-pill">💻</span>
-              <h3>S1 Teknik Informatika</h3>
-              <p>Fokus pada software engineering, AI, data science, dan cloud-native development.</p>
-            </article>
-
-            <article class="info-card">
-              <span class="icon-pill">🧠</span>
-              <h3>S1 Sistem Informasi</h3>
-              <p>Integrasi teknologi, bisnis digital, enterprise architecture, dan transformasi proses.</p>
-            </article>
-
-            <article class="info-card">
-              <span class="icon-pill">🛠️</span>
-              <h3>S1 Teknik Komputer</h3>
-              <p>Pengembangan IoT, embedded systems, jaringan cerdas, dan otomasi perangkat.</p>
-            </article>
-
-            <article class="info-card">
-              <span class="icon-pill">📈</span>
-              <h3>S1 Bisnis Digital</h3>
-              <p>Perpaduan product management, growth marketing, analytics, dan strategi startup.</p>
-            </article>
-          </div>
-        </section>
-
-        <section id="fasilitas" class="section section-news">
-          <div class="section-head">
-            <p class="section-kicker">Berita & Acara</p>
-            <h2>Update Kegiatan Terbaru Goldenity Campus</h2>
-          </div>
-
-          <div class="card-grid news-grid">
-            <article class="news-card">
-              <p class="news-date">24 Juni 2026</p>
-              <h3>Seminar AI Nasional</h3>
-              <p>Kolaborasi pakar industri dan akademisi membahas masa depan AI di Indonesia.</p>
-            </article>
-
-            <article class="news-card">
-              <p class="news-date">18 Juni 2026</p>
-              <h3>Penerimaan Mahasiswa Baru Dibuka</h3>
-              <p>Pendaftaran gelombang utama resmi dibuka dengan jalur prestasi dan reguler.</p>
-            </article>
-
-            <article class="news-card">
-              <p class="news-date">02 Juni 2026</p>
-              <h3>Prestasi Mahasiswa Internasional</h3>
-              <p>Tim inovasi Goldenity meraih penghargaan global pada kompetisi smart city challenge.</p>
-            </article>
-          </div>
-        </section>
-      </main>
-
-      <footer class="site-footer">
-        <div class="footer-grid">
-          <div>
-            <h4>Alamat Kampus</h4>
-            <p>Jl. Inovasi Digital No. 88, Jakarta Selatan</p>
-            <p>Jl. Teknologi Nusantara No. 21, Surakarta</p>
-          </div>
-
-          <div>
-            <h4>Kontak</h4>
-            <p>Email: info@goldenity.campus</p>
-            <p>Telepon: +62 21 7000 8899</p>
-          </div>
-
-          <div>
-            <h4>Tautan Cepat</h4>
-            <p><a href="./maba-registration.html">Pendaftaran MABA</a></p>
-            <p><a href="./mahasiswa-portal.html">Cek Status Pendaftaran</a></p>
-            <p><a href="./login.html">Login Portal</a></p>
-          </div>
-        </div>
-        <p class="copyright">© 2026 Goldenity Inc. All rights reserved.</p>
-      </footer>
-    </div>
+        <article class="gateway-card">
+          <p class="card-label">Portal Civitas</p>
+          <h2>Portal Internal</h2>
+          <p>Masuk sebagai Dosen, Mahasiswa Aktif, atau Staff.</p>
+          <a class="gateway-btn" href="./login.html">Login Sistem</a>
+        </article>
+      </section>
+    </main>
   </body>
 </html>
