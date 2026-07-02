@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monitoring Siswa - Aplikasi Sopir</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./student-monitoring.css" />
+  </head>
+  <body>
+    <main class="monitoring-page driver-dashboard">
+      <div class="page-shell">
+        <header class="topbar">
+          <div class="brand-stack">
+            <div class="brand-badge">G</div>
+            <div class="brand-copy">
+              <p>Prototype Monitoring Siswa</p>
+              <h1>
+                <span class="heading-with-icon">
+                  <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M7 5.8h10l2 5.6v6.8H5V11.4L7 5.8Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linejoin="round"
+                      stroke-width="1.8"
+                    />
+                    <path
+                      d="M6.2 11.4h11.6"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-width="1.8"
+                    />
+                    <circle cx="8.2" cy="16.8" r="1.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+                    <circle cx="15.8" cy="16.8" r="1.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+                  </svg>
+                  Dashboard Sopir &amp; Pengantaran
+                </span>
+              </h1>
+            </div>
+          </div>
+
+          <a class="page-link" href="./index.html">
+            <svg class="ui-icon tiny" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M10 6 4.5 12 10 18"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.8"
+              />
+              <path d="M5 12h14.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" />
+            </svg>
+            Kembali ke Portal Awal
+          </a>
+        </header>
+
+        <section class="panel-card driver-intro-card">
+          <div class="panel-header driver-intro-header">
+            <div>
+              <span class="hero-kicker">
+                <svg class="ui-icon tiny" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M7 5.8h10l2 5.6v6.8H5V11.4L7 5.8Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linejoin="round"
+                    stroke-width="1.8"
+                  />
+                  <path
+                    d="M6.2 11.4h11.6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-width="1.8"
+                  />
+                  <circle cx="8.2" cy="16.8" r="1.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+                  <circle cx="15.8" cy="16.8" r="1.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+                </svg>
+                Aplikasi Sopir
+              </span>
+              <h2>Mendata penumpang mobil penjemput dan menandai siswa yang sudah diantar.</h2>
+              <p>
+                Sopir memilih mobil penjemput 1 atau 2 untuk melihat daftar murid yang berada di kendaraan tersebut.
+                Setelah sampai tujuan, sopir dapat menandai murid sebagai sudah diantar agar rekap penjemputan rapi.
+              </p>
+            </div>
+            <span class="status-pill status-live">Prototype Dummy Aktif</span>
+          </div>
+
+          <div class="driver-vehicle-toolbar">
+            <div class="driver-vehicle-switch" id="vehicleTabs" role="tablist" aria-label="Pilih mobil penjemput"></div>
+            <div class="teacher-toolbar-note" id="vehicleInfo"></div>
+          </div>
+        </section>
+
+        <section class="panel-card driver-summary-card">
+          <div class="panel-header">
+            <div>
+              <h3>
+                <span class="heading-with-icon">
+                  <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M8 11a3 3 0 1 0 0-6a3 3 0 0 0 0 6Zm8 1a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5ZM3.5 18.5a4.5 4.5 0 0 1 9 0v1h-9v-1Zm10 1v-.5a4 4 0 0 0-1.2-2.85A4.8 4.8 0 0 1 20.5 19v.5h-7Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Ringkasan Mobil Hari Ini
+                </span>
+              </h3>
+              <p>Angka di bawah berubah mengikuti mobil penjemput yang dipilih.</p>
+            </div>
+            <span class="tag">Live Vehicle Snapshot</span>
+          </div>
+
+          <div class="teacher-stats-grid" id="driverStats"></div>
+        </section>
+
+        <section class="panel-card driver-table-card">
+          <div class="panel-header">
+            <div>
+              <h3>
+                <span class="heading-with-icon">
+                  <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="4" y="5" width="16" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8" />
+                    <path d="M4.8 9.5h14.4M9.2 5.8v12.4M14.8 5.8v12.4" fill="none" stroke="currentColor" stroke-width="1.8" />
+                  </svg>
+                  Daftar Murid di Mobil
+                </span>
+              </h3>
+              <p>Menampilkan murid yang berada di mobil penjemput beserta status pengantaran.</p>
+            </div>
+            <span class="tag" id="activeVehicleBadge">Mobil Aktif</span>
+          </div>
+
+          <div class="teacher-table-wrap">
+            <table class="teacher-table driver-table">
+              <thead>
+                <tr>
+                  <th>
+                    <span class="table-heading">
+                      <svg class="ui-icon tiny" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="8.2" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+                        <path
+                          d="M5.5 18.5a6.5 6.5 0 0 1 13 0"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-width="1.8"
+                        />
+                      </svg>
+                      Nama Murid
+                    </span>
+                  </th>
+                  <th>
+                    <span class="table-heading">
+                      <svg class="ui-icon tiny" viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M4 7.2 12 4l8 3.2-8 3.2-8-3.2Z"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                        />
+                        <path
+                          d="M6.8 10.4v3.4c0 1.5 2.4 2.7 5.2 2.7s5.2-1.2 5.2-2.7v-3.4"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                        />
+                      </svg>
+                      Kelas
+                    </span>
+                  </th>
+                  <th>
+                    <span class="table-heading">
+                      <svg class="ui-icon tiny" viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M12 21s7-5.2 7-11.3A7 7 0 0 0 5 9.7C5 15.8 12 21 12 21Z"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                        />
+                        <circle cx="12" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+                      </svg>
+                      Tujuan Antar
+                    </span>
+                  </th>
+                  <th>
+                    <span class="table-heading">
+                      <svg class="ui-icon tiny" viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M12 21s7-5.2 7-11.3A7 7 0 0 0 5 9.7C5 15.8 12 21 12 21Z"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                        />
+                        <circle cx="12" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+                        <path
+                          d="M14.8 6.2h4.4v4.4"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                        />
+                        <path
+                          d="M19.2 6.2 14 11.4"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-width="1.8"
+                        />
+                      </svg>
+                      Maps
+                    </span>
+                  </th>
+                  <th>
+                    <span class="table-heading">
+                      <svg class="ui-icon tiny" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8" />
+                        <path
+                          d="M12 7.8v4.5l3 1.8"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                        />
+                      </svg>
+                      Status
+                    </span>
+                  </th>
+                  <th>
+                    <span class="table-heading">
+                      <svg class="ui-icon tiny" viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M6 4.8h9.2L18 7.6v11.6H6z"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                        />
+                        <path
+                          d="M14.8 4.8v3H18M8.5 11h7M8.5 14.2h7"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-width="1.8"
+                        />
+                      </svg>
+                      Aksi
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="driverTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <p class="footer-note">
+          Halaman ini adalah dummy frontend untuk prototype. Nantinya tombol dan daftar penumpang dapat disambungkan ke
+          sistem dispatch atau third party tracking sesuai kebutuhan operasional.
+        </p>
+      </div>
+    </main>
+
+    <script src="./monitoring-sopir.js"></script>
+  </body>
+</html>

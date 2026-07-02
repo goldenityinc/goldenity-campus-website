@@ -184,6 +184,11 @@ body::before {
   align-content: center;
 }
 
+.monitoring-actions .gateway-btn {
+  margin-top: 0;
+  align-self: stretch;
+}
+
 .monitoring-btn {
   width: 100%;
   justify-content: center;

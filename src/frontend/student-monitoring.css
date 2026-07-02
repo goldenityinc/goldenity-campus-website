@@ -344,6 +344,90 @@ body::before {
   max-width: 72ch;
 }
 
+.driver-dashboard .driver-intro-card,
+.driver-dashboard .driver-summary-card,
+.driver-dashboard .driver-table-card {
+  padding: 28px;
+  border-radius: 30px;
+}
+
+.driver-dashboard .driver-intro-header {
+  align-items: flex-start;
+}
+
+.driver-dashboard .driver-intro-header h2 {
+  margin: 14px 0 0;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  line-height: 1.12;
+}
+
+.driver-dashboard .driver-intro-header p {
+  margin-top: 12px;
+  max-width: 72ch;
+}
+
+.driver-vehicle-toolbar {
+  margin-top: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+.driver-vehicle-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.vehicle-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(19, 54, 97, 0.14);
+  background: rgba(255, 255, 255, 0.86);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #173e63;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vehicle-chip:hover {
+  transform: translateY(-1px);
+  border-color: rgba(38, 192, 173, 0.34);
+  box-shadow: 0 10px 24px rgba(17, 48, 81, 0.08);
+}
+
+.vehicle-chip.active {
+  border-color: transparent;
+  color: #0b3b5a;
+  background: linear-gradient(135deg, rgba(38, 192, 173, 0.18), rgba(105, 195, 233, 0.16));
+  box-shadow: 0 12px 26px rgba(38, 192, 173, 0.16);
+}
+
+.vehicle-info-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.teacher-status.onboard {
+  color: #6a4c0a;
+  background: rgba(255, 215, 130, 0.22);
+}
+
+.teacher-status.delivered {
+  color: #0f5c45;
+  background: rgba(105, 210, 125, 0.16);
+}
+
+.driver-dashboard .teacher-table tbody tr.row-delivered td {
+  background: rgba(230, 248, 236, 0.72);
+}
+
 .teacher-class-toolbar {
   margin-top: 20px;
   display: grid;
@@ -778,6 +862,12 @@ body::before {
 .table-action-btn.warn {
   color: #744d05;
   background: rgba(255, 215, 130, 0.18);
+}
+
+.table-action-btn.map {
+  color: #0f5d63;
+  background: rgba(75, 198, 194, 0.14);
+  border-color: rgba(75, 198, 194, 0.22);
 }
 
 .table-action-btn.track {
